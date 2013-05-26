@@ -7,8 +7,8 @@ public class Server {
 	ServerSocket s = null;
 	Socket player = null;
 	int portNumber;
-	BufferedReader in = null;
-    PrintWriter out = null;
+	//BufferedReader in = null;
+    //PrintWriter out = null;
 	
 	//Initialize Server and ServerSocket
 	public Server()	{
@@ -26,6 +26,7 @@ public class Server {
 	{
 		try {
 	         player = s.accept( );
+	         player.connect(s);
 	         System.out.println("Player connected.");
 	      }//try
 	      catch (IOException e) {
@@ -38,7 +39,7 @@ public class Server {
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
-	        in = new BufferedReader
+	        BufferedReader in = new BufferedReader
 	                (new InputStreamReader(socket.getInputStream()));
 	     }//try
 	     catch (IOException e) {
@@ -50,8 +51,8 @@ public class Server {
 	public PrintWriter connectWriter(Socket socket)
 	{
 		try{
-			out = new PrintWriter
-	                (player.getOutputStream(), true /* autoFlush */);
+			PrintWriter out = new PrintWriter
+	                (socket.getOutputStream(), true /* autoFlush */);
 	        
 	        out.println( "Hello! Enter BYE to exit." );
 	
