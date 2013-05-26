@@ -1,0 +1,8 @@
+package networking;
+import java.util.*;
+
+public class Board {
+	public ArrayList<ArrayList<Marker>> row =new ArrayList<ArrayList<Marker>>(false, 0, true);
+	row.add(new ArrayList<Makrer>(false, 0, true));
+
+}
