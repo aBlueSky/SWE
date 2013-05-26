@@ -38,7 +38,7 @@ public class Server {
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
-	        in = new BufferedReader
+			in = new BufferedReader
 	                (new InputStreamReader(socket.getInputStream()));
 	     }//try
 	     catch (IOException e) {
@@ -51,7 +51,7 @@ public class Server {
 	{
 		try{
 			out = new PrintWriter
-	                (player.getOutputStream(), true /* autoFlush */);
+	                (socket.getOutputStream(), true /* autoFlush */);
 	        
 	        out.println( "Hello! Enter BYE to exit." );
 	
