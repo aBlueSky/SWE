@@ -7,8 +7,9 @@ public class Server {
 	ServerSocket s = null;
 	Socket player = null;
 	int portNumber;
-	//BufferedReader in = null;
-    //PrintWriter out = null;
+	BufferedReader in = null;
+    PrintWriter out = null;
+    static int numConnected=0;
 	
 	//Initialize Server and ServerSocket
 	public Server()	{
@@ -26,21 +27,22 @@ public class Server {
 	{
 		try {
 	         player = s.accept( );
-	         player.connect(s);
 	         System.out.println("Player connected.");
+	         out = new PrintWriter(player.getOutputStream(), true);
+	         out.println(++numConnected);
 	      }//try
 	      catch (IOException e) {
 	         System.err.println("Accept failed: " + e.getMessage());
 	         System.exit(-1);
 	      }//catch
-		System.out.println("return point");
 		return player;
 	}//method
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
-	        BufferedReader in = new BufferedReader
+	        in = new BufferedReader
 	                (new InputStreamReader(socket.getInputStream()));
+	        System.out.println("Reader Connected");
 	     }//try
 	     catch (IOException e) {
 	        System.err.println("Unable to read from or write to the client: "
@@ -51,11 +53,11 @@ public class Server {
 	public PrintWriter connectWriter(Socket socket)
 	{
 		try{
-			PrintWriter out = new PrintWriter
+			out = new PrintWriter
 	                (socket.getOutputStream(), true /* autoFlush */);
+	        System.out.println("Writer connected");
 	        
 	        out.println( "Hello! Enter BYE to exit." );
-	
 	        boolean done = false;
 	        while (!done) {
 	           String line = in.readLine();
@@ -67,7 +69,7 @@ public class Server {
 	              }//if
 	           }//else
 	        }//while
-		}
+		}//try
         catch (IOException e) {
 	        System.err.println("Unable to read from or write to the client: "
 	                           + e.getMessage());
