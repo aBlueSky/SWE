@@ -9,10 +9,7 @@ public class Server {
 	int portNumber;
 	BufferedReader in = null;
     PrintWriter out = null;
-<<<<<<< HEAD
     static int numConnected=0;
-=======
->>>>>>> 8cd55e9280fe3a728d02c526b39717fa1f9ae0a4
 	
 	//Initialize Server and ServerSocket
 	public Server()	{
@@ -43,12 +40,7 @@ public class Server {
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
-<<<<<<< HEAD
-	        in = new BufferedReader
-=======
-			in = new BufferedReader
->>>>>>> 8cd55e9280fe3a728d02c526b39717fa1f9ae0a4
-	                (new InputStreamReader(socket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	        System.out.println("Reader Connected");
 	     }//try
 	     catch (IOException e) {
