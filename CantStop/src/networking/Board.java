@@ -2,17 +2,74 @@ package networking;
 import java.io.*;
 
 public class Board {
-	int c = 11;
-	int r = 9;
+	static int c = 11;
+	static int r = 9;
 	Marker grid[][];
-	Marker V = new Marker(false, 0, true);//vacant
-	Marker N = new Marker(false, 0, true);//No mans land, not part of grid
-	Marker T = new Marker(false, 0, false);//Temporary Markers
-	Marker mOne = new Marker(true, 1, false);
-	Marker mTwo = new Marker(true, 2, false);
-	public Board(){
+	Marker V;
+	Marker N;
+	Marker T;
+	Marker m;
+	public Board(int playerNum){
+		V = new Marker(false, playerNum, true);//vacant
+		N = new Marker(false, 0, true);//No mans land, not part of grid
+		T = new Marker(false, playerNum, false);//Temporary Markers
+		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
+	public Board changeTemps(Board board)
+	{
+		Board newBoard = new Board(board.m.playerNum);
+		for(int i = 0; i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(board.grid[i][j]==board.T)
+				{
+					newBoard.grid[i][j]=newBoard.V;
+				}
+				else if(board.grid[i][j]==board.N)
+				{
+					newBoard.grid[i][j]=newBoard.N;
+				}
+				else if(board.grid[i][j]==board.m)
+				{
+					newBoard.grid[i][j]=newBoard.m;
+				}
+				else
+				{
+					newBoard.grid[i][j]=newBoard.V;
+				}
+			}
+		}
+		return newBoard;
+	}//method
+	public Board tempsToPerms(Board board)
+	{
+		Board newBoard = new Board(board.m.playerNum);
+		for(int i = 0; i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(board.grid[i][j]==board.T)
+				{
+					newBoard.grid[i][j]=newBoard.m;
+				}
+				else if(board.grid[i][j]==board.N)
+				{
+					newBoard.grid[i][j]=newBoard.N;
+				}
+				else if(board.grid[i][j]==board.m)
+				{
+					newBoard.grid[i][j]=newBoard.m;
+				}
+				else
+				{
+					newBoard.grid[i][j]=newBoard.V;
+				}
+			}
+		}
+		return newBoard;
+	}//method
 	public String printBoard()
 	{
 		String board="";
@@ -28,6 +85,10 @@ public class Board {
 				else if(grid[i][j]==N)
 				{/*Not Possible spot*/
 					temp=("N");
+				}//else if
+				else if(grid[i][j]==m)
+				{/*Not Possible spot*/
+					temp=("M");
 				}//else if
 				else/*(grid[i][j].vacant==true)*/
 				{
@@ -131,16 +192,10 @@ public class Board {
 		}
 		return grid;
 	}//method
-	private boolean addMarker(int playerNum, int i, int j){
+	private boolean addMarker(int i, int j){
 		boolean added = false;
-		if(playerNum==1){
-			grid[i][j]=mOne;
+			grid[i][j]=m;
 			added = true;
-		}//if
-		else if(playerNum==2){
-			grid[i][j]=mTwo;
-			added = true;
-		}//else if
 		return added;
 	}//method
 	private boolean isVacant(int i, int j){
@@ -180,29 +235,18 @@ public class Board {
 		grid[i+spot][j]=T;
 		grid[i][j]=V;
 	}
-	public void placePerma (int player){
+	public void placePerma (){
 		for(int i=0; i<c; i++){
 			for(int j=0; j<r; j++){
 				if(grid[j][i]==T){
-					if(player == 1){
-						grid[j][i]=mOne;
-					}
-					else{
-						grid[j][i]=mTwo;
-					}
+					grid[j][i]=m;
 				}
 			}
 		}
 	}
-	private void movePerma(int playerNum, int i, int j){
+	private void movePerma(int i, int j){
 		for(int h = i; h<9; h++){
 			if(grid[h][j]==T){
-				if(playerNum==1){
-					grid[h][j]=mOne;
-				}
-				else{
-					grid[h][j]=mTwo;
-				}
 				grid[i][j]=V;
 			}
 		}

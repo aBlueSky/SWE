@@ -10,8 +10,8 @@ public class GameManager {
 		Server server = new Server();
 		Socket player1 = null;
 		Socket player2 = null;
-		Board board1 = new Board();
-		Board board2 = new Board();
+		Board board1 = new Board(1);
+		Board board2 = new Board(2);
 		
 		//player connections
 		player1=server.connect(player1);
@@ -33,7 +33,7 @@ public class GameManager {
 		System.out.println(board2.printBoard());//Print board for P2
 		while(playing)
 		{
-			boolean turnA = playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
+			playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
 							/*player 1's turn, giving both P1 IO ,
 							P2 Writer and P1's player number and the board for the players*/
 			System.out.println(board1.printBoard());//Print board for P1
@@ -41,7 +41,7 @@ public class GameManager {
 			if(playing)
 			{//if turnA didn't win
 				p2Writer.println("go");//Tell next player to go.
-				boolean turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
+				playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
 						/*player 2's turn, giving both P2 IO ,
 						P1 Writer and P2's player number and the board for the players*/
 				System.out.println(board2.printBoard());//Print board for P2
@@ -170,10 +170,10 @@ public class GameManager {
 		int counter2 = 0;
 		for(int c=0; c<11; c++){
 			for(int r=0; r<9; r++){
-				if(board1.isMarkerInFinalSpot(c)== board1.mOne){
+				if(board1.isMarkerInFinalSpot(c)== board1.m){
 					counter++;
 				}
-				else if(board1.isMarkerInFinalSpot(c)== board2.mTwo){
+				else if(board1.isMarkerInFinalSpot(c)== board2.m){
 					counter2++;
 				}
 			}
@@ -186,7 +186,7 @@ public class GameManager {
 		}
 		return gameWon;
 	}
-	private static boolean playerTurn(BufferedReader reader, PrintWriter writer,
+	private static void playerTurn(BufferedReader reader, PrintWriter writer,
 									 PrintWriter otherPlayer, int playerNum, Board boardPrimary,
 									 Board boardSecondary)
 	{/*
@@ -202,7 +202,7 @@ public class GameManager {
 		           else {
 		              if (line.trim().equals("stop")) {
 		            	  //switch temp markers to PERMANENT 
-		            	  boardPrimary.placePerma(playerNum);//make temp nodes permanent
+		            	  boardPrimary=boardPrimary.tempsToPerms(boardPrimary);
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
@@ -216,7 +216,7 @@ public class GameManager {
 		            	 {
 		            		//Player crapped out need to add the remove temp markers method.
 		            		writer.println("ack");
-		            		boardPrimary.swapOut(boardPrimary.T,boardPrimary.V);
+		            		boardPrimary=boardPrimary.changeTemps(boardPrimary);
 		            		done=true;
 		            	 }//if
 		            	 else
@@ -246,7 +246,7 @@ public class GameManager {
 			            			  if(num1==num2)
 			            			  {
 			            				  boolean tempExistsAlready=false;
-			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  for(int i=0;i<Board.r;i++)
 			            				  {
 			            					  if(boardPrimary.grid[i][num1-1]==boardPrimary.T)
 			            					  {
@@ -267,7 +267,7 @@ public class GameManager {
 			            			  else
 			            			  {
 			            				  boolean tempExistsAlready=false;
-			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  for(int i=0;i<Board.r;i++)
 			            				  {
 			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
 			            					  {
@@ -285,7 +285,7 @@ public class GameManager {
 		            					  }
 			            				  
 			            				  tempExistsAlready=false;
-			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  for(int i=0;i<Board.r;i++)
 			            				  {
 			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.T)
 			            					  {
@@ -308,7 +308,7 @@ public class GameManager {
 			            		  else{
 			            			//Player crapped out need to add the remove temp markers method.
 			            			  System.out.println("Crapping out");
-					            		boardPrimary.swapOut(boardPrimary.T,boardPrimary.V);
+					            		boardPrimary=boardPrimary.changeTemps(boardPrimary);
 					            		writer.println("ack");
 					            		done=true;
 			            		  }//crapped out
@@ -329,7 +329,6 @@ public class GameManager {
 	        System.err.println("Unable to read from or write to the client: "
 	                           + e.getMessage());
 	     }//Catch
-		return done;
 	}//method
 
 }
