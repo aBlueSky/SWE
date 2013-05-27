@@ -166,7 +166,7 @@ public class Board {
 	}
 	
 	public void placeTemp(int i, int j){
-		grid[i][j]=T;
+			grid[i][j-2]=T;
 	}
 	public void moveTemp(int i, int j, int spot){
 		grid[i+spot][j]=T;

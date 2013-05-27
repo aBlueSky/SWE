@@ -108,19 +108,11 @@ public class GameManager {
 	private static boolean checkRoll(int a, int b){
 		boolean valid = false;
 		if((2<=a)&&(12>=a)){
-			for(int i=0; i<dice.length; i++){
-				if(dice[i]==a){
-					valid = true;
-				}
-			}
+			valid = true;
 		}
 		
 		if((2<=b)&&(12>=b)){
-			for(int i=0; i<dice.length; i++){
-				if(dice[i]==b){
-					valid = true;
-				}
-			}
+			valid = true;
 		}
 		return valid;
 	}
@@ -210,7 +202,9 @@ public class GameManager {
 		           else {
 		              if (line.trim().equals("stop")) {
 		            	  //switch temp markers to PERMANENT 
+		            	  System.out.println(boardPrimary.printBoard());
 		            	  boardPrimary.placePerma(playerNum);//make temp nodes permanent
+		            	  System.out.println(boardPrimary.printBoard());
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
@@ -240,14 +234,15 @@ public class GameManager {
 			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
 			            		  a = list[0];
 			            		  b = list[1];
-			            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b))
-			            				  &&!checkBusted(boardPrimary)
-			            				  &&!checkBusted(boardSecondary))
+			            		  int num1 = (int)Integer.parseInt(a);
+		            			  int num2 = (int)Integer.parseInt(b);
+			            		  if (checkRoll(num1,num2)
+			            				  /*&&!checkBusted(boardPrimary)
+			            				  &&!checkBusted(boardSecondary)*/)
 			            		  {
 			            			  //Player combination is valid as far as 2<=x<=12
 			            			  //add or increment marker positions
-			            			  int num1 = Integer.parseInt(a);
-			            			  int num2 = Integer.parseInt(b);
+			            			  System.out.println("Valid roll and choice.");
 			            			  int loc1=num1;
 			            			  int loc2=num2;
 			            			  if(num1==num2)
@@ -255,7 +250,7 @@ public class GameManager {
 			            				  boolean tempExistsAlready=false;
 			            				  for(int i=0;i<boardPrimary.r;i++)
 			            				  {
-			            					  if(boardPrimary.grid[i][num1]==boardPrimary.T)
+			            					  if(boardPrimary.grid[i][num1-1]==boardPrimary.T)
 			            					  {
 			            						  loc1=i;
 			            						  tempExistsAlready=true;
@@ -263,12 +258,12 @@ public class GameManager {
 			            				  }
 			            				  if(tempExistsAlready)
 			            				  {
-		            						  boardPrimary.moveTemp(loc1,num1,2);
+		            						  boardPrimary.moveTemp(loc1,num1-2,2);
 			            				  }
 			            				  else
 		            					  {
-		            						  boardPrimary.placeTemp(loc1,num1);
-		            						  boardPrimary.moveTemp(loc1,num1,1);
+		            						  boardPrimary.placeTemp(0,num1);
+		            						  boardPrimary.moveTemp(0,num1-2,1);
 		            					  }
 			            			  }//if -- matching numbers
 			            			  else
@@ -276,7 +271,7 @@ public class GameManager {
 			            				  boolean tempExistsAlready=false;
 			            				  for(int i=0;i<boardPrimary.r;i++)
 			            				  {
-			            					  if(boardPrimary.grid[i][num1]==boardPrimary.T)
+			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
 			            					  {
 			            						  loc1=i;
 			            						  tempExistsAlready=true;
@@ -284,17 +279,17 @@ public class GameManager {
 			            				  }
 			            				  if(tempExistsAlready)
 			            				  {
-		            						  boardPrimary.moveTemp(loc1,num1,1);
+		            						  boardPrimary.moveTemp(loc1,num1-2,1);
 			            				  }
 			            				  else
 		            					  {
-		            						  boardPrimary.placeTemp(loc1,num1);
+		            						  boardPrimary.placeTemp(0,num1);
 		            					  }
 			            				  
 			            				  tempExistsAlready=false;
 			            				  for(int i=0;i<boardPrimary.r;i++)
 			            				  {
-			            					  if(boardPrimary.grid[i][num2]==boardPrimary.T)
+			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.T)
 			            					  {
 			            						  loc2=i;
 			            						  tempExistsAlready=true;
@@ -302,17 +297,19 @@ public class GameManager {
 			            				  }
 			            				  if(tempExistsAlready)
 			            				  {
-		            						  boardPrimary.moveTemp(loc2,num2,1);
+		            						  boardPrimary.moveTemp(loc2,num2-2,1);
 			            				  }
 			            				  else
 		            					  {
-		            						  boardPrimary.placeTemp(loc2,num2);
+		            						  boardPrimary.placeTemp(0,num2);
 		            					  }
 			            			  }//non matching numbers
+			            			  System.out.println(boardPrimary.printBoard());
 			            			  System.out.println("Valid 2<=x<=12");
 			            		  }//if -- crap check
 			            		  else{
 			            			//Player crapped out need to add the remove temp markers method.
+			            			  System.out.println("Crapping out");
 					            		boardPrimary.crappingOut();
 					            		writer.println("ack");
 					            		done=true;
@@ -320,7 +317,8 @@ public class GameManager {
 			            	  }//try
 			            	  catch(Exception e)
 			            	  {
-			            		  System.err.println("Error with turn function.");
+			            		  throw e;
+			            		  //System.err.println("Error with turn function.");
 			            	  }//catch
 			               }//assume the 2 desired dice combinations were passed.
 			           }//inner else
