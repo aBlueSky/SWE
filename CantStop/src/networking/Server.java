@@ -27,7 +27,6 @@ public class Server {
 	{
 		try {
 	         player = s.accept( );
-	         System.out.println("Player connected.");
 	         out = new PrintWriter(player.getOutputStream(), true);
 	         out.println(++numConnected);
 	      }//try
@@ -41,7 +40,6 @@ public class Server {
 	{
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	        System.out.println("Reader Connected");
 	     }//try
 	     catch (IOException e) {
 	        System.err.println("Unable to read from or write to the client: "
@@ -54,20 +52,6 @@ public class Server {
 		try{
 			out = new PrintWriter
 	                (socket.getOutputStream(), true /* autoFlush */);
-	        System.out.println("Writer connected");
-	        
-	        /*out.println( "Hello! Enter BYE to exit." );
-	        boolean done = false;
-	        while (!done) {
-	           String line = in.readLine();
-	           if (line == null) { done = true; }
-	           else {
-	              out.println("Echo: " + line);
-	              if (line.trim().equals("BYE")) {
-	                 done = true;
-	              }//if
-	           }//else
-	        }//while*/
 		}//try
         catch (IOException e) {
 	        System.err.println("Unable to read from or write to the client: "
@@ -87,6 +71,5 @@ public class Server {
 	         System.err.println("Unable to close writer, reader, or socket: "
 	                            + e.getMessage());
 	      }//catch
-		System.out.println("Everything closed.");
 	}//method
 }//class

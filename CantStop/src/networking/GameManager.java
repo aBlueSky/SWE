@@ -10,7 +10,8 @@ public class GameManager {
 		Server server = new Server();
 		Socket player1 = null;
 		Socket player2 = null;
-		Board board = new Board();
+		Board board1 = new Board();
+		Board board2 = new Board();
 		
 		//player connections
 		System.out.println("Waiting for player connections");
@@ -18,24 +19,31 @@ public class GameManager {
 		//Create IO for Player 1
 		BufferedReader p1Reader = server.connectReader(player1);
 		PrintWriter p1Writer = server.connectWriter(player1);
-		System.out.println("End of setting up IO for P1");
 		
 		player2=server.connect(player2);
 		//Create IO for Player 2
 		BufferedReader p2Reader = server.connectReader(player2);
 		PrintWriter p2Writer = server.connectWriter(player2);
-		System.out.println("End of setting up IO for P2");
 		
 		//Time to play the game
 		boolean playing = true;/*A boolean value that will
 		 						be true as long as the game
 		 						is running and needs to continue
 		 						running*/
+		System.out.println(board1.printBoard());//Print board for P1
+		System.out.println(board2.printBoard());//Print board for P2
 		while(playing)
 		{
-			System.out.println(board.printBoard());
-			boolean turnA = playerTurn(p1Reader, p1Writer);
-			boolean turnB = playerTurn(p2Reader, p2Writer);
+			boolean turnA = playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
+							/*player 1's turn, giving both P1 IO ,
+							P2 Writer and P1's player number and the board for the players*/
+			System.out.println(board1.printBoard());//Print board for P1
+			p2Writer.println("go");//Tell next player to go.
+			boolean turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
+							/*player 2's turn, giving both P2 IO ,
+							P1 Writer and P2's player number and the board for the players*/
+			System.out.println(board2.printBoard());//Print board for P2
+			p1Writer.println("go");//Tell next player to go.
 		}//while
 		
 		//Game is finished, close connections
@@ -101,8 +109,12 @@ public class GameManager {
 		}
 		return valid;
 	}
-	private static boolean checkBusted(){
-		Board thing = new Board();
+	/* Checks to see if there are temporary markers already placed on the 
+	 * given board and returns true if at least one temp marker is placed
+	 * and there is a possibility that it was chosen by the user with a 
+	 * valid roll.
+	 */
+	private static boolean checkBusted(Board board){
 		boolean busted = false;
 		boolean match = false;
 		int counter = 0;
@@ -112,34 +124,42 @@ public class GameManager {
 		int match0 = 0;
 		for(int i=0; i<11; i++){
 			for(int j=0; j<9; j++){
-				if(thing.grid[i][j]==thing.T){
+				if(board.grid[i][j]==board.T){
 					counter ++;
 					if(place1==0){
 						place1=i+2;
-					}
+					}//else if
 					else if(place2==0){
 						place2=i+2;
-					}
+					}//else if
 					else if(place3==0){
 						place3=i+2;
-					}
-				}
-			}
-		}
+					}//else if
+				}//if
+			}//inner for
+		}//outer for -- finds temp markers
+		/*
+		 * Finds out if the place where it matches the dice roll has a vacant spot.
+		 */
 		for(int i=0; i<3; i++){
 			for(int j=i+1; j<4; j++){
 				match0=dice[i]+dice[j];
-				if((match0==place1)||(match0==place2)||(match0==place3)){
+				if(((match0==place1&&board.isMarkerInFinalSpot(place1)==board.V)||
+					(match0==place2&&board.isMarkerInFinalSpot(place2)==board.V)||
+					(match0==place3&&board.isMarkerInFinalSpot(place3)==board.V)))
+				{
 					match=true;
-				}
-			}
-		}
+				}//if
+			}//inner for
+		}//outer for
 		if(counter == 3 && match != true){
 			busted = true;
-		}
+		}// 3 temp markers and there is no match can be made with the given rolls.
 		return busted;
 	}
-	private static boolean playerTurn(BufferedReader reader, PrintWriter writer)
+	private static boolean playerTurn(BufferedReader reader, PrintWriter writer,
+									 PrintWriter otherPlayer, int playerNum, Board boardPrimary,
+									 Board boardSecondary)
 	{
 		boolean done=false;/*Marks whether the player's turn is done.*/
 		try
@@ -150,12 +170,14 @@ public class GameManager {
 		           if (line == null) { done = true; }
 		           else {
 		              writer.println("Echo: " + line);//debug code
+		              otherPlayer.println("Echo: " + line);//debug code
 		              if (line.trim().equals("stop")) {
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
 		            	  roll();
-			              writer.println(""+concatRoll()); 
+			              writer.println(""+concatRoll());
+			              otherPlayer.println(""+concatRoll());
 			              done = false;
 			          }// else if
 		              else
@@ -165,7 +187,7 @@ public class GameManager {
 		            		  //Player crapped out.
 		            	 }//if
 		            	 else
-		            	 {/*player should have inputted 2 numbers delimited by a ','*/
+		            	 {/*player should have input 2 numbers delimited by a ','*/
 			            	  /*input should be in form "a,b" where
 			            	   a and b are int's delimited by ',' */
 			            	  String a=null;
@@ -173,14 +195,13 @@ public class GameManager {
 			            	  try
 			            	  {
 			            		  String[] list=line.split(",");
-			            		  /*ArrayList<String> list = (ArrayList<String>)
-			            				  					(Arrays.asList(line.split(",")));
-			            		  							/*To ArrayList of Strings*/
-			            		  System.out.println(""+list.toString());
+			            		  System.out.println(""+list.toString());//debug
 			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
 			            		  a = list[0];
 			            		  b = list[1];
-			            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b)))
+			            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b))
+			            				  &&checkBusted(boardPrimary)
+			            				  &&checkBusted(boardSecondary))
 			            		  {
 			            			  //Player combination is valid as far as 2<=x<=12
 			            			  System.out.println("Valid 2<=x<=12");
@@ -190,13 +211,11 @@ public class GameManager {
 			            	  catch(Exception e)
 			            	  {
 			            		  System.err.println("Error with input.");
-			            		  System.out.println(""+a+","+b);
 			            	  }//catch
 			               }//assume the 2 desired dice combinations were passed.
 			           }//inner else
 		           }//outer else
 			}//while
-			System.out.println("End of turn.");
 		}//try
 		catch (IOException e) {
 			done=true;

@@ -25,8 +25,8 @@ public class Board {
 					temp="T";/*T for Temporary*/
 				}//if
 				else if(grid[i][j]==N)
-				{/*player number of zero means no player*/
-					temp=(""+grid[i][j].playerNum);
+				{/*Not Possible spot*/
+					temp=("N");
 				}//else if
 				else/*(grid[i][j].vacant==true)*/
 				{
@@ -135,13 +135,13 @@ public class Board {
 		if(playerNum==1){
 			grid[i][j]=mOne;
 			added = true;
-		}
+		}//if
 		else if(playerNum==2){
 			grid[i][j]=mTwo;
 			added = true;
-		}
+		}//else if
 		return added;
-	}
+	}//method
 	private boolean isVacant(int i, int j){
 		boolean vacant = false;
 		if(grid[i][j]==V){
@@ -149,11 +149,19 @@ public class Board {
 		}
 		return vacant;
 	}
-	private boolean isMarkerInFinalSpot(int i, int j){
-		boolean fin = false;
-		if(grid[i+1][j]==N){
-			fin = true;
-		}
+	/*
+	 * Given a column number will return what the last available marker
+	 * spot is containing. If it is V then it is not closed, anything 
+	 * else and it should be a blocked column.
+	 */
+	public Marker isMarkerInFinalSpot(int j){
+		Marker fin=null;
+		for(int i=0;grid[i][j]!=N;i++)
+		{
+			if(grid[i+1][j]==N){
+			fin = grid[i][j];
+			}//if
+		}//for
 		return fin;
 	}
 	
