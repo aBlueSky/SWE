@@ -156,34 +156,41 @@ public class GameManager {
 			          }// else if
 		              else
 		              {
-		            	  /*input should be in form "a,b" where
-		            	   a and b are int's delimited by ',' */
-		            	  String a=null;
-	            		  String b=null;
-		            	  try
-		            	  {
-		            		  String[] list=line.split(",");
-		            		  /*ArrayList<String> list = (ArrayList<String>)
-		            				  					(Arrays.asList(line.split(",")));
-		            		  							/*To ArrayList of Strings*/
-		            		  System.out.println(""+list.toString());
-		            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
-		            		  a = list[0];
-		            		  b = list[1];
-		            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b)))
-		            		  {
-		            			  //Player combination is valid as far as 2<=x<=12
-		            			  System.out.println("Valid 2<=x<=12");
-		            		  }//if
-		            		  System.out.println(""+a+","+b);
-		            	  }//try
-		            	  catch(Exception e)
-		            	  {
-		            		  System.err.println("Invalid input.");
-		            		  System.out.println(""+a+","+b);
-		            	  }//catch
-		              }//assume the 2 desired dice combinations were passed.
-		           }//else
+		            	 if(line.equals("crap"))
+		            	 {
+		            		  //Player crapped out.
+		            	 }//if
+		            	 else
+		            	 {/*player should have inputted 2 numbers delimited by a ','*/
+			            	  /*input should be in form "a,b" where
+			            	   a and b are int's delimited by ',' */
+			            	  String a=null;
+		            		  String b=null;
+			            	  try
+			            	  {
+			            		  String[] list=line.split(",");
+			            		  /*ArrayList<String> list = (ArrayList<String>)
+			            				  					(Arrays.asList(line.split(",")));
+			            		  							/*To ArrayList of Strings*/
+			            		  System.out.println(""+list.toString());
+			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
+			            		  a = list[0];
+			            		  b = list[1];
+			            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b)))
+			            		  {
+			            			  //Player combination is valid as far as 2<=x<=12
+			            			  System.out.println("Valid 2<=x<=12");
+			            		  }//if
+			            		  System.out.println(""+a+","+b);
+			            	  }//try
+			            	  catch(Exception e)
+			            	  {
+			            		  System.err.println("Error with input.");
+			            		  System.out.println(""+a+","+b);
+			            	  }//catch
+			               }//assume the 2 desired dice combinations were passed.
+			           }//inner else
+		           }//outer else
 			}//while
 			System.out.println("End of turn.");
 		}//try
