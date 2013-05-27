@@ -1,7 +1,5 @@
 package networking;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.*;
 
 public class GameManager {
@@ -128,14 +126,14 @@ public class GameManager {
 	            		  String b=null;
 		            	  try
 		            	  {
-		            		  String[] list=new String[2];
+		            		  String[] list=line.split(",");
 		            		  /*ArrayList<String> list = (ArrayList<String>)
 		            				  					(Arrays.asList(line.split(",")));
 		            		  							/*To ArrayList of Strings*/
 		            		  System.out.println(""+list.toString());
 		            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
-		            		  a = list.get(0);
-		            		  b = list.get(1);
+		            		  a = list[0];
+		            		  b = list[1];
 		            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b)))
 		            		  {
 		            			  //Player combination is valid as far as 2<=x<=12
