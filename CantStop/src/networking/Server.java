@@ -56,7 +56,7 @@ public class Server {
 	                (socket.getOutputStream(), true /* autoFlush */);
 	        System.out.println("Writer connected");
 	        
-	        out.println( "Hello! Enter BYE to exit." );
+	        /*out.println( "Hello! Enter BYE to exit." );
 	        boolean done = false;
 	        while (!done) {
 	           String line = in.readLine();
@@ -67,7 +67,7 @@ public class Server {
 	                 done = true;
 	              }//if
 	           }//else
-	        }//while
+	        }//while*/
 		}//try
         catch (IOException e) {
 	        System.err.println("Unable to read from or write to the client: "

@@ -34,12 +34,13 @@ public class Main {
 		p1Writer.close();
 		try {
 			p2Reader.close();
-		} catch (IOException e) {
+		} //try
+		catch (IOException e) {
 	         System.err.println("Unable to close reader: "
                      + e.getMessage());
 		}//catch
 		p2Writer.close();
 		server.close();
 		System.out.println("Connections Closed.");
-	}
-}
+	}//Main method
+}//class
