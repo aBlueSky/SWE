@@ -5,6 +5,7 @@ public class Board {
 	Marker grid[][] = new Marker[9][11];
 	Marker V = new Marker(false, 0, true);
 	Marker N = new Marker(false, 0, true);
+	Marker T = new Marker(false, 0, false);
 	Marker mOne = new Marker(true, 1, false);
 	Marker mTwo = new Marker(true, 2, false);
 	public Board(){	

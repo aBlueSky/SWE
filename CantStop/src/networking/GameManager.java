@@ -99,6 +99,40 @@ public class GameManager {
 		}
 		return valid;
 	}
+	private static boolean checkBusted(){
+		Board thing = new Board();
+		boolean busted = false;
+		boolean match = false;
+		int counter = 0;
+		int place1=0;
+		int place2=0;
+		int place3=0;
+		for(int i=0; i<11; i++){
+			for(int j=0; j<9; j++){
+				if(thing.grid[i][j]==thing.T){
+					counter ++;
+					if(place1==0){
+						place1=i+2;
+					}
+					else if(place2==0){
+						place2=i+2;
+					}
+					else if(place3==0){
+						place3=i+2;
+					}
+				}
+			}
+		}
+		for(int i=0; i<4; i++){
+			if((dice[i]==place1)||(dice[i]==place2)||(dice[i]==place3)){
+				match = true;
+			}
+		}
+		if(counter == 3 && match != true){
+			busted = true;
+		}
+		return busted;
+	}
 	private static boolean playerTurn(BufferedReader reader, PrintWriter writer)
 	{
 		boolean done=false;/*Marks whether the player's turn is done.*/
