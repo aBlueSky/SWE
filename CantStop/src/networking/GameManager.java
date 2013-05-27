@@ -173,7 +173,7 @@ public class GameManager {
 				if(board1.isMarkerInFinalSpot(c)== board1.mOne){
 					counter++;
 				}
-				else if(board2.isMarkerInFinalSpot(c)== board2.mTwo){
+				else if(board1.isMarkerInFinalSpot(c)== board2.mTwo){
 					counter2++;
 				}
 			}
@@ -202,9 +202,7 @@ public class GameManager {
 		           else {
 		              if (line.trim().equals("stop")) {
 		            	  //switch temp markers to PERMANENT 
-		            	  System.out.println(boardPrimary.printBoard());
 		            	  boardPrimary.placePerma(playerNum);//make temp nodes permanent
-		            	  System.out.println(boardPrimary.printBoard());
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
@@ -217,8 +215,8 @@ public class GameManager {
 		            	 if(line.equals("crap"))
 		            	 {
 		            		//Player crapped out need to add the remove temp markers method.
-		            		boardPrimary.crappingOut();
 		            		writer.println("ack");
+		            		boardPrimary.swapOut(boardPrimary.T,boardPrimary.V);
 		            		done=true;
 		            	 }//if
 		            	 else
@@ -310,7 +308,7 @@ public class GameManager {
 			            		  else{
 			            			//Player crapped out need to add the remove temp markers method.
 			            			  System.out.println("Crapping out");
-					            		boardPrimary.crappingOut();
+					            		boardPrimary.swapOut(boardPrimary.T,boardPrimary.V);
 					            		writer.println("ack");
 					            		done=true;
 			            		  }//crapped out
@@ -320,6 +318,7 @@ public class GameManager {
 			            		  throw e;
 			            		  //System.err.println("Error with turn function.");
 			            	  }//catch
+			            	  System.out.println(boardPrimary.printBoard());
 			               }//assume the 2 desired dice combinations were passed.
 			           }//inner else
 		           }//outer else

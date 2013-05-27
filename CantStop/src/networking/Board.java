@@ -1,4 +1,5 @@
 package networking;
+import java.io.*;
 
 public class Board {
 	int c = 11;
@@ -156,11 +157,18 @@ public class Board {
 	 */
 	public Marker isMarkerInFinalSpot(int j){
 		Marker fin=null;
-		for(int i=0;grid[i][j]!=N;i++)
+		for(int i=0;i<r;i++)
 		{
-			if(grid[i+1][j]==N){
-			fin = grid[i][j];
-			}//if
+			try
+			{
+				if(grid[i][j]==N&&grid[i-1][j]!=N){
+					fin = grid[i][j];
+				}//if
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				System.err.println("Traversed to far.");
+			}
 		}//for
 		return fin;
 	}
@@ -203,15 +211,15 @@ public class Board {
 	private void removeMarker(int i, int j){
 		grid[i][j]=V;
 	}
-	public void crappingOut()
+	public void swapOut(Marker lookFor, Marker swap)
 	{
 		for(int i=0;i<r;i++)
 		{
-			for(int j=0;j<c;r++)
+			for(int j=0;j<c;j++)
 			{
-				if(grid[i][j]==T);
+				if(grid[i][j]==(lookFor));
 				{
-					removeMarker(i,j);
+					grid[i][j]=swap;
 				}//if
 			}//inner for
 		}//outer for
