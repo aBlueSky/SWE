@@ -165,10 +165,10 @@ public class Board {
 		return fin;
 	}
 	
-	private void placeTemp(int i, int j){
+	public void placeTemp(int i, int j){
 		grid[i][j]=T;
 	}
-	private void moveTemp(int i, int j, int spot){
+	public void moveTemp(int i, int j, int spot){
 		grid[i+spot][j]=T;
 		grid[i][j]=V;
 	}

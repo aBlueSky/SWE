@@ -235,6 +235,7 @@ public class GameManager {
 		            		  String b=null;
 			            	  try
 			            	  {
+			            		  otherPlayer.println(line);//echo to other player
 			            		  String[] list=line.split(",");
 			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
 			            		  a = list[0];
@@ -245,8 +246,77 @@ public class GameManager {
 			            		  {
 			            			  //Player combination is valid as far as 2<=x<=12
 			            			  //add or increment marker positions
+			            			  int num1 = Integer.parseInt(a);
+			            			  int num2 = Integer.parseInt(b);
+			            			  int loc1=num1;
+			            			  int loc2=num2;
+			            			  if(num1==num2)
+			            			  {
+			            				  boolean tempExistsAlready=false;
+			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  {
+			            					  if(boardPrimary.grid[i][num1]==boardPrimary.T)
+			            					  {
+			            						  loc1=i;
+			            						  tempExistsAlready=true;
+			            					  }
+			            				  }
+			            				  if(tempExistsAlready)
+			            				  {
+		            						  boardPrimary.moveTemp(loc1,num1,2);
+			            				  }
+			            				  else
+		            					  {
+		            						  boardPrimary.placeTemp(loc1,num1);
+		            						  boardPrimary.moveTemp(loc1,num1,1);
+		            					  }
+			            			  }//if -- matching numbers
+			            			  else
+			            			  {
+			            				  boolean tempExistsAlready=false;
+			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  {
+			            					  if(boardPrimary.grid[i][num1]==boardPrimary.T)
+			            					  {
+			            						  loc1=i;
+			            						  tempExistsAlready=true;
+			            					  }
+			            				  }
+			            				  if(tempExistsAlready)
+			            				  {
+		            						  boardPrimary.moveTemp(loc1,num1,1);
+			            				  }
+			            				  else
+		            					  {
+		            						  boardPrimary.placeTemp(loc1,num1);
+		            					  }
+			            				  
+			            				  tempExistsAlready=false;
+			            				  for(int i=0;i<boardPrimary.r;i++)
+			            				  {
+			            					  if(boardPrimary.grid[i][num2]==boardPrimary.T)
+			            					  {
+			            						  loc2=i;
+			            						  tempExistsAlready=true;
+			            					  }
+			            				  }
+			            				  if(tempExistsAlready)
+			            				  {
+		            						  boardPrimary.moveTemp(loc2,num2,1);
+			            				  }
+			            				  else
+		            					  {
+		            						  boardPrimary.placeTemp(loc2,num2);
+		            					  }
+			            			  }//non matching numbers
 			            			  System.out.println("Valid 2<=x<=12");
-			            		  }//if
+			            		  }//if -- crap check
+			            		  else{
+			            			//Player crapped out need to add the remove temp markers method.
+					            		boardPrimary.crappingOut();
+					            		writer.println("ack");
+					            		done=true;
+			            		  }//crapped out
 			            	  }//try
 			            	  catch(Exception e)
 			            	  {
