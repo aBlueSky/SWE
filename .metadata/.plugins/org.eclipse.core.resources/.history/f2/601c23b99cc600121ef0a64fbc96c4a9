@@ -157,28 +157,6 @@ public class GameManager {
 		}// 3 temp markers and there is no match can be made with the given rolls.
 		return busted;
 	}
-	private static boolean isGameWon(Board board1, Board board2){
-		boolean gameWon = false;
-		int counter = 0;
-		int counter2 = 0;
-		for(int c=0; c<11; c++){
-			for(int r=0; r<9; r++){
-				if(board1.isMarkerInFinalSpot(c)== board1.mOne){
-					counter++;
-				}
-				else if(board2.isMarkerInFinalSpot(c)== board2.mTwo){
-					counter2++;
-				}
-			}
-		}
-		if(counter == 3){
-			gameWon = true;
-		}
-		else if(counter2 == 3){
-			gameWon = true;
-		}
-		return gameWon;
-	}
 	private static boolean playerTurn(BufferedReader reader, PrintWriter writer,
 									 PrintWriter otherPlayer, int playerNum, Board boardPrimary,
 									 Board boardSecondary)
