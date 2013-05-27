@@ -1,17 +1,45 @@
 package networking;
-import java.util.*;
 
 public class Board {
-	Marker grid[][] = new Marker[9][11];
-	Marker V = new Marker(false, 0, true);
-	Marker N = new Marker(false, 0, true);
-	Marker T = new Marker(false, 0, false);
+	int c = 11;
+	int r = 9;
+	Marker grid[][];
+	Marker V = new Marker(false, 0, true);//vacant
+	Marker N = new Marker(false, 0, true);//No mans land, not part of grid
+	Marker T = new Marker(false, 0, false);//Temporary Markers
 	Marker mOne = new Marker(true, 1, false);
 	Marker mTwo = new Marker(true, 2, false);
-	public Board(){	
+	public Board(){
+		grid=createBoard(r,c);
 	}
-	
-	private void createBoard(){
+	public String printBoard()
+	{
+		String board="";
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				String temp;
+				if(grid[i][j]==mOne)/*change to temporary marker*/
+				{
+					temp="T";/*T for Temporary*/
+				}//if
+				else if(grid[i][j]==N)
+				{/*player number of zero means no player*/
+					temp=(""+grid[i][j].playerNum);
+				}//else if
+				else/*(grid[i][j].vacant==true)*/
+				{
+					temp="V";/*V for vacant */
+				}//if
+				board=board+" "+temp;
+			}//inner for loop (c)
+			board=board+"\n";
+		}//outer for loop (r)
+		return board;
+	}//method
+	private Marker[][] createBoard(int r,int c){
+		Marker grid[][] = new Marker[r][c];
 		for(int i=0; i<1; i++){
 			for(int j=0; j<3; j++){
 				grid[j][i]= V;
@@ -68,7 +96,7 @@ public class Board {
 				grid[j][i]= N;
 			}
 		}
-		for(int i=8; i<9; i++){
+		for(int i=7; i<8; i++){
 			for(int j=0; j<6; j++){
 				grid[j][i]= V;
 			}
@@ -76,7 +104,7 @@ public class Board {
 				grid[j][i]= N;
 			}
 		}
-		for(int i=9; i<10; i++){
+		for(int i=8; i<9; i++){
 			for(int j=0; j<5; j++){
 				grid[j][i]= V;
 			}
@@ -84,7 +112,7 @@ public class Board {
 				grid[j][i]= N;
 			}
 		}
-		for(int i=10; i<11; i++){
+		for(int i=9; i<10; i++){
 			for(int j=0; j<4; j++){
 				grid[j][i]= V;
 			}
@@ -92,7 +120,7 @@ public class Board {
 				grid[j][i]= N;
 			}
 		}
-		for(int i=11; i<12; i++){
+		for(int i=10; i<11; i++){
 			for(int j=0; j<3; j++){
 				grid[j][i]= V;
 			}
@@ -100,7 +128,8 @@ public class Board {
 				grid[j][i]= N;
 			}
 		}
-	}
+		return grid;
+	}//method
 	private boolean addMarker(int playerNum, int i, int j){
 		boolean added = false;
 		if(playerNum==1){
@@ -127,7 +156,7 @@ public class Board {
 		}
 		return fin;
 	}
-	private void removeMaker(int i, int j){
+	private void removeMarker(int i, int j){
 		
 	}
 }

@@ -1,17 +1,17 @@
 package networking;
 public class Marker {
-	boolean permanate;
+	boolean permanent;
 	int playerNum;
 	boolean vacant;
 	
-	public Marker(boolean perma, int playnum, boolean issVacant){
-		permanate = perma;
-		playerNum = playnum;
+	public Marker(boolean perma, int playNum, boolean issVacant){
+		permanent = perma;
+		playerNum = playNum;
 		vacant = issVacant;
 	}
 	
-	private boolean getPermanate(){
-		return permanate;
+	private boolean getPermanent(){
+		return permanent;
 	}
 	
 	private int getPlayerNumber(){

@@ -10,6 +10,7 @@ public class GameManager {
 		Server server = new Server();
 		Socket player1 = null;
 		Socket player2 = null;
+		Board board = new Board();
 		
 		//player connections
 		System.out.println("Waiting for player connections");
@@ -32,6 +33,7 @@ public class GameManager {
 		 						running*/
 		while(playing)
 		{
+			System.out.println(board.printBoard());
 			boolean turnA = playerTurn(p1Reader, p1Writer);
 			boolean turnB = playerTurn(p2Reader, p2Writer);
 		}//while
