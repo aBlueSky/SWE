@@ -37,16 +37,30 @@ public class GameManager {
 							/*player 1's turn, giving both P1 IO ,
 							P2 Writer and P1's player number and the board for the players*/
 			System.out.println(board1.printBoard());//Print board for P1
-			p2Writer.println("go");//Tell next player to go.
-			boolean turnB=false;
-			if(turnA==false)
+			playing=!isGameWon(board1, board2);//check win condition
+			if(playing)
 			{//if turnA didn't win
-				turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
+				p2Writer.println("go");//Tell next player to go.
+				boolean turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
 						/*player 2's turn, giving both P2 IO ,
 						P1 Writer and P2's player number and the board for the players*/
 				System.out.println(board2.printBoard());//Print board for P2
-				p1Writer.println("go");//Tell next player to go.
+				playing=!isGameWon(board1, board2);//check win condition
+				if(playing)
+				{
+					p1Writer.println("go");//Tell next player to go.
+				}//if
+				else
+				{
+					p2Writer.println("you won");
+					p1Writer.println("you lost");
+				}//else -- P2 win
 			}//if
+			else
+			{
+				p1Writer.println("you won");
+				p2Writer.println("you lost");
+			}//else -- P1 win
 		}//while
 		//Game is finished, close connections
 		try {
@@ -183,7 +197,9 @@ public class GameManager {
 	private static boolean playerTurn(BufferedReader reader, PrintWriter writer,
 									 PrintWriter otherPlayer, int playerNum, Board boardPrimary,
 									 Board boardSecondary)
-	{
+	{/*
+	 * Return true if the turn is done for the active player.
+	 */
 		boolean done=false;/*Marks whether the player's turn is done.*/
 		try
 		{
@@ -194,7 +210,7 @@ public class GameManager {
 		           else {
 		              if (line.trim().equals("stop")) {
 		            	  //switch temp markers to PERMANENT 
-		            	  // MISSING CODE <-------
+		            	  boardPrimary.placePerma(playerNum);//make temp nodes permanent
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
@@ -207,7 +223,9 @@ public class GameManager {
 		            	 if(line.equals("crap"))
 		            	 {
 		            		//Player crapped out need to add the remove temp markers method.
-		            		// MISSING CODE <-------
+		            		boardPrimary.crappingOut();
+		            		writer.println("ack");
+		            		done=true;
 		            	 }//if
 		            	 else
 		            	 {/*player should have input 2 numbers delimited by a ','*/

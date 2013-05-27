@@ -172,9 +172,9 @@ public class Board {
 		grid[i+spot][j]=T;
 		grid[i][j]=V;
 	}
-	private void placePerma (int player){
-		for(int i=0; i<11; i++){
-			for(int j=0; j<9; j++){
+	public void placePerma (int player){
+		for(int i=0; i<c; i++){
+			for(int j=0; j<r; j++){
 				if(grid[j][i]==T){
 					if(player == 1){
 						grid[j][i]=mOne;
@@ -203,4 +203,17 @@ public class Board {
 	private void removeMarker(int i, int j){
 		grid[i][j]=V;
 	}
+	public void crappingOut()
+	{
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;r++)
+			{
+				if(grid[i][j]==T);
+				{
+					removeMarker(i,j);
+				}//if
+			}//inner for
+		}//outer for
+	}//method
 }
