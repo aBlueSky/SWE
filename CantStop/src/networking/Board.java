@@ -20,7 +20,7 @@ public class Board {
 			for(int j=0;j<c;j++)
 			{
 				String temp;
-				if(grid[i][j]==mOne)/*change to temporary marker*/
+				if(grid[i][j]==T)
 				{
 					temp="T";/*T for Temporary*/
 				}//if
