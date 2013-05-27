@@ -14,7 +14,6 @@ public class GameManager {
 		Board board2 = new Board();
 		
 		//player connections
-		System.out.println("Waiting for player connections");
 		player1=server.connect(player1);
 		//Create IO for Player 1
 		BufferedReader p1Reader = server.connectReader(player1);
@@ -39,13 +38,16 @@ public class GameManager {
 							P2 Writer and P1's player number and the board for the players*/
 			System.out.println(board1.printBoard());//Print board for P1
 			p2Writer.println("go");//Tell next player to go.
-			boolean turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
-							/*player 2's turn, giving both P2 IO ,
-							P1 Writer and P2's player number and the board for the players*/
-			System.out.println(board2.printBoard());//Print board for P2
-			p1Writer.println("go");//Tell next player to go.
+			boolean turnB=false;
+			if(turnA==false)
+			{//if turnA didn't win
+				turnB = playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
+						/*player 2's turn, giving both P2 IO ,
+						P1 Writer and P2's player number and the board for the players*/
+				System.out.println(board2.printBoard());//Print board for P2
+				p1Writer.println("go");//Tell next player to go.
+			}//if
 		}//while
-		
 		//Game is finished, close connections
 		try {
 			p1Reader.close();
@@ -64,7 +66,6 @@ public class GameManager {
 		}//catch
 		p2Writer.close();
 		server.close();
-		System.out.println("Connections Closed.");
 	}//Main method
 	
 	private static int[] roll(){
@@ -191,22 +192,22 @@ public class GameManager {
 				String line = reader.readLine();
 		           if (line == null) { done = true; }
 		           else {
-		              writer.println("Echo: " + line);//debug code
-		              otherPlayer.println("Echo: " + line);//debug code
 		              if (line.trim().equals("stop")) {
+		            	  //switch temp markers to PERMANENT 
+		            	  // MISSING CODE <-------
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
 		            	  roll();
 			              writer.println(""+concatRoll());
 			              otherPlayer.println(""+concatRoll());
-			              done = false;
 			          }// else if
 		              else
 		              {
 		            	 if(line.equals("crap"))
 		            	 {
-		            		  //Player crapped out.
+		            		//Player crapped out need to add the remove temp markers method.
+		            		// MISSING CODE <-------
 		            	 }//if
 		            	 else
 		            	 {/*player should have input 2 numbers delimited by a ','*/
@@ -217,22 +218,21 @@ public class GameManager {
 			            	  try
 			            	  {
 			            		  String[] list=line.split(",");
-			            		  System.out.println(""+list.toString());//debug
 			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
 			            		  a = list[0];
 			            		  b = list[1];
 			            		  if (checkRoll(Integer.parseInt(a),Integer.parseInt(b))
-			            				  &&checkBusted(boardPrimary)
-			            				  &&checkBusted(boardSecondary))
+			            				  &&!checkBusted(boardPrimary)
+			            				  &&!checkBusted(boardSecondary))
 			            		  {
 			            			  //Player combination is valid as far as 2<=x<=12
+			            			  //add or increment marker positions
 			            			  System.out.println("Valid 2<=x<=12");
 			            		  }//if
-			            		  System.out.println(""+a+","+b);
 			            	  }//try
 			            	  catch(Exception e)
 			            	  {
-			            		  System.err.println("Error with input.");
+			            		  System.err.println("Error with turn function.");
 			            	  }//catch
 			               }//assume the 2 desired dice combinations were passed.
 			           }//inner else
