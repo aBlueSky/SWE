@@ -109,7 +109,6 @@ public class GameManager {
 		int place1=0;
 		int place2=0;
 		int place3=0;
-		int match0 = 0;
 		for(int i=0; i<11; i++){
 			for(int j=0; j<9; j++){
 				if(thing.grid[i][j]==thing.T){
@@ -126,12 +125,9 @@ public class GameManager {
 				}
 			}
 		}
-		for(int i=0; i<3; i++){
-			for(int j=i+1; j<4; j++){
-				match0=dice[i]+dice[j];
-				if((match0==place1)||(match0==place2)||(match0==place3)){
-					match=true;
-				}
+		for(int i=0; i<4; i++){
+			if((dice[i]==place1)||(dice[i]==place2)||(dice[i]==place3)){
+				match = true;
 			}
 		}
 		if(counter == 3 && match != true){

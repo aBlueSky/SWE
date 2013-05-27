@@ -156,43 +156,7 @@ public class Board {
 		}
 		return fin;
 	}
-	
-	private void placeTemp(int i, int j){
-		grid[i][j]=T;
-	}
-	private void moveTemp(int i, int j, int spot){
-		grid[i+spot][j]=T;
-		grid[i][j]=V;
-	}
-	private void placePerma (int player){
-		for(int i=0; i<11; i++){
-			for(int j=0; j<9; j++){
-				if(grid[j][i]==T){
-					if(player == 1){
-						grid[j][i]=mOne;
-					}
-					else{
-						grid[j][i]=mTwo;
-					}
-				}
-			}
-		}
-	}
-	private void movePerma(int playerNum, int i, int j){
-		for(int h = i; h<9; h++){
-			if(grid[h][j]==T){
-				if(playerNum==1){
-					grid[h][j]=mOne;
-				}
-				else{
-					grid[h][j]=mTwo;
-				}
-				grid[i][j]=V;
-			}
-		}
-		
-	}
 	private void removeMarker(int i, int j){
-		grid[i][j]=V;
+		
 	}
 }
