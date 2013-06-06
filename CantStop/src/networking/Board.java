@@ -1,5 +1,4 @@
 package networking;
-import java.io.*;
 
 public class Board {
 	static int c = 11;
@@ -16,7 +15,7 @@ public class Board {
 		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
-	public Board changeTemps(Board board)
+	public Board clearTemps(Board board)
 	{
 		Board newBoard = new Board(board.m.playerNum);
 		for(int i = 0; i<r;i++)
@@ -68,6 +67,9 @@ public class Board {
 				}
 			}
 		}
+		System.out.println(newBoard.printBoard());
+		/*newBoard.placePerma();
+		System.out.println(newBoard.printBoard());*/
 		return newBoard;
 	}//method
 	public String printBoard()
@@ -101,7 +103,7 @@ public class Board {
 		return board;
 	}//method
 	private Marker[][] createBoard(int r,int c){
-		Marker grid[][] = new Marker[r][c];
+		grid = new Marker[r][c];
 		for(int i=0; i<1; i++){
 			for(int j=0; j<3; j++){
 				grid[j][i]= V;
@@ -192,12 +194,7 @@ public class Board {
 		}
 		return grid;
 	}//method
-	private boolean addMarker(int i, int j){
-		boolean added = false;
-			grid[i][j]=m;
-			added = true;
-		return added;
-	}//method
+
 	private boolean isVacant(int i, int j){
 		boolean vacant = false;
 		if(grid[i][j]==V){

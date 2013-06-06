@@ -29,8 +29,6 @@ public class GameManager {
 		 						be true as long as the game
 		 						is running and needs to continue
 		 						running*/
-		System.out.println(board1.printBoard());//Print board for P1
-		System.out.println(board2.printBoard());//Print board for P2
 		while(playing)
 		{
 			playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
@@ -101,7 +99,6 @@ public class GameManager {
 				results=results+",";
 			}//if
 		}//for
-		System.out.println(""+results);//debug code
 		return results;
 	}//method
 	
@@ -193,6 +190,7 @@ public class GameManager {
 	 * Return true if the turn is done for the active player.
 	 */
 		boolean done=false;/*Marks whether the player's turn is done.*/
+		System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
 		try
 		{
 			while (!done)
@@ -216,7 +214,7 @@ public class GameManager {
 		            	 {
 		            		//Player crapped out need to add the remove temp markers method.
 		            		writer.println("ack");
-		            		boardPrimary=boardPrimary.changeTemps(boardPrimary);
+		            		boardPrimary=boardPrimary.clearTemps(boardPrimary);
 		            		done=true;
 		            	 }//if
 		            	 else
@@ -302,13 +300,12 @@ public class GameManager {
 		            						  boardPrimary.placeTemp(0,num2);
 		            					  }
 			            			  }//non matching numbers
-			            			  System.out.println(boardPrimary.printBoard());
-			            			  System.out.println("Valid 2<=x<=12");
+			            			  System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
 			            		  }//if -- crap check
 			            		  else{
 			            			//Player crapped out need to add the remove temp markers method.
 			            			  System.out.println("Crapping out");
-					            		boardPrimary=boardPrimary.changeTemps(boardPrimary);
+					            		boardPrimary=boardPrimary.clearTemps(boardPrimary);
 					            		writer.println("ack");
 					            		done=true;
 			            		  }//crapped out
