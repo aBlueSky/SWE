@@ -15,7 +15,7 @@ public class Board {
 		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
-	public Board clearTemps(Board board)
+	/*public Board clearTemps(Board board)
 	{
 		Board newBoard = new Board(board.m.playerNum);
 		for(int i = 0; i<r;i++)
@@ -41,36 +41,32 @@ public class Board {
 			}
 		}
 		return newBoard;
+	}//method*/
+	public void clearTemps()
+	{
+		for(int i = 0; i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==T)
+				{
+					grid[i][j]=V;
+				}
+			}
+		}
 	}//method
-	public Board tempsToPerms(Board board)
+	public void tempsToPerms()
 	{
-		Board newBoard = new Board(board.m.playerNum);
 		for(int i = 0; i<r;i++)
 		{
 			for(int j=0;j<c;j++)
 			{
-				if(board.grid[i][j]==board.T)
+				if(grid[i][j]==T)
 				{
-					newBoard.grid[i][j]=newBoard.m;
-				}
-				else if(board.grid[i][j]==board.N)
-				{
-					newBoard.grid[i][j]=newBoard.N;
-				}
-				else if(board.grid[i][j]==board.m)
-				{
-					newBoard.grid[i][j]=newBoard.m;
-				}
-				else
-				{
-					newBoard.grid[i][j]=newBoard.V;
+					grid[i][j]=m;
 				}
 			}
 		}
-		System.out.println(newBoard.printBoard());
-		/*newBoard.placePerma();
-		System.out.println(newBoard.printBoard());*/
-		return newBoard;
 	}//method
 	public String printBoard()
 	{

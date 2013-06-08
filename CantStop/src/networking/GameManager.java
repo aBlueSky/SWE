@@ -88,13 +88,13 @@ public class GameManager {
 		return dice;
 		
 	}
-	private static String concatRoll()
+	private static String concatRoll(int[] diceArray)
 	{
 		String results="";
-		for(int i=0;i<dice.length;i++)
+		for(int i=0;i<diceArray.length;i++)
 		{
-			results=results+dice[i];
-			if(i<(dice.length-1))
+			results=results+diceArray[i];
+			if(i<(diceArray.length-1))
 			{
 				results=results+",";
 			}//if
@@ -195,26 +195,31 @@ public class GameManager {
 		{
 			while (!done)
 			{
+				String storedConcatRoll = "";
+				int turnDice[];
 				String line = reader.readLine();
 		           if (line == null) { done = true; }
 		           else {
 		              if (line.trim().equals("stop")) {
 		            	  //switch temp markers to PERMANENT 
-		            	  boardPrimary=boardPrimary.tempsToPerms(boardPrimary);
+		            	  boardPrimary.tempsToPerms();
 		                 done = true;
 		              }//if
 		              else if (line.trim().equals("roll")) {
-		            	  roll();
-			              writer.println(""+concatRoll());
-			              otherPlayer.println(""+concatRoll());
+		            	  turnDice=roll();
+		            	  storedConcatRoll=concatRoll(turnDice);
+			              writer.println(storedConcatRoll);
+			              otherPlayer.println(storedConcatRoll);
 			          }// else if
 		              else
 		              {
 		            	 if(line.equals("crap"))
 		            	 {
 		            		//Player crapped out need to add the remove temp markers method.
-		            		writer.println("ack");
-		            		boardPrimary=boardPrimary.clearTemps(boardPrimary);
+		            		writer.println("ack");//ack means acknowledged
+		            		System.out.println("crap");
+		            		boardPrimary.clearTemps();
+		            		System.out.println(boardPrimary.printBoard());
 		            		done=true;
 		            	 }//if
 		            	 else
@@ -223,6 +228,7 @@ public class GameManager {
 			            	   a and b are int's delimited by ',' */
 			            	  String a=null;
 		            		  String b=null;
+		            		  System.out.println("Combination entered.");
 			            	  try
 			            	  {
 			            		  otherPlayer.println(line);//echo to other player
@@ -232,6 +238,7 @@ public class GameManager {
 			            		  b = list[1];
 			            		  int num1 = (int)Integer.parseInt(a);
 		            			  int num2 = (int)Integer.parseInt(b);
+		            			  System.out.println("Before CheckRoll.");
 			            		  if (checkRoll(num1,num2)
 			            				  /*&&!checkBusted(boardPrimary)
 			            				  &&!checkBusted(boardSecondary)*/)
@@ -305,7 +312,8 @@ public class GameManager {
 			            		  else{
 			            			//Player crapped out need to add the remove temp markers method.
 			            			  System.out.println("Crapping out");
-					            		boardPrimary=boardPrimary.clearTemps(boardPrimary);
+					            		boardPrimary.clearTemps();
+					            		System.out.println(boardPrimary.printBoard());
 					            		writer.println("ack");
 					            		done=true;
 			            		  }//crapped out
