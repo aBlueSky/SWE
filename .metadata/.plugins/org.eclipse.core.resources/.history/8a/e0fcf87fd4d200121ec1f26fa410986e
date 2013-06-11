@@ -22,8 +22,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Main extends JFrame {
 
@@ -34,50 +32,16 @@ public class Main extends JFrame {
 	 */
 	public static void main(String[] args) {
 		boolean valid = false;
-		boolean uservalid = false;
-		boolean passwordvalid = false;
 		String answer = JOptionPane.showInputDialog("Are you a new user? Please enter yes or no.");
 		while(!valid){
 			if(answer.equals("no")|| answer.equals("No") || answer.equals("NO")){
 				String username = JOptionPane.showInputDialog("Enter your Username");
-				while(!uservalid){
-					if(username.length()==0){
-						username = JOptionPane.showInputDialog("Invalid Length. Please enter your username");
-					}
-					else{
-						uservalid = true;
-					}
-				}
 				String password = JOptionPane.showInputDialog("Enter your Password");
-				while(!passwordvalid){
-					if(password.length()==0){
-						password = JOptionPane.showInputDialog("Invalid Length. Please enter your password");
-					}
-					else{
-						passwordvalid = true;
-					}
-				}
 				valid = true;
 			}
 			else if(answer.equals("yes")|| answer.equals("Yes") || answer.equals("YES")){
 				String newusername = JOptionPane.showInputDialog("Enter desired username");
-				while(!uservalid){
-					if(newusername.length()==0){
-						newusername = JOptionPane.showInputDialog("Invalid Length. Please enter another username");
-					}
-					else{
-						uservalid = true;
-					}
-				}
 				String newpassword = JOptionPane.showInputDialog("Enter desired password");
-				while(!passwordvalid){
-					if(newpassword.length()==0){
-						newpassword = JOptionPane.showInputDialog("Invalid Length. Please enter another password");
-					}
-					else{
-						passwordvalid = true;
-					}
-				}
 				valid = true;
 			}
 			else{
@@ -117,34 +81,18 @@ public class Main extends JFrame {
 		panel.setBackground(new Color(255, 255, 102));
 		
 		JButton btnRoll = new JButton("Roll");
-		btnRoll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnRoll.setBackground(new Color(255, 127, 80));
 		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
 		JButton btnBust = new JButton("Bust");
-		btnBust.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnBust.setBackground(new Color(255, 127, 80));
 		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
 		JButton btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		btnStop.setBackground(new Color(255, 99, 71));
 		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
 		JButton btnGo = new JButton("Go");
-		btnGo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnGo.setBackground(new Color(255, 127, 80));
 		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
 		JButton button_valid = new JButton(" ");
