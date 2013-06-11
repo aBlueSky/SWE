@@ -140,10 +140,12 @@ public class GameManager
 			if(a==possibilities[i])
 			{
 				aPrime=true;
+				possibilities[i]=0;
 			}
 			if(b==possibilities[i])
 			{
 				bPrime=true;
+				possibilities[i]=0;
 			}
 		}/*if a or b matches a possible combination set the
 		 boolean value to true for that variable*/
@@ -233,6 +235,7 @@ public class GameManager
 		{
 			int tempDice[]=new int[4];/*only stored during this player's
 			 							turn and until the next roll.*/
+			boolean freshRoll = false;
 			while (!done)
 			{
 				String storedConcatRoll = "";
@@ -242,21 +245,22 @@ public class GameManager
 				{ 
 					done = false;
 				}//Assume turn is not done with empty input.
-				else if (line.trim().equals("stop")) 
+				else if (line.trim().equals("stop")&&freshRoll==false) 
 				{//switch temp markers to PERMANENT 
 					boardPrimary.tempsToPerms();
 					boardPrimary.removeRepeatedPermanentMarkers();
 					done = true;
-				}//if
-				else if (line.trim().equals("roll")) 
+				}//if - stop, can't stop if you've rolled.
+				else if (line.trim().equals("roll")&&freshRoll==false) 
 				{
+					freshRoll=true;
 					turnDice=roll();
 					tempDice=turnDice;
 					storedConcatRoll=concatRoll(turnDice);
 					writer.println(storedConcatRoll);
 					otherPlayer.println(storedConcatRoll);
-				}// else if
-				else if(line.equals("crap"))
+				}// else if, can only roll if you've not rolled without using the roll.
+				else if(line.equals("crap")&&freshRoll==true)
 				{
 					//Player crapped out need to add the remove temp markers method.
 					writer.println("ack");//ack means acknowledged
@@ -264,8 +268,8 @@ public class GameManager
 					boardPrimary.clearTemps();
 					System.out.println(boardPrimary.printBoard());
 					done=true;
-				}
-				else if (line.matches("\\d*[,]{1}\\d*"))
+				}//else if - crap, can only crap out if you've got a fresh roll.
+				else if (line.matches("\\d*[,]{1}\\d*")&&freshRoll==true)
 				{/*player should have input 2 numbers delimited by a ','*/
 					/*input should be in form "a,b" where
    					a and b are int's delimited by ',' */
@@ -284,7 +288,7 @@ public class GameManager
 						int num2 = (int)Integer.parseInt(b);
 						System.out.println("A: "+num1+"; B: "+num2);//debug
 						System.out.println("CheckRoll about to be called.");
-
+						
 						if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
 								/*&&!checkBusted(boardPrimary)
   								&&!checkBusted(boardSecondary)*/)
@@ -378,11 +382,12 @@ public class GameManager
 						System.err.println("Error with turn function." + e.getMessage());
 					}//catch
 					System.out.println(boardPrimary.printBoard());
-				}//assume the 2 desired dice combinations were passed.
+					freshRoll=false;
+				}//assume the 2 desired dice combinations were passed. Can't do this until you've rolled.
 				else
 				{
 					System.out.println("Unhandled line: "+line);//debug
-				}//unhandled yet
+				}//unhandled yet, skip to next input.
 			}//while
 		}//try
 		catch (IOException e) 

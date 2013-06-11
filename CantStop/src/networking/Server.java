@@ -148,6 +148,8 @@ public class Server {
 		try {
 	         player = s.accept( );
 	         out = new PrintWriter(player.getOutputStream(), true);
+	         /* Handle there user name and password 
+	          * here before allowing them to connect fully.*/
 	         out.println(++numConnected);
 	      }//try
 	      catch (IOException e) {
