@@ -245,6 +245,7 @@ public class GameManager
 				else if (line.trim().equals("stop")) 
 				{//switch temp markers to PERMANENT 
 					boardPrimary.tempsToPerms();
+					boardPrimary.removeRepeatedPermanentMarkers();
 					done = true;
 				}//if
 				else if (line.trim().equals("roll")) 

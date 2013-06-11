@@ -220,7 +220,35 @@ public class Board {
 		}//for
 		return fin;
 	}
-	
+	/*Methods to remove unnecessary repeated permanent markers.*/
+	public void removeRepeatedPermanentMarkers()
+	{
+		for(int i=2;i<13;i++)
+		{
+			removeRepeatedPermanentMarkers(i);
+		}
+	}
+	private void removeRepeatedPermanentMarkers(int j)
+	{
+		boolean foundFirstM = false;
+		for(int i = (r-1);i>=0;i--)
+		{
+			if(grid[i][j-2]==m)
+			{
+				if(foundFirstM)
+				{
+					System.out.println("Found an M at position: "+(i+1));//debug
+					grid[i][j-2]=V;
+				}
+				else
+				{
+					System.out.println("Found the highest M at position: "+(i+1));//debug
+					foundFirstM=true;
+				}
+			}
+		}
+		System.out.println("All unnecessary M's should be removed for the number: " + j);//debug
+	}
 	public void placeTemp(int i, int j){
 			grid[i][j-2]=T;
 	}
@@ -236,14 +264,6 @@ public class Board {
 				}
 			}
 		}
-	}
-	private void movePerma(int i, int j){
-		for(int h = i; h<9; h++){
-			if(grid[h][j]==T){
-				grid[i][j]=V;
-			}
-		}
-		
 	}
 	private void removeMarker(int i, int j){
 		grid[i][j]=V;
