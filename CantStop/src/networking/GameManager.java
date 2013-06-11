@@ -236,8 +236,10 @@ public class GameManager {
 			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
 			            		  a = list[0];
 			            		  b = list[1];
+			            		  System.out.println("A: "+a+"; B: "+b);//debug
 			            		  int num1 = (int)Integer.parseInt(a);
 		            			  int num2 = (int)Integer.parseInt(b);
+		            			  System.out.println("A: "+num1+"; B: "+num2);//debug
 		            			  System.out.println("Before CheckRoll.");
 			            		  if (checkRoll(num1,num2)
 			            				  /*&&!checkBusted(boardPrimary)
@@ -250,45 +252,78 @@ public class GameManager {
 			            			  int loc2=num2;
 			            			  if(num1==num2)
 			            			  {
+			            				  System.out.println("Match Case");//debug
 			            				  boolean tempExistsAlready=false;
+			            				  boolean found=false;
 			            				  for(int i=0;i<Board.r;i++)
 			            				  {
-			            					  if(boardPrimary.grid[i][num1-1]==boardPrimary.T)
+			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T || boardPrimary.grid[i][num2-2]==boardPrimary.T)
 			            					  {
 			            						  loc1=i;
 			            						  tempExistsAlready=true;
+			            						  found = true;
+			            					  }
+			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.m || boardPrimary.grid[i][num2-2]==boardPrimary.m)
+			            					  {
+			            						  loc1=i;
+			            						  found = true;
 			            					  }
 			            				  }
-			            				  if(tempExistsAlready)
+			            				  if(found)
 			            				  {
-		            						  boardPrimary.moveTemp(loc1,num1-2,2);
+		            						  if(tempExistsAlready)
+		            						  {
+		            							  boardPrimary.moveTemp(loc1,num1-2,2);
+		            						  }//found and temp exists in column.
+			            					  else
+			            					  {
+			            						  boardPrimary.placeTemp(loc1+1,num1);
+			            						  boardPrimary.moveTemp(loc1+1,num1-2,1);
+			            					  }//Found but no temp exists.
 			            				  }
 			            				  else
-		            					  {
-		            						  boardPrimary.placeTemp(0,num1);
+			            				  {
+			            					  boardPrimary.placeTemp(0,num1);
 		            						  boardPrimary.moveTemp(0,num1-2,1);
-		            					  }
+			            				  }//nothing found, empty column. Create temp in first location and increment by one.
 			            			  }//if -- matching numbers
 			            			  else
 			            			  {
+			            				  System.out.println("Non Matching Case");//debug
+			            				  System.out.println("First Number");//debug
 			            				  boolean tempExistsAlready=false;
+			            				  boolean found=false;
 			            				  for(int i=0;i<Board.r;i++)
 			            				  {
 			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
 			            					  {
 			            						  loc1=i;
 			            						  tempExistsAlready=true;
+			            						  found = true;
+			            					  }
+			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.m)
+			            					  {
+			            						  loc1=i;
+			            						  found = true;
 			            					  }
 			            				  }
-			            				  if(tempExistsAlready)
+			            				  /*Code Inserted Below*/
+			            				  if(found)
 			            				  {
-		            						  boardPrimary.moveTemp(loc1,num1-2,1);
+		            						  if(tempExistsAlready)
+		            						  {
+		            							  boardPrimary.moveTemp(loc1,num1-2,1);
+		            						  }//found and temp exists in column.
+			            					  else
+			            					  {
+			            						  boardPrimary.placeTemp(loc1+1,num1);
+			            					  }//Found but no temp exists.
 			            				  }
 			            				  else
-		            					  {
-		            						  boardPrimary.placeTemp(0,num1);
-		            					  }
-			            				  
+			            				  {
+			            					  boardPrimary.placeTemp(0,num1);
+			            				  }//Nothing found in column.
+			            				  System.out.println("Second Number");//debug
 			            				  tempExistsAlready=false;
 			            				  for(int i=0;i<Board.r;i++)
 			            				  {
@@ -297,13 +332,19 @@ public class GameManager {
 			            						  loc2=i;
 			            						  tempExistsAlready=true;
 			            					  }
+			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.m)
+			            					  {
+			            						  loc2=i;
+			            					  }
 			            				  }
 			            				  if(tempExistsAlready)
 			            				  {
+			            					  System.out.println("-Temporary Marker Exists Already.");//debug
 		            						  boardPrimary.moveTemp(loc2,num2-2,1);
 			            				  }
 			            				  else
 		            					  {
+			            					  System.out.println("-No Temporary Marker Exists Already.");//debug
 		            						  boardPrimary.placeTemp(0,num2);
 		            					  }
 			            			  }//non matching numbers

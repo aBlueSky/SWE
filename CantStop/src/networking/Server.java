@@ -1,6 +1,7 @@
 package networking;
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Server {
 	//Instance variables
@@ -9,6 +10,8 @@ public class Server {
 	int portNumber;
 	BufferedReader in = null;
     PrintWriter out = null;
+    BufferedReader fileReader = null;
+    PrintWriter fileWriter = null;
     static int numConnected=0;
 	
 	//Initialize Server and ServerSocket
@@ -16,13 +19,32 @@ public class Server {
 		portNumber=2043;
 		try{
 			s=new ServerSocket(portNumber);
+			//initFileIO();//set up the file reader and writer for login.
 		}//try
 		catch(IOException e){
 			System.err.println("Could not listen on port: "+portNumber+". " + e.getMessage());
 	        System.exit(-1);
 		}//catch
 	}//Method
-	//incoming
+	public void initFileIO()
+	{
+		try
+		{
+			fileReader = new BufferedReader(new FileReader("CantStop.txt"));
+			fileWriter = new PrintWriter(new FileWriter("CantStop"));
+		}
+		catch(IOException e)
+		
+		{
+			System.err.println("Could not setup reader or writer." + e.getMessage());
+	        System.exit(-1);
+		}
+	}//method
+	public boolean handleLogin()
+	{
+		boolean result = false;
+		return result;
+	}
 	public Socket connect(Socket player)
 	{
 		try {
@@ -60,6 +82,20 @@ public class Server {
 		return out;
 	}//method
 	//close the connections
+	public void close(Socket socket)
+	{
+		try
+		{
+			socket.close();
+			numConnected--;
+		}
+		catch(IOException e)
+		{
+			System.err.println("Unable to close the connection to the client: "
+                    + e.getMessage());
+		}
+		
+	}
 	public void close()
 	{
 		try {
