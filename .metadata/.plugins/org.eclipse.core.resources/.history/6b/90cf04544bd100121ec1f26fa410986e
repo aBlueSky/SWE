@@ -1,0 +1,103 @@
+package javagui.views;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JInternalFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+
+public class Main extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		String answer = JOptionPane.showInputDialog("New User", "Exisiting User");
+		String username = JOptionPane.showInputDialog("Enter your Username");
+		String password = JOptionPane.showInputDialog("Enter your Password");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Main frame = new Main();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Main() {
+		setAlwaysOnTop(true);
+		setFont(new Font("Orator Std", Font.PLAIN, 12));
+		setTitle("Can't Stop");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 751, 464);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblCantStop = new JLabel("CAN'T STOP");
+		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 22));
+		
+		JPanel panel = new JPanel();
+		
+		JButton btnRoll = new JButton("Roll");
+		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		
+		JButton btnBust = new JButton("Bust");
+		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		
+		JButton btnStop = new JButton("Stop");
+		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(297)
+							.addComponent(lblCantStop))
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnRoll)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnBust)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnStop)))
+					.addContainerGap(298, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(5)
+					.addComponent(lblCantStop)
+					.addPreferredGap(ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRoll)
+						.addComponent(btnBust)
+						.addComponent(btnStop))
+					.addGap(49)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		contentPane.setLayout(gl_contentPane);
+	}
+}

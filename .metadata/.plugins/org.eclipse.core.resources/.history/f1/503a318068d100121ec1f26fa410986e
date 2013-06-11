@@ -1,0 +1,206 @@
+package javagui.views;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JInternalFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+
+public class Main extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		String answer = JOptionPane.showInputDialog("Are you a new user? Please enter yes or no.");
+		if(answer.equals("yes")){
+			String username = JOptionPane.showInputDialog("Enter your Username");
+			String password = JOptionPane.showInputDialog("Enter your Password");
+		}
+		else{
+			String newusername = JOptionPane.showInputDialog("Enter desired username");
+			String newpassword = JOptionPane.showInputDialog("Enter desired password");
+		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Main frame = new Main();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Main() {
+		setAlwaysOnTop(true);
+		setFont(new Font("Orator Std", Font.PLAIN, 12));
+		setTitle("Can't Stop");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 776, 499);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(204, 255, 102));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblCantStop = new JLabel("CAN'T STOP");
+		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(51, 153, 102));
+		
+		JButton btnRoll = new JButton("Roll");
+		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		
+		JButton btnBust = new JButton("Bust");
+		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		
+		JButton btnStop = new JButton("Stop");
+		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
+		
+		JButton btnGo = new JButton("Go");
+		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
+		
+		JButton button = new JButton("2");
+		
+		JButton button_1 = new JButton("3");
+		
+		JButton button_2 = new JButton("4");
+		
+		JButton button_3 = new JButton("5");
+		
+		JButton button_4 = new JButton("6");
+		
+		JButton button_5 = new JButton("7");
+		
+		JButton button_6 = new JButton("8");
+		
+		JButton button_7 = new JButton("9");
+		
+		JButton button_8 = new JButton("10");
+		
+		JButton button_9 = new JButton("11");
+		
+		JButton button_10 = new JButton("12");
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(456)
+							.addComponent(button_4)
+							.addGap(45)
+							.addComponent(button_6)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(button_3)
+							.addGap(132)))
+					.addComponent(button_7)
+					.addGap(128))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(536, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(322, Short.MAX_VALUE)
+					.addComponent(button_1)
+					.addGap(305)
+					.addComponent(button_9)
+					.addGap(39))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(364, Short.MAX_VALUE)
+					.addComponent(button_2)
+					.addGap(228)
+					.addComponent(button_8)
+					.addGap(74))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(280)
+					.addComponent(button)
+					.addPreferredGap(ComponentPlacement.RELATED, 386, Short.MAX_VALUE)
+					.addComponent(button_10))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(493, Short.MAX_VALUE)
+					.addComponent(button_5)
+					.addGap(218))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addComponent(btnRoll)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnBust)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnStop)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnGo)
+					.addContainerGap(502, Short.MAX_VALUE))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(290)
+					.addComponent(lblCantStop)
+					.addContainerGap(302, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(lblCantStop)
+							.addGap(34)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(button_5)
+									.addGap(5)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+										.addComponent(button_6)
+										.addComponent(button_4))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+										.addComponent(button_7)
+										.addComponent(button_3))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(button_2)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(button_1))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(button_8)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(button_9)))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(7)
+									.addComponent(button))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(button_10)
+									.addPreferredGap(ComponentPlacement.RELATED, 84, Short.MAX_VALUE)))
+							.addGap(241))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnRoll)
+								.addComponent(btnBust)
+								.addComponent(btnStop)
+								.addComponent(btnGo))
+							.addGap(18)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+							.addGap(24))))
+		);
+		contentPane.setLayout(gl_contentPane);
+	}
+}

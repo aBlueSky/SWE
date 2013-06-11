@@ -1,0 +1,9 @@
+import javax.swing.*;
+public class Login {
+	String username = "";
+	String password = "";
+	public Login(){
+		username = JOptionPane.showInputDialog("Username");
+		password = JOptionPane.showInputDialog("Password");
+	}
+}
