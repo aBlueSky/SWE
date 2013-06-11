@@ -10,12 +10,12 @@ public class Server {
 	Socket player = null;
 	int portNumber;
 	BufferedReader in = null;
-    PrintWriter out = null;
-    BufferedReader fileReader = null;
-    static int numConnected=0;
-    String loginInfo = "CantStop.txt";
-    Scanner loginSc = null;
-	
+	PrintWriter out = null;
+	BufferedReader fileReader = null;
+	static int numConnected=0;
+	String loginInfo = "CantStop.txt";
+	Scanner loginSc = null;
+
 	//Initialize Server and ServerSocket
 	public Server()	{
 		portNumber=2043;
@@ -46,7 +46,7 @@ public class Server {
 		}//try
 		catch(IOException e){
 			System.err.println("Could not listen on port: "+portNumber+". " + e.getMessage());
-	        System.exit(-1);
+			System.exit(-1);
 		}//catch
 	}//Method
 	private void checkExistingUser(String requested)
@@ -80,7 +80,7 @@ public class Server {
 		catch(IOException e)
 		{
 			System.err.println("Could not use File Reader or Scanner" + e.getMessage());
-	        System.exit(-1);
+			System.exit(-1);
 		}
 		finally
 		{
@@ -112,7 +112,7 @@ public class Server {
 			FileWriter fileWriter = new FileWriter(loginInfo,true);
 			System.out.println("Should write: " + write);
 			fileWriter.write(write+System.getProperty("line.separator"));
-			
+
 			fileWriter.flush();
 			fileWriter.close();
 			System.out.println("Finished adding new User Login.");//debug
@@ -120,7 +120,7 @@ public class Server {
 		catch(IOException e)
 		{
 			System.err.println("Could not add user to records." + e.getMessage());
-	        System.exit(-1);
+			System.exit(-1);
 		}
 	}
 	public void initFileIO()
@@ -132,10 +132,10 @@ public class Server {
 			loginSc = new Scanner(fileReader);
 		}
 		catch(IOException e)
-		
+
 		{
 			System.err.println("Could not setup reader or writer." + e.getMessage());
-	        System.exit(-1);
+			System.exit(-1);
 		}
 	}//method
 	public boolean handleLogin()
@@ -146,39 +146,62 @@ public class Server {
 	public Socket connect(Socket player)
 	{
 		try {
-	         player = s.accept( );
-	         out = new PrintWriter(player.getOutputStream(), true);
-	         /* Handle there user name and password 
-	          * here before allowing them to connect fully.*/
-	         out.println(++numConnected);
-	      }//try
-	      catch (IOException e) {
-	         System.err.println("Accept failed: " + e.getMessage());
-	         System.exit(-1);
-	      }//catch
+			player = s.accept( );
+			in = new BufferedReader(new InputStreamReader(player.getInputStream()));
+			out = new PrintWriter(player.getOutputStream(), true);
+			/* Handle there user name and password 
+			 * here before allowing them to connect fully.*/
+			
+			/*Done Handling Connection Attempt.*/
+			out.println(++numConnected);
+		}//try
+		catch (IOException e) {
+			System.err.println("Accept failed: " + e.getMessage());
+			close(player);
+		}//catch
 		return player;
 	}//method
+	/*Safety Copy of connect(player)
+	public Socket connect(Socket player)
+	{
+		try {
+			player = s.accept( );
+			in = new BufferedReader(new InputStreamReader(player.getInputStream()));
+			out = new PrintWriter(player.getOutputStream(), true);
+			/* Handle there user name and password 
+			 * here before allowing them to connect fully.*/
+			
+			/*Done Handling Connection Attempt.*//*
+			out.println(++numConnected);
+		}//try
+		catch (IOException e) {
+			System.err.println("Accept failed: " + e.getMessage());
+			close(player);
+		}//catch
+		return player;
+	}//method
+	End of Safety*/
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	     }//try
-	     catch (IOException e) {
-	        System.err.println("Unable to read from or write to the client: "
-	                           + e.getMessage());
-	     }//Catch
+		}//try
+		catch (IOException e) {
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
 		return in;
 	}//Method
 	public PrintWriter connectWriter(Socket socket)
 	{
 		try{
 			out = new PrintWriter
-	                (socket.getOutputStream(), true /* autoFlush */);
+					(socket.getOutputStream(), true /* autoFlush */);
 		}//try
-        catch (IOException e) {
-	        System.err.println("Unable to read from or write to the client: "
-	                           + e.getMessage());
-	     }//Catch
+		catch (IOException e) {
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
 		return out;
 	}//method
 	//close the connections
@@ -192,20 +215,20 @@ public class Server {
 		catch(IOException e)
 		{
 			System.err.println("Unable to close the connection to the client: "
-                    + e.getMessage());
+					+ e.getMessage());
 		}
-		
+
 	}
 	public void close()
 	{
 		try {
-			 out.close();
-	         in.close();
-	         s.close();
-	      }//try
-	      catch (IOException e) {
-	         System.err.println("Unable to close writer, reader, or socket: "
-	                            + e.getMessage());
-	      }//catch
+			out.close();
+			in.close();
+			s.close();
+		}//try
+		catch (IOException e) {
+			System.err.println("Unable to close writer, reader, or socket: "
+					+ e.getMessage());
+		}//catch
 	}//method
 }//class
