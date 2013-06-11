@@ -70,7 +70,7 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 726, 599);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 153, 102));
+		contentPane.setBackground(new Color(255, 255, 102));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
@@ -78,7 +78,7 @@ public class Main extends JFrame {
 		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 102));
+		panel.setBackground(new Color(204, 153, 51));
 		
 		JButton btnRoll = new JButton("Roll");
 		btnRoll.setBackground(new Color(255, 127, 80));
@@ -99,7 +99,7 @@ public class Main extends JFrame {
 		
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 102));
+		panel_1.setBackground(new Color(204, 153, 51));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

@@ -68,9 +68,9 @@ public class Main extends JFrame {
 		setFont(new Font("Orator Std", Font.PLAIN, 12));
 		setTitle("Can't Stop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 726, 599);
+		setBounds(0, 0, 791, 610);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 153, 102));
+		contentPane.setBackground(new Color(255, 255, 102));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
@@ -78,7 +78,7 @@ public class Main extends JFrame {
 		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 102));
+		panel.setBackground(new Color(0, 102, 102));
 		
 		JButton btnRoll = new JButton("Roll");
 		btnRoll.setBackground(new Color(255, 127, 80));
@@ -99,32 +99,31 @@ public class Main extends JFrame {
 		
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 102));
+		panel_1.setBackground(new Color(204, 153, 51));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(137)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 343, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(286)
+							.addComponent(lblCantStop))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(156)
+							.addComponent(btnStop)
+							.addGap(26)
+							.addComponent(btnGo)
+							.addGap(18)
+							.addComponent(btnBust)
+							.addGap(18)
+							.addComponent(btnRoll))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(137)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 343, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(113)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 540, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(112, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(156)
-					.addComponent(btnStop)
-					.addGap(26)
-					.addComponent(btnGo)
-					.addGap(18)
-					.addComponent(btnBust)
-					.addGap(18)
-					.addComponent(btnRoll)
-					.addContainerGap(317, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-					.addContainerGap(81, Short.MAX_VALUE)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 540, GroupLayout.PREFERRED_SIZE)
-					.addGap(79))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(244)
-					.addComponent(lblCantStop)
-					.addContainerGap(296, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -132,8 +131,8 @@ public class Main extends JFrame {
 					.addContainerGap()
 					.addComponent(lblCantStop)
 					.addGap(18)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
-					.addGap(59)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
+					.addGap(69)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnStop)
 						.addComponent(btnGo)
@@ -286,8 +285,8 @@ public class Main extends JFrame {
 		panel_1.add(button_20, "cell 9 5");
 		
 		JButton button_10 = new JButton("12");
-		panel_1.add(button_10, "cell 10 5,alignx left,aligny top");
 		button_10.setEnabled(false);
+		panel_1.add(button_10, "cell 10 5,alignx left,aligny top");
 		button_10.setBackground(new Color(245, 245, 245));
 		
 		JButton button_11 = new JButton("   ");
