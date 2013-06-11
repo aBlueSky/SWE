@@ -15,33 +15,6 @@ public class Board {
 		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
-	/*public Board clearTemps(Board board)
-	{
-		Board newBoard = new Board(board.m.playerNum);
-		for(int i = 0; i<r;i++)
-		{
-			for(int j=0;j<c;j++)
-			{
-				if(board.grid[i][j]==board.T)
-				{
-					newBoard.grid[i][j]=newBoard.V;
-				}
-				else if(board.grid[i][j]==board.N)
-				{
-					newBoard.grid[i][j]=newBoard.N;
-				}
-				else if(board.grid[i][j]==board.m)
-				{
-					newBoard.grid[i][j]=newBoard.m;
-				}
-				else
-				{
-					newBoard.grid[i][j]=newBoard.V;
-				}
-			}
-		}
-		return newBoard;
-	}//method*/
 	public void clearTemps()
 	{
 		for(int i = 0; i<r;i++)
@@ -68,6 +41,48 @@ public class Board {
 			}
 		}
 	}//method
+	public boolean checkBoardForWin()
+	{
+		boolean result = false;
+		int count=0;
+		for(int i=0;i<c;i++)
+		{
+			if(!checkColumn(i+2))
+			{
+				count++;
+			}
+		}
+		if(count>2)
+		{
+			result=true;
+		}
+		return result;
+	}
+	public int checkForNumTemps()
+	{
+		int count=0;
+		
+		return count;
+	}
+	public boolean checkColumn(int num)
+	{
+		boolean result=true;
+		for(int i=0;i<r;i++)
+		{
+			try
+			{
+				if(grid[i+1][num-2]==N && (grid[i][num-2]==T || grid[i][num-2]==T))
+				{
+					result = false;
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				System.err.println("Traversed to far."+e.getMessage());
+			}
+		}
+		return result;
+	}/*return false if the column isn't valid.*/
 	public String printBoard()
 	{
 		String board="";

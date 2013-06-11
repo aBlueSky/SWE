@@ -160,6 +160,14 @@ public class GameManager
 	}//method - check combinations.
 	private static boolean checkBusted(Board board){
 		boolean busted = false;
+		
+		
+		
+		return busted;
+	}//method - check busted.
+	/*
+	private static boolean checkBusted(Board board){
+		boolean busted = false;
 		boolean match = false;
 		int counter = 0;
 		int place1=0;
@@ -184,7 +192,7 @@ public class GameManager
 		}//outer for -- finds temp markers
 		/*
 		 * Finds out if the place where it matches the dice roll has a vacant spot.
-		 */
+		 *//*
 		for(int i=0; i<3; i++){
 			for(int j=i+1; j<4; j++){
 				match0=dice[i]+dice[j];
@@ -200,7 +208,7 @@ public class GameManager
 			busted = true;
 		}// 3 temp markers and there is no match can be made with the given rolls.
 		return busted;
-	}//method - check busted.
+	}//method - check busted.*/
 	private static boolean isGameWon(Board board1, Board board2){
 		boolean gameWon = false;
 		int counter = 0;
