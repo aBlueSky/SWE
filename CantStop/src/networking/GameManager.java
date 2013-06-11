@@ -2,9 +2,10 @@ package networking;
 import java.net.*;
 import java.io.*;
 
-public class GameManager {
+public class GameManager 
+{
 	static int[] dice = new int[4];
-	
+
 	public static void main(String[] args)
 	{
 		Server server = new Server();
@@ -12,18 +13,18 @@ public class GameManager {
 		Socket player2 = null;
 		Board board1 = new Board(1);
 		Board board2 = new Board(2);
-		
+
 		//player connections
 		player1=server.connect(player1);
 		//Create IO for Player 1
 		BufferedReader p1Reader = server.connectReader(player1);
 		PrintWriter p1Writer = server.connectWriter(player1);
-		
+
 		player2=server.connect(player2);
 		//Create IO for Player 2
 		BufferedReader p2Reader = server.connectReader(player2);
 		PrintWriter p2Writer = server.connectWriter(player2);
-		
+
 		//Time to play the game
 		boolean playing = true;/*A boolean value that will
 		 						be true as long as the game
@@ -32,7 +33,7 @@ public class GameManager {
 		while(playing)
 		{
 			playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
-							/*player 1's turn, giving both P1 IO ,
+			/*player 1's turn, giving both P1 IO ,
 							P2 Writer and P1's player number and the board for the players*/
 			System.out.println(board1.printBoard());//Print board for P1
 			playing=!isGameWon(board1, board2);//check win condition
@@ -40,54 +41,53 @@ public class GameManager {
 			{//if turnA didn't win
 				p2Writer.println("go");//Tell next player to go.
 				playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
-						/*player 2's turn, giving both P2 IO ,
+				/*player 2's turn, giving both P2 IO ,
 						P1 Writer and P2's player number and the board for the players*/
 				System.out.println(board2.printBoard());//Print board for P2
 				playing=!isGameWon(board1, board2);//check win condition
 				if(playing)
 				{
 					p1Writer.println("go");//Tell next player to go.
-				}//if
+				}//if - playing for turn switch.
 				else
 				{
 					p2Writer.println("you won");
 					p1Writer.println("you lost");
 				}//else -- P2 win
-			}//if
+			}//if - playing
 			else
 			{
 				p1Writer.println("you won");
 				p2Writer.println("you lost");
 			}//else -- P1 win
-		}//while
+		}//while - playing for turn A.
 		//Game is finished, close connections
 		try {
 			p1Reader.close();
 		}//try 
 		catch (IOException e) {
-	         System.err.println("Unable to close reader: "
-                     + e.getMessage());
+			System.err.println("Unable to close reader: "
+					+ e.getMessage());
 		}//catch
 		p1Writer.close();
 		try {
 			p2Reader.close();
-		} //try
+		} //try - close reader.
 		catch (IOException e) {
-	         System.err.println("Unable to close reader: "
-                     + e.getMessage());
-		}//catch
+			System.err.println("Unable to close reader: "
+					+ e.getMessage());
+		}//catch - close reader.
 		p2Writer.close();
 		server.close();
 	}//Main method
-	
+
 	private static int[] roll(){
 		for(int i=0; i<dice.length; i++){
 			dice[i]= (int) (6*Math.random()+1);
 		}
-		
+
 		return dice;
-		
-	}
+	}//method - roll
 	private static String concatRoll(int[] diceArray)
 	{
 		String results="";
@@ -100,19 +100,19 @@ public class GameManager {
 			}//if
 		}//for
 		return results;
-	}//method
-	
+	}//method - concat roll
+
 	private static boolean checkRoll(int a, int b){
 		boolean valid = false;
 		if((2<=a)&&(12>=a)){
 			valid = true;
 		}
-		
+
 		if((2<=b)&&(12>=b)){
 			valid = true;
 		}
 		return valid;
-	}
+	}//method - check roll
 	/* Checks to see if there are temporary markers already placed on the 
 	 * given board and returns true if at least one temp marker is placed
 	 * and there is a possibility that it was chosen by the user with a 
@@ -155,7 +155,7 @@ public class GameManager {
 		System.out.println("bPrime: "+bPrime);
 		System.out.println("Both valid: "+result);
 		return result;
-	}//method
+	}//method - check combinations.
 	private static boolean checkBusted(Board board){
 		boolean busted = false;
 		boolean match = false;
@@ -187,8 +187,8 @@ public class GameManager {
 			for(int j=i+1; j<4; j++){
 				match0=dice[i]+dice[j];
 				if(((match0==place1&&board.isMarkerInFinalSpot(place1)==board.V)||
-					(match0==place2&&board.isMarkerInFinalSpot(place2)==board.V)||
-					(match0==place3&&board.isMarkerInFinalSpot(place3)==board.V)))
+						(match0==place2&&board.isMarkerInFinalSpot(place2)==board.V)||
+						(match0==place3&&board.isMarkerInFinalSpot(place3)==board.V)))
 				{
 					match=true;
 				}//if
@@ -198,7 +198,7 @@ public class GameManager {
 			busted = true;
 		}// 3 temp markers and there is no match can be made with the given rolls.
 		return busted;
-	}
+	}//method - check busted.
 	private static boolean isGameWon(Board board1, Board board2){
 		boolean gameWon = false;
 		int counter = 0;
@@ -220,10 +220,10 @@ public class GameManager {
 			gameWon = true;
 		}
 		return gameWon;
-	}
+	}//method - isGameWon
 	private static void playerTurn(BufferedReader reader, PrintWriter writer,
-									 PrintWriter otherPlayer, int playerNum, Board boardPrimary,
-									 Board boardSecondary)
+			PrintWriter otherPlayer, int playerNum, Board boardPrimary,
+			Board boardSecondary)
 	{/*
 	 * Return true if the turn is done for the active player.
 	 */
@@ -238,197 +238,157 @@ public class GameManager {
 				String storedConcatRoll = "";
 				int turnDice[];
 				String line = reader.readLine();
-		           if (line == null) { done = true; }
-		           else {
-		              if (line.trim().equals("stop")) {
-		            	  //switch temp markers to PERMANENT 
-		            	  boardPrimary.tempsToPerms();
-		                 done = true;
-		              }//if
-		              else if (line.trim().equals("roll")) {
-		            	  turnDice=roll();
-		            	  tempDice=turnDice;
-		            	  storedConcatRoll=concatRoll(turnDice);
-			              writer.println(storedConcatRoll);
-			              otherPlayer.println(storedConcatRoll);
-			          }// else if
-		              else
-		              {
-		            	 if(line.equals("crap"))
-		            	 {
-		            		//Player crapped out need to add the remove temp markers method.
-		            		writer.println("ack");//ack means acknowledged
-		            		System.out.println("crap");
-		            		boardPrimary.clearTemps();
-		            		System.out.println(boardPrimary.printBoard());
-		            		done=true;
-		            	 }//if
-		            	 else
-		            	 {/*player should have input 2 numbers delimited by a ','*/
-			            	  /*input should be in form "a,b" where
-			            	   a and b are int's delimited by ',' */
-			            	  String a=null;
-		            		  String b=null;
-		            		  System.out.println("Combination entered.");
-			            	  try
-			            	  {
-			            		  otherPlayer.println(line);//echo to other player
-			            		  String[] list=line.split(",");
-			            		  //try the 2 numbers a, b which should be in positions 0 and 1 of list.
-			            		  a = list[0];
-			            		  b = list[1];
-			            		  System.out.println("A: "+a+"; B: "+b);//debug
-			            		  int num1 = (int)Integer.parseInt(a);
-		            			  int num2 = (int)Integer.parseInt(b);
-		            			  System.out.println("A: "+num1+"; B: "+num2);//debug
-		            			  System.out.println("Before CheckRoll.");
-			            		  if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
-			            				  /*&&!checkBusted(boardPrimary)
-			            				  &&!checkBusted(boardSecondary)*/)
-			            		  {/*removed check busted until further
-			            		   notice in this condition on the if*/
-			            			  //Player combination is valid as far as 2<=x<=12
-			            			  //add or increment marker positions
-			            			  System.out.println("Valid roll and choice.");
-			            			  int loc1=num1;
-			            			  int loc2=num2;
-			            			  if(num1==num2)
-			            			  {
-			            				  System.out.println("Match Case");//debug
-			            				  boolean tempExistsAlready=false;
-			            				  boolean found=false;
-			            				  for(int i=0;i<Board.r;i++)
-			            				  {
-			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T || boardPrimary.grid[i][num2-2]==boardPrimary.T)
-			            					  {
-			            						  loc1=i;
-			            						  tempExistsAlready=true;
-			            						  found = true;
-			            					  }
-			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.m || boardPrimary.grid[i][num2-2]==boardPrimary.m)
-			            					  {
-			            						  loc1=i;
-			            						  found = true;
-			            					  }
-			            				  }
-			            				  if(found)
-			            				  {
-		            						  if(tempExistsAlready)
-		            						  {
-		            							  boardPrimary.moveTemp(loc1,num1-2,2);
-		            						  }//found and temp exists in column.
-			            					  else
-			            					  {
-			            						  boardPrimary.placeTemp(loc1+1,num1);
-			            						  boardPrimary.moveTemp(loc1+1,num1-2,1);
-			            					  }//Found but no temp exists.
-			            				  }
-			            				  else
-			            				  {
-			            					  boardPrimary.placeTemp(0,num1);
-		            						  boardPrimary.moveTemp(0,num1-2,1);
-			            				  }//nothing found, empty column. Create temp in first location and increment by one.
-			            			  }//if -- matching numbers
-			            			  else
-			            			  {
-			            				  System.out.println("Non Matching Case");//debug
-			            				  System.out.println("First Number");//debug
-			            				  boolean tempExistsAlready=false;
-			            				  boolean found=false;
-			            				  for(int i=0;i<Board.r;i++)
-			            				  {
-			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
-			            					  {
-			            						  loc1=i;
-			            						  tempExistsAlready=true;
-			            						  found = true;
-			            					  }
-			            					  if(boardPrimary.grid[i][num1-2]==boardPrimary.m)
-			            					  {
-			            						  loc1=i;
-			            						  found = true;
-			            					  }
-			            				  }
-			            				  if(found)
-			            				  {
-		            						  if(tempExistsAlready)
-		            						  {
-		            							  System.out.println("-Temporary Marker Exists Already.");//debug
-		            							  boardPrimary.moveTemp(loc1,num1-2,1);
-		            						  }//found and temp exists in column.
-			            					  else
-			            					  {
-			            						  System.out.println("-Permanent Marker Exists Already.");//debug
-			            						  boardPrimary.placeTemp(loc1+1,num1);
-			            					  }//Found but no temp exists.
-			            				  }
-			            				  else
-			            				  {
-			            					  System.out.println("-No Marker Found.");//debug
-			            					  boardPrimary.placeTemp(0,num1);
-			            				  }//Nothing found in column.
-			            				  System.out.println("Second Number");//debug
-			            				  tempExistsAlready=false;
-			            				  for(int i=0;i<Board.r;i++)
-			            				  {
-			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.T)
-			            					  {
-			            						  loc2=i;
-			            						  tempExistsAlready=true;
-			            						  found = true;
-			            					  }
-			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.m)
-			            					  {
-			            						  loc2=i;
-			            						  found = true;
-			            					  }
-			            				  }
-			            				  if(found)
-			            				  {
-		            						  if(tempExistsAlready)
-		            						  {
-		            							  System.out.println("-Temporary Marker Exists Already.");//debug
-		            							  boardPrimary.moveTemp(loc2,num2-2,1);
-		            						  }//found and temp exists in column.
-			            					  else
-			            					  {
-			            						  System.out.println("-Permanent Marker Exists Already.");//debug
-			            						  boardPrimary.placeTemp(loc2+1,num2);
-			            					  }//Found but no temp exists.
-			            				  }//if - found
-			            				  else
-			            				  {
-			            					  System.out.println("-No Marker Found.");//debug
-			            					  boardPrimary.placeTemp(0,num2);
-			            				  }//Nothing found in column.
-			            			  }//non matching numbers
-			            			  System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
-			            		  }//if -- crap check
-			            		  else{
-			            			//Player crapped out need to add the remove temp markers method.
-			            			  System.out.println("Crapping out");
-					            		boardPrimary.clearTemps();
-					            		System.out.println(boardPrimary.printBoard());
-					            		writer.println("ack");
-					            		done=true;
-			            		  }//crapped out
-			            	  }//try
-			            	  catch(Exception e)
-			            	  {
-			            		  throw e;
-			            		  //System.err.println("Error with turn function.");
-			            	  }//catch
-			            	  System.out.println(boardPrimary.printBoard());
-			               }//assume the 2 desired dice combinations were passed.
-			           }//inner else
-		           }//outer else
+				if (line == null) 
+				{ 
+					done = false;
+				}//Assume turn is not done with empty input.
+				else if (line.trim().equals("stop")) 
+				{//switch temp markers to PERMANENT 
+					boardPrimary.tempsToPerms();
+					done = true;
+				}//if
+				else if (line.trim().equals("roll")) 
+				{
+					turnDice=roll();
+					tempDice=turnDice;
+					storedConcatRoll=concatRoll(turnDice);
+					writer.println(storedConcatRoll);
+					otherPlayer.println(storedConcatRoll);
+				}// else if
+				else if(line.equals("crap"))
+				{
+					//Player crapped out need to add the remove temp markers method.
+					writer.println("ack");//ack means acknowledged
+					System.out.println("crap");
+					boardPrimary.clearTemps();
+					System.out.println(boardPrimary.printBoard());
+					done=true;
+				}
+				else if (line.matches("\\d*[,]{1}\\d*"))
+				{/*player should have input 2 numbers delimited by a ','*/
+					/*input should be in form "a,b" where
+   					a and b are int's delimited by ',' */
+					String a=null;
+					String b=null;
+					System.out.println("Combination entered.");
+					try
+					{
+						otherPlayer.println(line);//echo to other player
+						String[] list=line.split(",");
+						//try the 2 numbers a, b which should be in positions 0 and 1 of list.
+						a = list[0];	
+						b = list[1];
+						System.out.println("A: "+a+"; B: "+b);//debug
+						int num1 = (int)Integer.parseInt(a);
+						int num2 = (int)Integer.parseInt(b);
+						System.out.println("A: "+num1+"; B: "+num2);//debug
+						System.out.println("CheckRoll about to be called.");
+
+						if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
+								/*&&!checkBusted(boardPrimary)
+  								&&!checkBusted(boardSecondary)*/)
+						{/*removed check busted until further notice in this condition on the if*/
+							//Player combination is valid as far as 2<=x<=12
+							//add or increment marker positions
+							System.out.println("Valid roll and choice.");//debug
+							int loc1=num1;
+							int loc2=num2;
+							System.out.println("First Number");//debug
+							boolean tempExistsAlready=false;
+							boolean found=false;
+							for(int i=0;i<Board.r;i++)
+							{
+								if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
+								{
+									loc1=i;
+									tempExistsAlready=true;
+									found = true;
+								}//if
+								if(boardPrimary.grid[i][num1-2]==boardPrimary.m)
+								{
+									loc1=i;
+									found = true;
+								}//if
+							}//for
+							if(found)
+							{
+								if(tempExistsAlready)
+								{
+									System.out.println("-Temporary Marker Exists Already.");//debug
+									boardPrimary.moveTemp(loc1,num1-2,1);
+								}//Temporary Marker exists in column.
+								else
+								{
+									System.out.println("-Permanent Marker Exists Already.");//debug
+									boardPrimary.placeTemp(loc1+1,num1);
+								}//Found but no temp exists.
+							}//if - found
+							else
+							{
+								System.out.println("-No Marker Found.");//debug
+								boardPrimary.placeTemp(0,num1);
+							}//Nothing found in column.
+							System.out.println("Second Number");//debug
+							found=false;
+							tempExistsAlready=false;
+							for(int i=0;i<Board.r;i++)
+							{
+								if(boardPrimary.grid[i][num2-2]==boardPrimary.T)
+								{
+									loc2=i;
+									tempExistsAlready=true;
+									found = true;
+								}//if
+								if(boardPrimary.grid[i][num2-2]==boardPrimary.m)
+								{
+									loc2=i;
+									found = true;
+								}//if
+							}
+							if(found)
+							{
+								if(tempExistsAlready)
+								{
+									System.out.println("-Temporary Marker Exists Already.");//debug
+									boardPrimary.moveTemp(loc2,num2-2,1);
+								}//found and temp exists in column.
+								else
+								{
+									System.out.println("-Permanent Marker Exists Already.");//debug
+									boardPrimary.placeTemp(loc2+1,num2);
+								}//Found but no temp exists.
+							}//if - found
+							else
+							{
+								System.out.println("-No Marker Found.");//debug
+								boardPrimary.placeTemp(0,num2);
+							}//Nothing found in column.
+						}//end of handling the numbers.
+						else
+						{
+							System.out.println("Crapping out");
+							boardPrimary.clearTemps();
+							writer.println("ack");
+							done=true;
+						}//Player "crapped" out
+					}//try
+					catch(Exception e)
+					{
+						System.err.println("Error with turn function." + e.getMessage());
+					}//catch
+					System.out.println(boardPrimary.printBoard());
+				}//assume the 2 desired dice combinations were passed.
+				else
+				{
+					System.out.println("Unhandled line: "+line);//debug
+				}//unhandled yet
 			}//while
 		}//try
-		catch (IOException e) {
+		catch (IOException e) 
+		{
 			done=true;
-	        System.err.println("Unable to read from or write to the client: "
-	                           + e.getMessage());
-	     }//Catch
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
 	}//method
-
-}
+}//class
