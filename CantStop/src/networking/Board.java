@@ -220,7 +220,6 @@ public class Board {
 		}//for
 		return fin;
 	}
-	/*Methods to remove unnecessary repeated permanent markers.*/
 	public void removeRepeatedPermanentMarkers()
 	{
 		for(int i=2;i<13;i++)
