@@ -118,6 +118,44 @@ public class GameManager {
 	 * and there is a possibility that it was chosen by the user with a 
 	 * valid roll.
 	 */
+	private static boolean checkCombinations(int[] dice, int a, int b)
+	{
+		boolean result = false;
+		boolean aPrime = false;
+		boolean bPrime = false;
+		int possibilities[]=new int[12];
+		int spot=0;
+		for(int i=0;i<dice.length;i++)
+		{
+			for(int j=0;j<dice.length;j++)
+			{
+				if(i!=j)
+				{
+					possibilities[spot++]=(dice[i]+dice[j]);
+				}
+			}
+		}//set up combination possibilities.
+		for(int i=0;i<possibilities.length;i++)
+		{
+			if(a==possibilities[i])
+			{
+				aPrime=true;
+			}
+			if(b==possibilities[i])
+			{
+				bPrime=true;
+			}
+		}/*if a or b matches a possible combination set the
+		 boolean value to true for that variable*/
+		if(aPrime && bPrime)
+		{
+			result=true;
+		}/*if both are true then the two desired choices are valid*/
+		System.out.println("aPrime: "+aPrime);
+		System.out.println("bPrime: "+bPrime);
+		System.out.println("Both valid: "+result);
+		return result;
+	}//method
 	private static boolean checkBusted(Board board){
 		boolean busted = false;
 		boolean match = false;
@@ -193,6 +231,8 @@ public class GameManager {
 		System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
 		try
 		{
+			int tempDice[]=new int[4];/*only stored during this player's
+			 							turn and until the next roll.*/
 			while (!done)
 			{
 				String storedConcatRoll = "";
@@ -207,6 +247,7 @@ public class GameManager {
 		              }//if
 		              else if (line.trim().equals("roll")) {
 		            	  turnDice=roll();
+		            	  tempDice=turnDice;
 		            	  storedConcatRoll=concatRoll(turnDice);
 			              writer.println(storedConcatRoll);
 			              otherPlayer.println(storedConcatRoll);
@@ -241,10 +282,11 @@ public class GameManager {
 		            			  int num2 = (int)Integer.parseInt(b);
 		            			  System.out.println("A: "+num1+"; B: "+num2);//debug
 		            			  System.out.println("Before CheckRoll.");
-			            		  if (checkRoll(num1,num2)
+			            		  if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
 			            				  /*&&!checkBusted(boardPrimary)
 			            				  &&!checkBusted(boardSecondary)*/)
-			            		  {
+			            		  {/*removed check busted until further
+			            		   notice in this condition on the if*/
 			            			  //Player combination is valid as far as 2<=x<=12
 			            			  //add or increment marker positions
 			            			  System.out.println("Valid roll and choice.");
@@ -307,20 +349,22 @@ public class GameManager {
 			            						  found = true;
 			            					  }
 			            				  }
-			            				  /*Code Inserted Below*/
 			            				  if(found)
 			            				  {
 		            						  if(tempExistsAlready)
 		            						  {
+		            							  System.out.println("-Temporary Marker Exists Already.");//debug
 		            							  boardPrimary.moveTemp(loc1,num1-2,1);
 		            						  }//found and temp exists in column.
 			            					  else
 			            					  {
+			            						  System.out.println("-Permanent Marker Exists Already.");//debug
 			            						  boardPrimary.placeTemp(loc1+1,num1);
 			            					  }//Found but no temp exists.
 			            				  }
 			            				  else
 			            				  {
+			            					  System.out.println("-No Marker Found.");//debug
 			            					  boardPrimary.placeTemp(0,num1);
 			            				  }//Nothing found in column.
 			            				  System.out.println("Second Number");//debug
@@ -331,22 +375,32 @@ public class GameManager {
 			            					  {
 			            						  loc2=i;
 			            						  tempExistsAlready=true;
+			            						  found = true;
 			            					  }
 			            					  if(boardPrimary.grid[i][num2-2]==boardPrimary.m)
 			            					  {
 			            						  loc2=i;
+			            						  found = true;
 			            					  }
 			            				  }
-			            				  if(tempExistsAlready)
+			            				  if(found)
 			            				  {
-			            					  System.out.println("-Temporary Marker Exists Already.");//debug
-		            						  boardPrimary.moveTemp(loc2,num2-2,1);
-			            				  }
+		            						  if(tempExistsAlready)
+		            						  {
+		            							  System.out.println("-Temporary Marker Exists Already.");//debug
+		            							  boardPrimary.moveTemp(loc2,num2-2,1);
+		            						  }//found and temp exists in column.
+			            					  else
+			            					  {
+			            						  System.out.println("-Permanent Marker Exists Already.");//debug
+			            						  boardPrimary.placeTemp(loc2+1,num2);
+			            					  }//Found but no temp exists.
+			            				  }//if - found
 			            				  else
-		            					  {
-			            					  System.out.println("-No Temporary Marker Exists Already.");//debug
-		            						  boardPrimary.placeTemp(0,num2);
-		            					  }
+			            				  {
+			            					  System.out.println("-No Marker Found.");//debug
+			            					  boardPrimary.placeTemp(0,num2);
+			            				  }//Nothing found in column.
 			            			  }//non matching numbers
 			            			  System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
 			            		  }//if -- crap check
