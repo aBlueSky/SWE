@@ -13,6 +13,19 @@
     "javaRuntime": true
   },
   {
+    "symbolicName": "miglayout15-swing",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "8d654048391ea62f296e2c6960206556811650c0",
+    "jarFileModificationDate": "2013-06-10T22:15:04.635-03:00",
+    "location": "C:\\Users\\Kelsey\\Documents\\GitHub\\SWE\\JavaGUI\\miglayout15-swing.jar",
+    "javaRuntime": false
+  },
+  {
     "symbolicName": "jre",
     "version": {
       "major": 1,
@@ -115,6 +128,19 @@
     "jarFileModificationDate": "2013-05-24T20:01:42.652-03:00",
     "location": "C:\\Program Files\\Java\\jre7\\lib\\charsets.jar",
     "javaRuntime": true
+  },
+  {
+    "symbolicName": "forms-1.3.0",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "d403858db2fbf1ebfdac1c367a27ce7213b9070a",
+    "jarFileModificationDate": "2013-06-10T22:16:22.224-03:00",
+    "location": "C:\\Users\\Kelsey\\Documents\\GitHub\\SWE\\JavaGUI\\forms-1.3.0.jar",
+    "javaRuntime": false
   },
   {
     "symbolicName": "jre",
