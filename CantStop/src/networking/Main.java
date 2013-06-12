@@ -1,4 +1,4 @@
-package javagui.views;
+package networking;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
