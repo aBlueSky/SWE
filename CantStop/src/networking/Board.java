@@ -57,13 +57,22 @@ public class Board {
 			result=true;
 		}
 		return result;
-	}
+	}//Should return true if the game has been won by the player who owns the board.
 	public int checkForNumTemps()
 	{
 		int count=0;
-		
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==T)
+				{
+					count++;
+				}
+			}
+		}
 		return count;
-	}
+	}//return the number of temp markers found on the board.
 	public boolean checkColumn(int num)
 	{
 		boolean result=true;

@@ -158,13 +158,14 @@ public class GameManager
 		System.out.println("Both valid: "+result);
 		return result;
 	}//method - check combinations.
-	private static boolean checkBusted(Board board){
-		boolean busted = false;
-		
-		
-		
-		return busted;
-	}//method - check busted.
+	public boolean checkBusted(Board board)
+	{
+		boolean result = false;
+
+
+
+		return result;
+	}//Return true if the player busted.
 	/*
 	private static boolean checkBusted(Board board){
 		boolean busted = false;
@@ -191,8 +192,8 @@ public class GameManager
 			}//inner for
 		}//outer for -- finds temp markers
 		/*
-		 * Finds out if the place where it matches the dice roll has a vacant spot.
-		 *//*
+	 * Finds out if the place where it matches the dice roll has a vacant spot.
+	 *//*
 		for(int i=0; i<3; i++){
 			for(int j=i+1; j<4; j++){
 				match0=dice[i]+dice[j];
@@ -244,8 +245,11 @@ public class GameManager
 			int tempDice[]=new int[4];/*only stored during this player's
 			 							turn and until the next roll.*/
 			boolean freshRoll = false;
-			while (!done)
+			TURN: while (!done)
 			{
+				int wasAbleToPlaceATemp = 2;/*2 at the start;
+											1 if one was not able to be placed;
+											0 if neither were placed*/
 				String storedConcatRoll = "";
 				int turnDice[];
 				String line = reader.readLine();
@@ -272,7 +276,7 @@ public class GameManager
 				{
 					//Player crapped out need to add the remove temp markers method.
 					writer.println("ack");//ack means acknowledged
-					System.out.println("crap");
+					System.out.println("crap");//debug
 					boardPrimary.clearTemps();
 					System.out.println(boardPrimary.printBoard());
 					done=true;
@@ -283,10 +287,9 @@ public class GameManager
    					a and b are int's delimited by ',' */
 					String a=null;
 					String b=null;
-					System.out.println("Combination entered.");
+					System.out.println("Combination entered.");//debug
 					try
 					{
-						otherPlayer.println(line);//echo to other player
 						String[] list=line.split(",");
 						//try the 2 numbers a, b which should be in positions 0 and 1 of list.
 						a = list[0];	
@@ -295,8 +298,8 @@ public class GameManager
 						int num1 = (int)Integer.parseInt(a);
 						int num2 = (int)Integer.parseInt(b);
 						System.out.println("A: "+num1+"; B: "+num2);//debug
-						System.out.println("CheckRoll about to be called.");
-						
+						System.out.println("CheckRoll and CheckCombination about to be called.");
+
 						if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
 								/*&&!checkBusted(boardPrimary)
   								&&!checkBusted(boardSecondary)*/)
@@ -304,6 +307,8 @@ public class GameManager
 							//Player combination is valid as far as 2<=x<=12
 							//add or increment marker positions
 							System.out.println("Valid roll and choice.");//debug
+							writer.println("ack");//acknowledge valid choice
+							otherPlayer.println(line);//echo to other player
 							int loc1=num1;
 							int loc2=num2;
 							System.out.println("First Number");//debug
@@ -333,13 +338,31 @@ public class GameManager
 								else
 								{
 									System.out.println("-Permanent Marker Exists Already.");//debug
-									boardPrimary.placeTemp(loc1+1,num1);
+									if (boardPrimary.checkForNumTemps()<3) {
+										boardPrimary.placeTemp(loc1 + 1, num1);
+									}
+									else
+									{
+										//bust
+										System.out.println("Bust");//debug
+										wasAbleToPlaceATemp--;
+										System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+									}
 								}//Found but no temp exists.
 							}//if - found
 							else
 							{
 								System.out.println("-No Marker Found.");//debug
-								boardPrimary.placeTemp(0,num1);
+								if (boardPrimary.checkForNumTemps()<3) {
+									boardPrimary.placeTemp(0, num1);
+								}//allowed to not be able to place the second temp
+								else
+								{
+									//bust
+									System.out.println("Bust");//debug
+									wasAbleToPlaceATemp--;
+									System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+								}
 							}//Nothing found in column.
 							System.out.println("Second Number");//debug
 							found=false;
@@ -368,34 +391,62 @@ public class GameManager
 								else
 								{
 									System.out.println("-Permanent Marker Exists Already.");//debug
-									boardPrimary.placeTemp(loc2+1,num2);
+									if (boardPrimary.checkForNumTemps()<3) {
+										boardPrimary.placeTemp(loc2 + 1, num2);
+									}
+									else
+									{
+										//bust
+										System.out.println("Bust");//debug
+										wasAbleToPlaceATemp--;
+										System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+									}
 								}//Found but no temp exists.
 							}//if - found
 							else
 							{
 								System.out.println("-No Marker Found.");//debug
-								boardPrimary.placeTemp(0,num2);
+								if (boardPrimary.checkForNumTemps()<3) {
+									boardPrimary.placeTemp(0, num2);
+								}
+								else
+								{
+									//bust
+									System.out.println("Bust");//debug
+									wasAbleToPlaceATemp--;
+									System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+								}
 							}//Nothing found in column.
 						}//end of handling the numbers.
 						else
 						{
-							System.out.println("Crapping out");
+							System.out.println("Crapping out");//debug
 							boardPrimary.clearTemps();
 							writer.println("ack");
 							done=true;
 						}//Player "crapped" out
+						if(wasAbleToPlaceATemp<1)
+						{
+							//Bust
+							System.out.println("Busted out.");//debug
+							boardPrimary.clearTemps();
+							writer.println("ack");
+							done=true;
+						}
 					}//try
 					catch(Exception e)
 					{
 						System.err.println("Error with turn function." + e.getMessage());
 					}//catch
-					System.out.println(boardPrimary.printBoard());
+					System.out.println(boardPrimary.printBoard());//debug
 					freshRoll=false;
 				}//assume the 2 desired dice combinations were passed. Can't do this until you've rolled.
 				else
 				{
 					System.out.println("Unhandled line: "+line);//debug
+					writer.println("err");
 				}//unhandled yet, skip to next input.
+
 			}//while
 		}//try
 		catch (IOException e) 
