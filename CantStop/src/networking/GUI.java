@@ -29,7 +29,9 @@ import java.io.*;
 import java.util.*;
 
 public class GUI extends JFrame {
-
+	Socket playerSocket = null;
+	PrintWriter output = null;
+	BufferedReader input = null;
 	private JPanel contentPane;
 
 	/**
@@ -89,6 +91,7 @@ public class GUI extends JFrame {
 							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 						}
 						catch(IOException e){
+							System.err.println("Could not connect socket: " + e.getMessage());
 						}
 						uservalid = true;
 					}
@@ -124,6 +127,14 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
+		try{
+			playerSocket = new Socket("localhost", 2043);
+			output = new PrintWriter(playerSocket.getOutputStream(), true);
+			input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+		}
+		catch(IOException e){
+			System.err.println("Could not connect socket: " + e.getMessage());
+		}
 		setAlwaysOnTop(true);
 		setFont(new Font("Orator Std", Font.PLAIN, 12));
 		setTitle("Can't Stop");
@@ -143,14 +154,16 @@ public class GUI extends JFrame {
 		JButton btnRoll = new JButton("Roll");
 		btnRoll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				output.println("roll");
 			}
 		});
 		btnRoll.setBackground(new Color(255, 127, 80));
 		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
-		JButton btnBust = new JButton("Bust");
+		JButton btnBust = new JButton("Crap");
 		btnBust.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				output.println("crap");
 			}
 		});
 		btnBust.setBackground(new Color(255, 127, 80));
@@ -159,6 +172,7 @@ public class GUI extends JFrame {
 		JButton btnStop = new JButton("Stop");
 		btnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				output.println("stop");
 			}
 		});
 		btnStop.setBackground(new Color(255, 99, 71));
@@ -167,6 +181,7 @@ public class GUI extends JFrame {
 		JButton btnGo = new JButton("Go");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				output.println("go");
 			}
 		});
 		btnGo.setBackground(new Color(255, 127, 80));
