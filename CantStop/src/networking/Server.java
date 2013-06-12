@@ -41,15 +41,13 @@ public class Server {
 		{
 			s=new ServerSocket(portNumber);
 			System.out.println("Server started on port: "+portNumber);//debug
-			addNewUser("test,test");
-			checkExistingUser("test,test");
 		}//try
 		catch(IOException e){
 			System.err.println("Could not listen on port: "+portNumber+". " + e.getMessage());
 			System.exit(-1);
 		}//catch
 	}//Method
-	private void checkExistingUser(String requested)
+	private boolean checkExistingUser(String requested)
 	{
 		boolean existing=false;
 		try
@@ -59,14 +57,16 @@ public class Server {
 			loginSc = new Scanner(fileReader);
 			String line = loginSc.nextLine();
 			System.out.println(line);//debug
+			String store[];
 			boolean scan = true;
 			while(scan)
 			{
-				if(line.equals(requested))
+				store = line.split(",");
+				if(store[0].equals(requested))
 				{
 					existing=true;
 				}
-				System.out.println(line);//debug
+				System.out.println(store[0]);//debug
 				System.out.println("Matches requested: "+existing);//debug
 				try
 				{
@@ -92,17 +92,55 @@ public class Server {
 				System.err.println("Could not close File Reader" + e.getMessage());
 			}
 		}
-		if(existing)
-		{
-			//allowed
-			System.out.println("Allowed to connect.");//debug
-		}
-		else
-		{
-			//Rejected, reply to client with error from CS protocol.
-			System.out.println("err, User does not exist.");//debug
-		}
+		return existing;
 	}//Method - checkExistingUser
+	private boolean checkPasswordWithName(String u, String p)
+	{
+		boolean accept = false;
+		try
+		{
+			System.out.println("Login File reader to be created: "+loginInfo);//debug
+			fileReader = new BufferedReader(new FileReader(loginInfo));
+			loginSc = new Scanner(fileReader);
+			String line = loginSc.nextLine();
+			System.out.println(line);//debug
+			String store[];
+			boolean scan = true;
+			while(scan)
+			{
+				store = line.split(",");
+				if(store[0].equals(u) && store[1].equals(p))
+				{
+					accept=true;
+				}
+				System.out.println(store[0]);//debug
+				System.out.println("Matches requested: "+accept);//debug
+				try
+				{
+					line=loginSc.nextLine();
+				} catch (NoSuchElementException e) {
+					System.err.println("Could not use Scanner. " + e.getMessage());
+					scan=false;
+				}
+			}
+		}
+		catch(IOException e)
+		{
+			System.err.println("Could not use File Reader or Scanner" + e.getMessage());
+			System.exit(-1);
+		}
+		finally
+		{
+			try 
+			{
+				fileReader.close();
+			} catch (IOException e) 
+			{
+				System.err.println("Could not close File Reader" + e.getMessage());
+			}
+		}
+		return accept;
+	}
 	private void addNewUser(String write)
 	{
 		try
@@ -144,13 +182,87 @@ public class Server {
 	}
 	public Socket connect(Socket player)
 	{
+		boolean userNameCheck;
+		boolean passwordCheck;
+		boolean error;
 		try {
 			player = s.accept( );
 			in = new BufferedReader(new InputStreamReader(player.getInputStream()));
 			out = new PrintWriter(player.getOutputStream(), true);
 			/* Handle there user name and password 
 			 * here before allowing them to connect fully.*/
-			
+			boolean done = false;
+			while(!done)
+			{
+				userNameCheck=false;
+				passwordCheck=false;
+				error = false;
+				String line = in.readLine();
+				String store[];
+				String password;
+				int passwordsAttempted=0;
+				if(line.matches("(R|N){1}[,]{1}(\\w|\\s)*"));
+				{
+					
+					store=line.split(",");
+					if(store[0]=="R")
+					{
+						if(checkExistingUser(store[1]))
+						{
+							out.println("ack");
+							userNameCheck=true;
+							PW: while(!error)
+							{
+								password=in.readLine();
+								if(checkPasswordWithName(store[1], password))
+								{
+									out.println("ack");
+									passwordCheck=true;
+									break PW;
+								}//password matched
+								else
+								{
+									out.println("err,Invalid Password");
+									passwordsAttempted++;
+									if(passwordsAttempted>2)
+									{
+										error=true;
+									}
+								}//invalid password
+							}
+						}//check to see if user name exists.
+						else
+						{
+							out.println("err,Unknown User");
+						}
+					}//returning user.
+					else
+					{
+						if(!checkExistingUser(store[1]))
+						{
+							out.println("ack");
+							password = in.readLine();
+							userNameCheck=true;
+							addNewUser(store[1]+","+password);
+							passwordCheck=true;
+							//get password then store both
+						}//check to see if User Name is free;
+						else
+						{
+							out.println("err,Duplicate User Name");
+						}//err,Duplicate User Name
+					}//new user.
+				}//only excepts in the form of regex: "(r|d){1}[,]{1}(\\w|\\s)*"
+				if(error)
+				{
+					//close connection
+				}
+				else if(passwordCheck && userNameCheck)
+				{
+					//Keep Connection
+					done=true;
+				}
+			}//while not done
 			/*Done Handling Connection Attempt.*/
 			out.println(++numConnected);
 		}//try
@@ -158,6 +270,19 @@ public class Server {
 			System.err.println("Accept failed: " + e.getMessage());
 			close(player);
 		}//catch
+		finally
+		{
+			try
+			{
+				player.close();
+				in.close();
+				out.close();
+			}
+			catch(IOException e)
+			{
+				System.err.println("Error closing connections: " + e.getMessage());
+			}
+		}
 		return player;
 	}//method
 	/*Safety Copy of connect(player)
