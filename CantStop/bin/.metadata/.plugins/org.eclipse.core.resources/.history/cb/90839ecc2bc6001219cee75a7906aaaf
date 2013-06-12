@@ -1,0 +1,8 @@
+package networking;
+import java.util.*;
+
+public class Board {
+	ArrayList<Marker> markers = new ArrayList<Marker>();
+	
+
+}
