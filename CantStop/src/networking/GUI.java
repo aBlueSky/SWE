@@ -25,7 +25,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Main extends JFrame {
+public class GUI extends JFrame {
 
 	private JPanel contentPane;
 
@@ -87,7 +87,7 @@ public class Main extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main frame = new Main();
+					GUI frame = new GUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -99,7 +99,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public GUI() {
 		setAlwaysOnTop(true);
 		setFont(new Font("Orator Std", Font.PLAIN, 12));
 		setTitle("Can't Stop");
