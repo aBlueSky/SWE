@@ -201,14 +201,18 @@ public class Server {
 				String store[];
 				String password;
 				int passwordsAttempted=0;
-				if(line.matches("(R|N){1}[,]{1}(\\w|\\s)*"));
+				System.out.println("Line: "+line);//debug
+				if(line.matches("[RN]{1}[,]{1}[\\w|\\s]*"));
 				{
 					
 					store=line.split(",");
 					if(store[0]=="R")
 					{
+						System.out.println(store[0]);//debug
+						System.out.println(store[1]);//debug
 						if(checkExistingUser(store[1]))
 						{
+							System.out.println(store[1]);//debug
 							out.println("ack");
 							userNameCheck=true;
 							PW: while(!error)
@@ -233,6 +237,7 @@ public class Server {
 						}//check to see if user name exists.
 						else
 						{
+							System.out.println(store[0]);//debug
 							out.println("err,Unknown User");
 						}
 					}//returning user.

@@ -161,55 +161,8 @@ public class GameManager
 	public boolean checkBusted(Board board)
 	{
 		boolean result = false;
-
-
-
 		return result;
 	}//Return true if the player busted.
-	/*
-	private static boolean checkBusted(Board board){
-		boolean busted = false;
-		boolean match = false;
-		int counter = 0;
-		int place1=0;
-		int place2=0;
-		int place3=0;
-		int match0 = 0;
-		for(int i=0; i<11; i++){
-			for(int j=0; j<9; j++){
-				if(board.grid[i][j]==board.T){
-					counter ++;
-					if(place1==0){
-						place1=i+2;
-					}//else if
-					else if(place2==0){
-						place2=i+2;
-					}//else if
-					else if(place3==0){
-						place3=i+2;
-					}//else if
-				}//if
-			}//inner for
-		}//outer for -- finds temp markers
-		/*
-	 * Finds out if the place where it matches the dice roll has a vacant spot.
-	 *//*
-		for(int i=0; i<3; i++){
-			for(int j=i+1; j<4; j++){
-				match0=dice[i]+dice[j];
-				if(((match0==place1&&board.isMarkerInFinalSpot(place1)==board.V)||
-						(match0==place2&&board.isMarkerInFinalSpot(place2)==board.V)||
-						(match0==place3&&board.isMarkerInFinalSpot(place3)==board.V)))
-				{
-					match=true;
-				}//if
-			}//inner for
-		}//outer for
-		if(counter == 3 && match != true){
-			busted = true;
-		}// 3 temp markers and there is no match can be made with the given rolls.
-		return busted;
-	}//method - check busted.*/
 	private static boolean isGameWon(Board board1, Board board2){
 		boolean gameWon = false;
 		int counter = 0;
