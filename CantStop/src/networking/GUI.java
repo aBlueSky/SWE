@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -179,6 +181,42 @@ public class GUI extends JFrame {
 		btnRoll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				output.println("roll");
+				Scanner search = new Scanner(input);
+				String rolled = search.nextLine();
+				Scanner search2 = new Scanner(rolled);
+				while(search2.hasNext()){
+					if(search2.nextInt() == 1){
+						JButton die1 = new JButton();
+						die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
+						add(die1);
+					}
+					else if(search2.nextInt() == 2){
+						JButton die2 = new JButton();
+						die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
+						add(die2);
+					}
+					else if(search2.nextInt() == 3){
+						JButton die3 = new JButton();
+						die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
+						add(die3);
+					}
+					else if(search2.nextInt() == 4){
+						JButton die4 = new JButton();
+						die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
+						add(die4);
+					}
+					else if(search2.nextInt() == 5){
+						JButton die5 = new JButton();
+						die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
+						add(die5);
+					}
+					else if(search2.nextInt() == 6){
+						JButton die6 = new JButton();
+						die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
+						add(die6);
+					}
+				}
+				
 			}
 		});
 		btnRoll.setBackground(new Color(255, 127, 80));
@@ -210,9 +248,7 @@ public class GUI extends JFrame {
 		});
 		btnGo.setBackground(new Color(255, 127, 80));
 		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
-		JButton button_valid = new JButton(" ");
-		
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(102, 187, 102));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
