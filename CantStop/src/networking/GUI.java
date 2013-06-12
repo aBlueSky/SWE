@@ -30,11 +30,22 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener{
 	Socket playerSocket = null;
 	PrintWriter output = null;
 	BufferedReader input = null;
 	private JPanel contentPane;
+	private JButton btnRoll = new JButton("Roll");
+	private JButton die1 = new JButton();
+	private JButton die2 = new JButton();
+	private JButton die3 = new JButton();
+	private JButton die4 = new JButton();
+	private JButton die5 = new JButton();
+	private JButton die6 = new JButton();
+	private JButton btnBust = new JButton("Crap");
+	private JButton btnStop = new JButton("Stop");
+	private JButton btnGo = new JButton("Go");
+	
 
 	/**
 	 * Launch the application.
@@ -176,76 +187,21 @@ public class GUI extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 187, 102));
+		JButton die1 = new JButton();
 		
-		JButton btnRoll = new JButton("Roll");
-		btnRoll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("roll");
-				Scanner search = new Scanner(input);
-				String rolled = search.nextLine();
-				Scanner search2 = new Scanner(rolled);
-				while(search2.hasNext()){
-					if(search2.nextInt() == 1){
-						JButton die1 = new JButton();
-						die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
-						add(die1);
-					}
-					else if(search2.nextInt() == 2){
-						JButton die2 = new JButton();
-						die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
-						add(die2);
-					}
-					else if(search2.nextInt() == 3){
-						JButton die3 = new JButton();
-						die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
-						add(die3);
-					}
-					else if(search2.nextInt() == 4){
-						JButton die4 = new JButton();
-						die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
-						add(die4);
-					}
-					else if(search2.nextInt() == 5){
-						JButton die5 = new JButton();
-						die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
-						add(die5);
-					}
-					else if(search2.nextInt() == 6){
-						JButton die6 = new JButton();
-						die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
-						add(die6);
-					}
-				}
-				
-			}
-		});
+		btnRoll.addActionListener(this);
 		btnRoll.setBackground(new Color(255, 127, 80));
 		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
-		JButton btnBust = new JButton("Crap");
-		btnBust.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("crap");
-			}
-		});
+		btnBust.addActionListener(this);
 		btnBust.setBackground(new Color(255, 127, 80));
 		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
-		JButton btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				output.println("stop");
-			}
-		});
+		btnStop.addActionListener(this);
 		btnStop.setBackground(new Color(255, 99, 71));
 		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
 		
-		JButton btnGo = new JButton("Go");
-		btnGo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("go");
-			}
-		});
+		btnGo.addActionListener(this);
 		btnGo.setBackground(new Color(255, 127, 80));
 		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
 
@@ -533,4 +489,54 @@ public class GUI extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 	}
+public void actionPerformed(ActionEvent e) {
+	Object o = e.getSource();
+	if(o == btnRoll){
+		output.println("roll");
+		Scanner search = new Scanner(input);
+		String rolled = search.nextLine();
+		Scanner search2 = new Scanner(rolled);
+		while(search2.hasNext()){
+			if(search2.nextInt() == 1){
+				die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
+				add(die1);
+			}
+			else if(search2.nextInt() == 2){
+				die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
+				add(die2);
+			}
+			else if(search2.nextInt() == 3){
+				die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
+				add(die3);
+			}
+			else if(search2.nextInt() == 4){
+				die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
+				add(die4);
+			}
+			else if(search2.nextInt() == 5){
+				die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
+				add(die5);
+			}
+			else if(search2.nextInt() == 6){
+				die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
+				add(die6);
+			}
+		}
+	}
+	if(o == btnBust){
+		output.println("crap");
+		die1.setVisible(false);
+		die2.setVisible(false);
+		die3.setVisible(false);
+		die4.setVisible(false);
+		die5.setVisible(false);
+		die6.setVisible(false);
+	}
+	if(o == btnStop){
+		output.println("stop");
+	}
+	if(o==btnGo){
+		output.println("go");
+	}
+  }
 }
