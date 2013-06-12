@@ -24,6 +24,9 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.*;
+import java.io.*;
+import java.util.*;
 
 public class GUI extends JFrame {
 
@@ -36,6 +39,10 @@ public class GUI extends JFrame {
 		boolean valid = false;
 		boolean uservalid = false;
 		boolean passwordvalid = false;
+		String userType;
+		Socket socket;
+		PrintWriter out;
+		BufferedReader in;
 		String answer = JOptionPane.showInputDialog("Are you a new user? Please enter yes or no.");
 		while(!valid){
 			if(answer.equals("no")|| answer.equals("No") || answer.equals("NO")){
@@ -45,6 +52,15 @@ public class GUI extends JFrame {
 						username = JOptionPane.showInputDialog("Invalid Length. Please enter your username");
 					}
 					else{
+						userType = "R, " + username;
+						try{
+						socket = new Socket("localhost", 2043);
+						out = new PrintWriter(socket.getOutputStream(), true);
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						}
+						catch(IOException e){
+							System.err.println("Could not connect socket: " + e.getMessage());
+						}
 						uservalid = true;
 					}
 				}
@@ -66,6 +82,14 @@ public class GUI extends JFrame {
 						newusername = JOptionPane.showInputDialog("Invalid Length. Please enter another username");
 					}
 					else{
+						userType = "N, " + newusername;
+						try{
+							socket = new Socket("localhost", 2043);
+							out = new PrintWriter(socket.getOutputStream(), true);
+							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						}
+						catch(IOException e){
+						}
 						uservalid = true;
 					}
 				}
