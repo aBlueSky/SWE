@@ -149,7 +149,7 @@ public class GUI extends JFrame {
 		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 102));
+		panel.setBackground(new Color(102, 187, 102));
 		
 		JButton btnRoll = new JButton("Roll");
 		btnRoll.addActionListener(new ActionListener() {
@@ -190,7 +190,7 @@ public class GUI extends JFrame {
 		
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 102));
+		panel_1.setBackground(new Color(102, 187, 102));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
