@@ -56,13 +56,25 @@ public class GUI extends JFrame {
 					else{
 						userType = "R, " + username;
 						try{
-						socket = new Socket("localhost", 2043);
-						out = new PrintWriter(socket.getOutputStream(), true);
-						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+							socket = new Socket("localhost", 2043);
+							out = new PrintWriter(socket.getOutputStream(), true);
+							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						boolean done = false;
+						Scanner scan = new Scanner(in);
+						String message = scan.nextLine();
+						while(!done){
+							if(message == "err,Unknown User Name"){
+								username = JOptionPane.showInputDialog("Unknown Username. Please try again");
+							}
+							else{
+								done = true;
+							}
 						}
-						catch(IOException e){
-							System.err.println("Could not connect socket: " + e.getMessage());
-						}
+						scan.close();
+					}
+					catch(IOException e){
+						System.err.println("Could not connect socket: " + e.getMessage());
+					}
 						uservalid = true;
 					}
 				}
@@ -89,6 +101,18 @@ public class GUI extends JFrame {
 							socket = new Socket("localhost", 2043);
 							out = new PrintWriter(socket.getOutputStream(), true);
 							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+							boolean done = false;
+							Scanner scan = new Scanner(in);
+							String message = scan.nextLine();
+							while(!done){
+								if(message == "err,Duplicate User Name"){
+									newusername = JOptionPane.showInputDialog("Username already taken. Please try again");
+								}
+								else{
+									done = true;
+								}
+							}
+							scan.close();
 						}
 						catch(IOException e){
 							System.err.println("Could not connect socket: " + e.getMessage());
