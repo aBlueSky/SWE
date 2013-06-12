@@ -193,8 +193,7 @@ public class GUI extends JFrame implements ActionListener{
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 187, 102));
-<<<<<<< HEAD
-		JButton die1 = new JButton();
+
 		
 		btnRoll.addActionListener(this);
 		btnRoll.setBackground(new Color(255, 127, 80));
@@ -211,47 +210,7 @@ public class GUI extends JFrame implements ActionListener{
 		btnGo.addActionListener(this);
 		btnGo.setBackground(new Color(255, 127, 80));
 		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
-=======
-
-		JButton btnRoll = new JButton("Roll");
-		btnRoll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("roll");
-			}
-		});
-		btnRoll.setBackground(new Color(255, 127, 80));
-		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
-
-		JButton btnBust = new JButton("Crap");
-		btnBust.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("crap");
-			}
-		});
-		btnBust.setBackground(new Color(255, 127, 80));
-		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
-
-		JButton btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				output.println("stop");
-			}
-		});
-		btnStop.setBackground(new Color(255, 99, 71));
-		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
-
-		JButton btnGo = new JButton("Go");
-		btnGo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				output.println("go");
-			}
-		});
-		btnGo.setBackground(new Color(255, 127, 80));
-		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
-		JButton button_valid = new JButton(" ");
-
->>>>>>> attempted change to GUI connect, no hope?
-
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(102, 187, 102));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
