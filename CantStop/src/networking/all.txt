@@ -1,5 +1,10 @@
 package networking;
-
+/**
+ * Board.java
+ * Board for a player.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Board {
 	static int c = 11;
 	static int r = 9;
@@ -8,6 +13,9 @@ public class Board {
 	Marker N;
 	Marker T;
 	Marker m;
+	/**Constructor for the board for player of playerNumber.
+	 * @param playerNum
+	 */
 	public Board(int playerNum){
 		V = new Marker(false, playerNum, true);//vacant
 		N = new Marker(false, 0, true);//No mans land, not part of grid
@@ -15,6 +23,9 @@ public class Board {
 		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
+	/**Remove all temporary markers and replace them with vacant.
+	 * 
+	 */
 	public void clearTemps()
 	{
 		for(int i = 0; i<r;i++)
@@ -28,6 +39,9 @@ public class Board {
 			}
 		}
 	}//method
+	/**change all temporary markers to permanent
+	 * 
+	 */
 	public void tempsToPerms()
 	{
 		for(int i = 0; i<r;i++)
@@ -41,6 +55,9 @@ public class Board {
 			}
 		}
 	}//method
+	/**check to see if the game is won.
+	 * @return
+	 */
 	public boolean checkBoardForWin()
 	{
 		boolean result = false;
@@ -58,6 +75,9 @@ public class Board {
 		}
 		return result;
 	}//Should return true if the game has been won by the player who owns the board.
+	/**Find out how many temporary markers are on the grid.
+	 * @return
+	 */
 	public int checkForNumTemps()
 	{
 		int count=0;
@@ -73,6 +93,10 @@ public class Board {
 		}
 		return count;
 	}//return the number of temp markers found on the board.
+	/**check the column to see if there is a marker in the last spot in column num-2
+	 * @param num
+	 * @return
+	 */
 	public boolean checkColumn(int num)
 	{
 		boolean result=true;
@@ -80,7 +104,7 @@ public class Board {
 		{
 			try
 			{
-				if(grid[i+1][num-2]==N && (grid[i][num-2]==T || grid[i][num-2]==T))
+				if(grid[i+1][num-2]==N && (grid[i][num-2]==m || grid[i][num-2]==T))
 				{
 					result = false;
 				}
@@ -92,6 +116,9 @@ public class Board {
 		}
 		return result;
 	}/*return false if the column isn't valid.*/
+	/**Get a string thats formatted in a 2d grid that represents the board.
+	 * @return
+	 */
 	public String printBoard()
 	{
 		String board="";
@@ -122,6 +149,11 @@ public class Board {
 		}//outer for loop (r)
 		return board;
 	}//method
+	/**Create a board for a player with row length r and col length c
+	 * @param r
+	 * @param c
+	 * @return
+	 */
 	private Marker[][] createBoard(int r,int c){
 		grid = new Marker[r][c];
 		for(int i=0; i<1; i++){
@@ -214,18 +246,14 @@ public class Board {
 		}
 		return grid;
 	}//method
-
-	private boolean isVacant(int i, int j){
-		boolean vacant = false;
-		if(grid[i][j]==V){
-			vacant = true;
-		}
-		return vacant;
-	}
 	/*
 	 * Given a column number will return what the last available marker
 	 * spot is containing. If it is V then it is not closed, anything 
 	 * else and it should be a blocked column.
+	 */
+	/**Check to see if there is a marker in the final spot in the column j
+	 * @param j
+	 * @return
 	 */
 	public Marker isMarkerInFinalSpot(int j){
 		Marker fin=null;
@@ -244,6 +272,9 @@ public class Board {
 		}//for
 		return fin;
 	}
+	/**call the removeRepeatedPermanentMarkers(int j) so that it hits every column.
+	 * 
+	 */
 	public void removeRepeatedPermanentMarkers()
 	{
 		for(int i=2;i<13;i++)
@@ -251,6 +282,9 @@ public class Board {
 			removeRepeatedPermanentMarkers(i);
 		}
 	}
+	/**Remove all permanent markers from a column j except for the highest permanent marker.
+	 * @param j
+	 */
 	private void removeRepeatedPermanentMarkers(int j)
 	{
 		boolean foundFirstM = false;
@@ -272,13 +306,25 @@ public class Board {
 		}
 		System.out.println("All unnecessary M's should be removed for the number: " + j);//debug
 	}
+	/**place a temporary marker at position [i][j]
+	 * @param i
+	 * @param j
+	 */
 	public void placeTemp(int i, int j){
 			grid[i][j-2]=T;
 	}
+	/**Move a temp marker up spot amounts at position [i][j] 
+	 * @param i
+	 * @param j
+	 * @param spot
+	 */
 	public void moveTemp(int i, int j, int spot){
 		grid[i+spot][j]=T;
 		grid[i][j]=V;
 	}
+	/** Switch all temporary markers to permanent markers
+	 * 
+	 */
 	public void placePerma (){
 		for(int i=0; i<c; i++){
 			for(int j=0; j<r; j++){
@@ -288,9 +334,17 @@ public class Board {
 			}
 		}
 	}
+	/**Remove a marker at position [i][j]
+	 * @param i
+	 * @param j
+	 */
 	private void removeMarker(int i, int j){
 		grid[i][j]=V;
 	}
+	/**swap out all instances of look for with swap in the grid.
+	 * @param lookFor
+	 * @param swap
+	 */
 	public void swapOut(Marker lookFor, Marker swap)
 	{
 		for(int i=0;i<r;i++)
@@ -311,6 +365,12 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Client.java
+ * Create a client
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Client {
 	
 	private Socket socket;
@@ -321,6 +381,12 @@ public class Client {
 	private String password;
 	private String username;
 	
+	/**Creates a client.
+	 * @param userType1
+	 * @param userName1
+	 * @param password1
+	 * @param gui1
+	 */
 	Client(String userType1, String userName1, String password1, GUI gui1){
 		userType = userType1;
 		username = userName1; 
@@ -343,7 +409,11 @@ import java.awt.FlowLayout;
 
 
 public class endGame extends JFrame {
-
+	/**
+	 * EndGame.java
+	 * @author Kelsey LaPointe
+	 * @author Matthew Koval
+	 */
 	private JPanel contentPane;
 
 	/**
@@ -384,11 +454,19 @@ public class endGame extends JFrame {
 package networking;
 import java.net.*;
 import java.io.*;
-
+/**
+ * GameManager.java
+ * Run the server.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class GameManager 
 {
 	static int[] dice = new int[4];
 
+	/**Runs the Server
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		Server server = new Server();
@@ -469,6 +547,9 @@ public class GameManager
 		server.close();
 	}//Main method
 
+	/**Create 4 dice rolls to be stored in an array
+	 * @return
+	 */
 	private static int[] roll(){
 		for(int i=0; i<dice.length; i++){
 			dice[i]= (int) (6*Math.random()+1);
@@ -476,6 +557,10 @@ public class GameManager
 
 		return dice;
 	}//method - roll
+	/**Concatenate the dice rolls into a string delimited by ","
+	 * @param diceArray
+	 * @return
+	 */
 	private static String concatRoll(int[] diceArray)
 	{
 		String results="";
@@ -490,6 +575,11 @@ public class GameManager
 		return results;
 	}//method - concat roll
 
+	/**check to see if the combination picked is between 2 and 12
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	private static boolean checkRoll(int a, int b){
 		boolean valid = false;
 		if((2<=a)&&(12>=a)){
@@ -505,6 +595,12 @@ public class GameManager
 	 * given board and returns true if at least one temp marker is placed
 	 * and there is a possibility that it was chosen by the user with a 
 	 * valid roll.
+	 */
+	/**check to see if the 2 combinations are possible from the dice rolls
+	 * @param dice
+	 * @param a
+	 * @param b
+	 * @return
 	 */
 	private static boolean checkCombinations(int[] dice, int a, int b)
 	{
@@ -546,11 +642,11 @@ public class GameManager
 		System.out.println("Both valid: "+result);
 		return result;
 	}//method - check combinations.
-	public boolean checkBusted(Board board)
-	{
-		boolean result = false;
-		return result;
-	}//Return true if the player busted.
+	/**Check to see if the game has been won
+	 * @param board1
+	 * @param board2
+	 * @return
+	 */
 	private static boolean isGameWon(Board board1, Board board2){
 		boolean gameWon = false;
 		int counter = 0;
@@ -573,6 +669,14 @@ public class GameManager
 		}
 		return gameWon;
 	}//method - isGameWon
+	/**a players turn
+	 * @param reader read from the player
+	 * @param writer write to the player who's turn it is
+	 * @param otherPlayer write to the player who's turn it is not
+	 * @param playerNum current player number
+	 * @param boardPrimary board for the current player
+	 * @param boardSecondary board for the other player
+	 */
 	private static void playerTurn(BufferedReader reader, PrintWriter writer,
 			PrintWriter otherPlayer, int playerNum, Board boardPrimary,
 			Board boardSecondary)
@@ -829,6 +933,12 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * GUI.java
+ * Creates a login prompt series and then creates a client application.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class GUI extends JFrame implements ActionListener{
 	static Socket playerSocket;
 	PrintWriter output = null;
@@ -846,8 +956,8 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton btnGo = new JButton("Go");
 
 
-	/**
-	 * Launch the application.
+	/**prompt for the user type
+	 * @return
 	 */
 	private static String getUserType()
 	{
@@ -867,6 +977,10 @@ public class GUI extends JFrame implements ActionListener{
 		}
 		return answer;
 	}
+	/** prompt for the user name
+	 * @param prompt
+	 * @return
+	 */
 	private static String getUserName(String prompt)
 	{
 		String userName=JOptionPane.showInputDialog(prompt);
@@ -876,11 +990,18 @@ public class GUI extends JFrame implements ActionListener{
 		}
 		return userName;
 	}
+	/** prompt for the password
+	 * @param prompt
+	 * @return
+	 */
 	private static String getPassword(String prompt)
 	{
 		String password=JOptionPane.showInputDialog(prompt);
 		return password;
 	}
+	/**Run GUI
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		boolean valid = false;
 		boolean userValid = false;
@@ -980,11 +1101,17 @@ public class GUI extends JFrame implements ActionListener{
 			}
 		});
 	}
+	/**
+	 * @return
+	 */
 	public Socket getSocket(){
 		return playerSocket;
 	}
 	/**
 	 * Create the frame.
+	 */
+	/**
+	 * 
 	 */
 	public GUI() {
 		try{
@@ -1363,25 +1490,45 @@ public class GUI extends JFrame implements ActionListener{
 	}
 }
 package networking;
+/**
+ * Marker.java
+ * Marker for a board.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Marker {
 	boolean permanent;
 	int playerNum;
 	boolean vacant;
 	
+	/** create a marker
+	 * @param perma
+	 * @param playNum
+	 * @param issVacant
+	 */
 	public Marker(boolean perma, int playNum, boolean issVacant){
 		permanent = perma;
 		playerNum = playNum;
 		vacant = issVacant;
 	}
 	
+	/**get if the marker is permanent
+	 * @return
+	 */
 	private boolean getPermanent(){
 		return permanent;
 	}
 	
+	/**get the player number for the marker
+	 * @return
+	 */
 	private int getPlayerNumber(){
 		return playerNum;
 	}
 	
+	/**
+	 * Flip the vacancy value
+	 */
 	private void setVacancy(){
 		if(vacant == true){
 			vacant = false;
@@ -1391,6 +1538,9 @@ public class Marker {
 		}
 	}
 	
+	/**Return vacancy
+	 * @return
+	 */
 	private boolean isVacant(){
 		return vacant;
 	}
@@ -1398,19 +1548,33 @@ public class Marker {
 }
 package networking;
 
+/**
+ * Player.java
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Player {
 	String name;
 	int score;
 	
+	/**create a player
+	 * @param plaNam
+	 */
 	public Player(String plaNam){
 		name = plaNam;
 		score = 0;
 	}
 	
+	/**Return the players score
+	 * @return
+	 */
 	private int getScore(){
 		return score;
 	}
 	
+	/** set the players score
+	 * @param newScore
+	 */
 	private void setScore(int newScore){
 		score = newScore;
 	}
@@ -1421,6 +1585,12 @@ import java.net.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Server.java
+ * Server methods.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Server {
 	//Instance variables
 	ServerSocket s = null;
@@ -1434,6 +1604,9 @@ public class Server {
 	Scanner loginSc = null;
 
 	//Initialize Server and ServerSocket
+	/**
+	 * create a server with the port number
+	 */
 	public Server()	{
 		portNumber=2043;
 		try
@@ -1464,6 +1637,10 @@ public class Server {
 			System.exit(-1);
 		}//catch
 	}//Method
+	/**check to see if user already exists in the records
+	 * @param requested
+	 * @return
+	 */
 	private boolean checkExistingUser(String requested)
 	{
 		boolean existing=false;
@@ -1517,6 +1694,11 @@ public class Server {
 		}
 		return existing;
 	}//Method - checkExistingUser
+	/**check to see if user u has password matching p
+	 * @param u
+	 * @param p
+	 * @return
+	 */
 	private boolean checkPasswordWithName(String u, String p)
 	{
 		boolean accept = false;
@@ -1564,6 +1746,9 @@ public class Server {
 		}
 		return accept;
 	}
+	/**add a new user with the information delimited by a ","
+	 * @param write
+	 */
 	private void addNewUser(String write)
 	{
 		try
@@ -1583,6 +1768,9 @@ public class Server {
 			System.exit(-1);
 		}
 	}
+	/**create the file io for loginInfo
+	 * 
+	 */
 	public void initFileIO()
 	{
 		try
@@ -1598,11 +1786,18 @@ public class Server {
 			System.exit(-1);
 		}
 	}//method
+	/**handle the login attempt
+	 * @return
+	 */
 	public boolean handleLogin()
 	{
 		boolean result = false;
 		return result;
 	}
+	/**connect a player to the server
+	 * @param player
+	 * @return
+	 */
 	public Socket connect(Socket player)
 	{
 		boolean userNameCheck;
@@ -1701,6 +1896,10 @@ public class Server {
 				out.println(++numConnected);
 		return player;
 	}//method
+	/**connect a bufferedreader to the socket and return it
+	 * @param socket
+	 * @return
+	 */
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
@@ -1712,6 +1911,10 @@ public class Server {
 		}//Catch
 		return in;
 	}//Method
+	/**connect a writer to the socket and return it
+	 * @param socket
+	 * @return
+	 */
 	public PrintWriter connectWriter(Socket socket)
 	{
 		try{
@@ -1725,6 +1928,9 @@ public class Server {
 		return out;
 	}//method
 	//close the connections
+	/**close the socket
+	 * @param socket
+	 */
 	public void close(Socket socket)
 	{
 		try
@@ -1739,6 +1945,9 @@ public class Server {
 		}
 
 	}
+	/**
+	 * close the server
+	 */
 	public void close()
 	{
 		try {
