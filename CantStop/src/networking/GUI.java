@@ -30,6 +30,12 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * GUI.java
+ * Creates a login prompt series and then creates a client application.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class GUI extends JFrame implements ActionListener{
 	static Socket playerSocket;
 	PrintWriter output = null;
@@ -47,8 +53,8 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton btnGo = new JButton("Go");
 
 
-	/**
-	 * Launch the application.
+	/**prompt for the user type
+	 * @return
 	 */
 	private static String getUserType()
 	{
@@ -68,6 +74,10 @@ public class GUI extends JFrame implements ActionListener{
 		}
 		return answer;
 	}
+	/** prompt for the user name
+	 * @param prompt
+	 * @return
+	 */
 	private static String getUserName(String prompt)
 	{
 		String userName=JOptionPane.showInputDialog(prompt);
@@ -77,11 +87,18 @@ public class GUI extends JFrame implements ActionListener{
 		}
 		return userName;
 	}
+	/** prompt for the password
+	 * @param prompt
+	 * @return
+	 */
 	private static String getPassword(String prompt)
 	{
 		String password=JOptionPane.showInputDialog(prompt);
 		return password;
 	}
+	/**Run GUI
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		boolean valid = false;
 		boolean userValid = false;
@@ -181,11 +198,17 @@ public class GUI extends JFrame implements ActionListener{
 			}
 		});
 	}
+	/**
+	 * @return
+	 */
 	public Socket getSocket(){
 		return playerSocket;
 	}
 	/**
 	 * Create the frame.
+	 */
+	/**
+	 * 
 	 */
 	public GUI() {
 		try{

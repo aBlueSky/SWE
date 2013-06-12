@@ -1,5 +1,10 @@
 package networking;
-
+/**
+ * Board.java
+ * Board for a player.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Board {
 	static int c = 11;
 	static int r = 9;
@@ -8,6 +13,9 @@ public class Board {
 	Marker N;
 	Marker T;
 	Marker m;
+	/**Constructor for the board for player of playerNumber.
+	 * @param playerNum
+	 */
 	public Board(int playerNum){
 		V = new Marker(false, playerNum, true);//vacant
 		N = new Marker(false, 0, true);//No mans land, not part of grid
@@ -15,6 +23,9 @@ public class Board {
 		m = new Marker(true, playerNum, false);
 		grid=createBoard(r,c);
 	}
+	/**Remove all temporary markers and replace them with vacant.
+	 * 
+	 */
 	public void clearTemps()
 	{
 		for(int i = 0; i<r;i++)
@@ -28,6 +39,9 @@ public class Board {
 			}
 		}
 	}//method
+	/**change all temporary markers to permanent
+	 * 
+	 */
 	public void tempsToPerms()
 	{
 		for(int i = 0; i<r;i++)
@@ -41,6 +55,9 @@ public class Board {
 			}
 		}
 	}//method
+	/**check to see if the game is won.
+	 * @return
+	 */
 	public boolean checkBoardForWin()
 	{
 		boolean result = false;
@@ -58,6 +75,9 @@ public class Board {
 		}
 		return result;
 	}//Should return true if the game has been won by the player who owns the board.
+	/**Find out how many temporary markers are on the grid.
+	 * @return
+	 */
 	public int checkForNumTemps()
 	{
 		int count=0;
@@ -73,6 +93,10 @@ public class Board {
 		}
 		return count;
 	}//return the number of temp markers found on the board.
+	/**check the column to see if there is a marker in the last spot in column num-2
+	 * @param num
+	 * @return
+	 */
 	public boolean checkColumn(int num)
 	{
 		boolean result=true;
@@ -80,7 +104,7 @@ public class Board {
 		{
 			try
 			{
-				if(grid[i+1][num-2]==N && (grid[i][num-2]==T || grid[i][num-2]==T))
+				if(grid[i+1][num-2]==N && (grid[i][num-2]==m || grid[i][num-2]==T))
 				{
 					result = false;
 				}
@@ -92,6 +116,9 @@ public class Board {
 		}
 		return result;
 	}/*return false if the column isn't valid.*/
+	/**Get a string thats formatted in a 2d grid that represents the board.
+	 * @return
+	 */
 	public String printBoard()
 	{
 		String board="";
@@ -122,6 +149,11 @@ public class Board {
 		}//outer for loop (r)
 		return board;
 	}//method
+	/**Create a board for a player with row length r and col length c
+	 * @param r
+	 * @param c
+	 * @return
+	 */
 	private Marker[][] createBoard(int r,int c){
 		grid = new Marker[r][c];
 		for(int i=0; i<1; i++){
@@ -214,18 +246,14 @@ public class Board {
 		}
 		return grid;
 	}//method
-
-	private boolean isVacant(int i, int j){
-		boolean vacant = false;
-		if(grid[i][j]==V){
-			vacant = true;
-		}
-		return vacant;
-	}
 	/*
 	 * Given a column number will return what the last available marker
 	 * spot is containing. If it is V then it is not closed, anything 
 	 * else and it should be a blocked column.
+	 */
+	/**Check to see if there is a marker in the final spot in the column j
+	 * @param j
+	 * @return
 	 */
 	public Marker isMarkerInFinalSpot(int j){
 		Marker fin=null;
@@ -244,6 +272,9 @@ public class Board {
 		}//for
 		return fin;
 	}
+	/**call the removeRepeatedPermanentMarkers(int j) so that it hits every column.
+	 * 
+	 */
 	public void removeRepeatedPermanentMarkers()
 	{
 		for(int i=2;i<13;i++)
@@ -251,6 +282,9 @@ public class Board {
 			removeRepeatedPermanentMarkers(i);
 		}
 	}
+	/**Remove all permanent markers from a column j except for the highest permanent marker.
+	 * @param j
+	 */
 	private void removeRepeatedPermanentMarkers(int j)
 	{
 		boolean foundFirstM = false;
@@ -272,13 +306,25 @@ public class Board {
 		}
 		System.out.println("All unnecessary M's should be removed for the number: " + j);//debug
 	}
+	/**place a temporary marker at position [i][j]
+	 * @param i
+	 * @param j
+	 */
 	public void placeTemp(int i, int j){
 			grid[i][j-2]=T;
 	}
+	/**Move a temp marker up spot amounts at position [i][j] 
+	 * @param i
+	 * @param j
+	 * @param spot
+	 */
 	public void moveTemp(int i, int j, int spot){
 		grid[i+spot][j]=T;
 		grid[i][j]=V;
 	}
+	/** Switch all temporary markers to permanent markers
+	 * 
+	 */
 	public void placePerma (){
 		for(int i=0; i<c; i++){
 			for(int j=0; j<r; j++){
@@ -288,9 +334,17 @@ public class Board {
 			}
 		}
 	}
+	/**Remove a marker at position [i][j]
+	 * @param i
+	 * @param j
+	 */
 	private void removeMarker(int i, int j){
 		grid[i][j]=V;
 	}
+	/**swap out all instances of look for with swap in the grid.
+	 * @param lookFor
+	 * @param swap
+	 */
 	public void swapOut(Marker lookFor, Marker swap)
 	{
 		for(int i=0;i<r;i++)

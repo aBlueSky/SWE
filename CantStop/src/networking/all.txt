@@ -1,0 +1,1754 @@
+package networking;
+
+public class Board {
+	static int c = 11;
+	static int r = 9;
+	Marker grid[][];
+	Marker V;
+	Marker N;
+	Marker T;
+	Marker m;
+	public Board(int playerNum){
+		V = new Marker(false, playerNum, true);//vacant
+		N = new Marker(false, 0, true);//No mans land, not part of grid
+		T = new Marker(false, playerNum, false);//Temporary Markers
+		m = new Marker(true, playerNum, false);
+		grid=createBoard(r,c);
+	}
+	public void clearTemps()
+	{
+		for(int i = 0; i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==T)
+				{
+					grid[i][j]=V;
+				}
+			}
+		}
+	}//method
+	public void tempsToPerms()
+	{
+		for(int i = 0; i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==T)
+				{
+					grid[i][j]=m;
+				}
+			}
+		}
+	}//method
+	public boolean checkBoardForWin()
+	{
+		boolean result = false;
+		int count=0;
+		for(int i=0;i<c;i++)
+		{
+			if(!checkColumn(i+2))
+			{
+				count++;
+			}
+		}
+		if(count>2)
+		{
+			result=true;
+		}
+		return result;
+	}//Should return true if the game has been won by the player who owns the board.
+	public int checkForNumTemps()
+	{
+		int count=0;
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==T)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}//return the number of temp markers found on the board.
+	public boolean checkColumn(int num)
+	{
+		boolean result=true;
+		for(int i=0;i<r;i++)
+		{
+			try
+			{
+				if(grid[i+1][num-2]==N && (grid[i][num-2]==T || grid[i][num-2]==T))
+				{
+					result = false;
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				System.err.println("Traversed to far."+e.getMessage());
+			}
+		}
+		return result;
+	}/*return false if the column isn't valid.*/
+	public String printBoard()
+	{
+		String board="";
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				String temp;
+				if(grid[i][j]==T)
+				{
+					temp="T";/*T for Temporary*/
+				}//if
+				else if(grid[i][j]==N)
+				{/*Not Possible spot*/
+					temp=("N");
+				}//else if
+				else if(grid[i][j]==m)
+				{/*Not Possible spot*/
+					temp=("M");
+				}//else if
+				else/*(grid[i][j].vacant==true)*/
+				{
+					temp="V";/*V for vacant */
+				}//if
+				board=board+" "+temp;
+			}//inner for loop (c)
+			board=board+"\n";
+		}//outer for loop (r)
+		return board;
+	}//method
+	private Marker[][] createBoard(int r,int c){
+		grid = new Marker[r][c];
+		for(int i=0; i<1; i++){
+			for(int j=0; j<3; j++){
+				grid[j][i]= V;
+			}
+			for(int j=3; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=1; i<2; i++){
+			for(int j=0; j<4; j++){
+				grid[j][i]= V;
+			}
+			for(int j=4; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=2; i<3; i++){
+			for(int j=0; j<5; j++){
+				grid[j][i]= V;
+			}
+			for(int j=5; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=3; i<4; i++){
+			for(int j=0; j<6; j++){
+				grid[j][i]= V;
+			}
+			for(int j=6; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=4; i<5; i++){
+			for(int j=0; j<7; j++){
+				grid[j][i]= V;
+			}
+			for(int j=7; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=5; i<6; i++){
+			for(int j=0; j<8; j++){
+				grid[j][i]= V;
+			}
+			for(int j=8; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=6; i<7; i++){
+			for(int j=0; j<7; j++){
+				grid[j][i]= V;
+			}
+			for(int j=7; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=7; i<8; i++){
+			for(int j=0; j<6; j++){
+				grid[j][i]= V;
+			}
+			for(int j=6; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=8; i<9; i++){
+			for(int j=0; j<5; j++){
+				grid[j][i]= V;
+			}
+			for(int j=5; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=9; i<10; i++){
+			for(int j=0; j<4; j++){
+				grid[j][i]= V;
+			}
+			for(int j=4; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		for(int i=10; i<11; i++){
+			for(int j=0; j<3; j++){
+				grid[j][i]= V;
+			}
+			for(int j=3; j<9; j++){
+				grid[j][i]= N;
+			}
+		}
+		return grid;
+	}//method
+
+	private boolean isVacant(int i, int j){
+		boolean vacant = false;
+		if(grid[i][j]==V){
+			vacant = true;
+		}
+		return vacant;
+	}
+	/*
+	 * Given a column number will return what the last available marker
+	 * spot is containing. If it is V then it is not closed, anything 
+	 * else and it should be a blocked column.
+	 */
+	public Marker isMarkerInFinalSpot(int j){
+		Marker fin=null;
+		for(int i=0;i<r;i++)
+		{
+			try
+			{
+				if(grid[i][j]==N&&grid[i-1][j]!=N){
+					fin = grid[i][j];
+				}//if
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				System.err.println("Traversed to far.");
+			}
+		}//for
+		return fin;
+	}
+	public void removeRepeatedPermanentMarkers()
+	{
+		for(int i=2;i<13;i++)
+		{
+			removeRepeatedPermanentMarkers(i);
+		}
+	}
+	private void removeRepeatedPermanentMarkers(int j)
+	{
+		boolean foundFirstM = false;
+		for(int i = (r-1);i>=0;i--)
+		{
+			if(grid[i][j-2]==m)
+			{
+				if(foundFirstM)
+				{
+					System.out.println("Found an M at position: "+(i+1));//debug
+					grid[i][j-2]=V;
+				}
+				else
+				{
+					System.out.println("Found the highest M at position: "+(i+1));//debug
+					foundFirstM=true;
+				}
+			}
+		}
+		System.out.println("All unnecessary M's should be removed for the number: " + j);//debug
+	}
+	public void placeTemp(int i, int j){
+			grid[i][j-2]=T;
+	}
+	public void moveTemp(int i, int j, int spot){
+		grid[i+spot][j]=T;
+		grid[i][j]=V;
+	}
+	public void placePerma (){
+		for(int i=0; i<c; i++){
+			for(int j=0; j<r; j++){
+				if(grid[j][i]==T){
+					grid[j][i]=m;
+				}
+			}
+		}
+	}
+	private void removeMarker(int i, int j){
+		grid[i][j]=V;
+	}
+	public void swapOut(Marker lookFor, Marker swap)
+	{
+		for(int i=0;i<r;i++)
+		{
+			for(int j=0;j<c;j++)
+			{
+				if(grid[i][j]==(lookFor));
+				{
+					grid[i][j]=swap;
+				}//if
+			}//inner for
+		}//outer for
+	}//method
+}
+package networking;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class Client {
+	
+	private Socket socket;
+	
+	private GUI gui;
+	
+	private String userType;
+	private String password;
+	private String username;
+	
+	Client(String userType1, String userName1, String password1, GUI gui1){
+		userType = userType1;
+		username = userName1; 
+		password = password1;
+		gui = gui1;
+	}
+
+}
+package networking;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.FlowLayout;
+
+
+public class endGame extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					endGame frame = new endGame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public endGame() {
+		setTitle("Can't Stop!");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 575, 449);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 102));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblCongratulations = new JLabel("CONGRATULATIONS!");
+		lblCongratulations.setFont(new Font("Orator Std", Font.PLAIN, 23));
+		contentPane.add(lblCongratulations);
+	}
+
+}
+package networking;
+import java.net.*;
+import java.io.*;
+
+public class GameManager 
+{
+	static int[] dice = new int[4];
+
+	public static void main(String[] args)
+	{
+		Server server = new Server();
+		Socket player1 = null;
+		Socket player2 = null;
+		Board board1 = new Board(1);
+		Board board2 = new Board(2);
+
+		//player connections
+		player1=server.connect(player1);
+		System.out.println("Closed: " +player1.isClosed());//debug
+		System.out.println("Player set up");//debug
+		//Create IO for Player 1
+		BufferedReader p1Reader = server.connectReader(player1);
+		PrintWriter p1Writer = server.connectWriter(player1);
+
+		player2=server.connect(player2);
+		System.out.println("Closed: " +player2.isClosed());//debug
+		System.out.println("Player set up");//debug
+		//Create IO for Player 2
+		BufferedReader p2Reader = server.connectReader(player2);
+		PrintWriter p2Writer = server.connectWriter(player2);
+
+		//Time to play the game
+		boolean playing = true;/*A boolean value that will
+		 						be true as long as the game
+		 						is running and needs to continue
+		 						running*/
+		
+		while(playing)
+		{
+			playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);
+			/*player 1's turn, giving both P1 IO ,
+							P2 Writer and P1's player number and the board for the players*/
+			System.out.println(board1.printBoard());//Print board for P1
+			playing=!isGameWon(board1, board2);//check win condition
+			if(playing)
+			{//if turnA didn't win
+				p2Writer.println("go");//Tell next player to go.
+				playerTurn(p2Reader, p2Writer, p1Writer, 2, board2, board1);
+				/*player 2's turn, giving both P2 IO ,
+						P1 Writer and P2's player number and the board for the players*/
+				System.out.println(board2.printBoard());//Print board for P2
+				playing=!isGameWon(board1, board2);//check win condition
+				if(playing)
+				{
+					p1Writer.println("go");//Tell next player to go.
+				}//if - playing for turn switch.
+				else
+				{
+					p2Writer.println("you won");
+					p1Writer.println("you lost");
+				}//else -- P2 win
+			}//if - playing
+			else
+			{
+				p1Writer.println("you won");
+				p2Writer.println("you lost");
+			}//else -- P1 win
+		}//while - playing for turn A.
+		//Game is finished, close connections
+		try {
+			p1Reader.close();
+		}//try 
+		catch (IOException e) {
+			System.err.println("Unable to close reader: "
+					+ e.getMessage());
+		}//catch
+		p1Writer.close();
+		try {
+			p2Reader.close();
+		} //try - close reader.
+		catch (IOException e) {
+			System.err.println("Unable to close reader: "
+					+ e.getMessage());
+		}//catch - close reader.
+		p2Writer.close();
+		server.close();
+	}//Main method
+
+	private static int[] roll(){
+		for(int i=0; i<dice.length; i++){
+			dice[i]= (int) (6*Math.random()+1);
+		}
+
+		return dice;
+	}//method - roll
+	private static String concatRoll(int[] diceArray)
+	{
+		String results="";
+		for(int i=0;i<diceArray.length;i++)
+		{
+			results=results+diceArray[i];
+			if(i<(diceArray.length-1))
+			{
+				results=results+",";
+			}//if
+		}//for
+		return results;
+	}//method - concat roll
+
+	private static boolean checkRoll(int a, int b){
+		boolean valid = false;
+		if((2<=a)&&(12>=a)){
+			valid = true;
+		}
+
+		if((2<=b)&&(12>=b)){
+			valid = true;
+		}
+		return valid;
+	}//method - check roll
+	/* Checks to see if there are temporary markers already placed on the 
+	 * given board and returns true if at least one temp marker is placed
+	 * and there is a possibility that it was chosen by the user with a 
+	 * valid roll.
+	 */
+	private static boolean checkCombinations(int[] dice, int a, int b)
+	{
+		boolean result = false;
+		boolean aPrime = false;
+		boolean bPrime = false;
+		int possibilities[]=new int[12];
+		int spot=0;
+		for(int i=0;i<dice.length;i++)
+		{
+			for(int j=0;j<dice.length;j++)
+			{
+				if(i!=j)
+				{
+					possibilities[spot++]=(dice[i]+dice[j]);
+				}
+			}
+		}//set up combination possibilities.
+		for(int i=0;i<possibilities.length;i++)
+		{
+			if(a==possibilities[i])
+			{
+				aPrime=true;
+				possibilities[i]=0;
+			}
+			if(b==possibilities[i])
+			{
+				bPrime=true;
+				possibilities[i]=0;
+			}
+		}/*if a or b matches a possible combination set the
+		 boolean value to true for that variable*/
+		if(aPrime && bPrime)
+		{
+			result=true;
+		}/*if both are true then the two desired choices are valid*/
+		System.out.println("aPrime: "+aPrime);
+		System.out.println("bPrime: "+bPrime);
+		System.out.println("Both valid: "+result);
+		return result;
+	}//method - check combinations.
+	public boolean checkBusted(Board board)
+	{
+		boolean result = false;
+		return result;
+	}//Return true if the player busted.
+	private static boolean isGameWon(Board board1, Board board2){
+		boolean gameWon = false;
+		int counter = 0;
+		int counter2 = 0;
+		for(int c=0; c<11; c++){
+			for(int r=0; r<9; r++){
+				if(board1.isMarkerInFinalSpot(c)== board1.m){
+					counter++;
+				}
+				else if(board1.isMarkerInFinalSpot(c)== board2.m){
+					counter2++;
+				}
+			}
+		}
+		if(counter == 3){
+			gameWon = true;
+		}
+		else if(counter2 == 3){
+			gameWon = true;
+		}
+		return gameWon;
+	}//method - isGameWon
+	private static void playerTurn(BufferedReader reader, PrintWriter writer,
+			PrintWriter otherPlayer, int playerNum, Board boardPrimary,
+			Board boardSecondary)
+	{/*
+	 * Return true if the turn is done for the active player.
+	 */
+		boolean done=false;/*Marks whether the player's turn is done.*/
+		System.out.println(playerNum + ":\n"+boardPrimary.printBoard());//Print board for current player
+		try
+		{
+			int tempDice[]=new int[4];/*only stored during this player's
+			 							turn and until the next roll.*/
+			boolean freshRoll = false;
+			TURN: while (!done)
+			{
+				int wasAbleToPlaceATemp = 2;/*2 at the start;
+											1 if one was not able to be placed;
+											0 if neither were placed*/
+				String storedConcatRoll = "";
+				int turnDice[];
+				String line = reader.readLine();
+				if (line == null) 
+				{ 
+					done = false;
+				}//Assume turn is not done with empty input.
+				else if (line.trim().equals("stop")&&freshRoll==false) 
+				{//switch temp markers to PERMANENT 
+					boardPrimary.tempsToPerms();
+					boardPrimary.removeRepeatedPermanentMarkers();
+					done = true;
+				}//if - stop, can't stop if you've rolled.
+				else if (line.trim().equals("roll")&&freshRoll==false) 
+				{
+					freshRoll=true;
+					turnDice=roll();
+					tempDice=turnDice;
+					storedConcatRoll=concatRoll(turnDice);
+					writer.println(storedConcatRoll);
+					otherPlayer.println(storedConcatRoll);
+				}// else if, can only roll if you've not rolled without using the roll.
+				else if(line.equals("crap")&&freshRoll==true)
+				{
+					//Player crapped out need to add the remove temp markers method.
+					writer.println("ack");//ack means acknowledged
+					System.out.println("crap");//debug
+					boardPrimary.clearTemps();
+					System.out.println(boardPrimary.printBoard());
+					done=true;
+				}//else if - crap, can only crap out if you've got a fresh roll.
+				else if (line.matches("\\d*[,]{1}\\d*")&&freshRoll==true)
+				{/*player should have input 2 numbers delimited by a ','*/
+					/*input should be in form "a,b" where
+   					a and b are int's delimited by ',' */
+					String a=null;
+					String b=null;
+					System.out.println("Combination entered.");//debug
+					try
+					{
+						String[] list=line.split(",");
+						//try the 2 numbers a, b which should be in positions 0 and 1 of list.
+						a = list[0];	
+						b = list[1];
+						System.out.println("A: "+a+"; B: "+b);//debug
+						int num1 = (int)Integer.parseInt(a);
+						int num2 = (int)Integer.parseInt(b);
+						System.out.println("A: "+num1+"; B: "+num2);//debug
+						System.out.println("CheckRoll and CheckCombination about to be called.");
+
+						if (checkRoll(num1,num2) && checkCombinations(tempDice, num1, num2)
+								/*&&!checkBusted(boardPrimary)
+  								&&!checkBusted(boardSecondary)*/)
+						{/*removed check busted until further notice in this condition on the if*/
+							//Player combination is valid as far as 2<=x<=12
+							//add or increment marker positions
+							System.out.println("Valid roll and choice.");//debug
+							writer.println("ack");//acknowledge valid choice
+							otherPlayer.println(line);//echo to other player
+							int loc1=num1;
+							int loc2=num2;
+							System.out.println("First Number");//debug
+							boolean tempExistsAlready=false;
+							boolean found=false;
+							for(int i=0;i<Board.r;i++)
+							{
+								if(boardPrimary.grid[i][num1-2]==boardPrimary.T)
+								{
+									loc1=i;
+									tempExistsAlready=true;
+									found = true;
+								}//if
+								if(boardPrimary.grid[i][num1-2]==boardPrimary.m)
+								{
+									loc1=i;
+									found = true;
+								}//if
+							}//for
+							if(found)
+							{
+								if(tempExistsAlready)
+								{
+									System.out.println("-Temporary Marker Exists Already.");//debug
+									boardPrimary.moveTemp(loc1,num1-2,1);
+								}//Temporary Marker exists in column.
+								else
+								{
+									System.out.println("-Permanent Marker Exists Already.");//debug
+									if (boardPrimary.checkForNumTemps()<3) {
+										boardPrimary.placeTemp(loc1 + 1, num1);
+									}
+									else
+									{
+										//bust
+										System.out.println("Bust");//debug
+										wasAbleToPlaceATemp--;
+										System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+									}
+								}//Found but no temp exists.
+							}//if - found
+							else
+							{
+								System.out.println("-No Marker Found.");//debug
+								if (boardPrimary.checkForNumTemps()<3) {
+									boardPrimary.placeTemp(0, num1);
+								}//allowed to not be able to place the second temp
+								else
+								{
+									//bust
+									System.out.println("Bust");//debug
+									wasAbleToPlaceATemp--;
+									System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+								}
+							}//Nothing found in column.
+							System.out.println("Second Number");//debug
+							found=false;
+							tempExistsAlready=false;
+							for(int i=0;i<Board.r;i++)
+							{
+								if(boardPrimary.grid[i][num2-2]==boardPrimary.T)
+								{
+									loc2=i;
+									tempExistsAlready=true;
+									found = true;
+								}//if
+								if(boardPrimary.grid[i][num2-2]==boardPrimary.m)
+								{
+									loc2=i;
+									found = true;
+								}//if
+							}
+							if(found)
+							{
+								if(tempExistsAlready)
+								{
+									System.out.println("-Temporary Marker Exists Already.");//debug
+									boardPrimary.moveTemp(loc2,num2-2,1);
+								}//found and temp exists in column.
+								else
+								{
+									System.out.println("-Permanent Marker Exists Already.");//debug
+									if (boardPrimary.checkForNumTemps()<3) {
+										boardPrimary.placeTemp(loc2 + 1, num2);
+									}
+									else
+									{
+										//bust
+										System.out.println("Bust");//debug
+										wasAbleToPlaceATemp--;
+										System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+									}
+								}//Found but no temp exists.
+							}//if - found
+							else
+							{
+								System.out.println("-No Marker Found.");//debug
+								if (boardPrimary.checkForNumTemps()<3) {
+									boardPrimary.placeTemp(0, num2);
+								}
+								else
+								{
+									//bust
+									System.out.println("Bust");//debug
+									wasAbleToPlaceATemp--;
+									System.out.println("Chances Left: "+ wasAbleToPlaceATemp);//debug
+								}
+							}//Nothing found in column.
+						}//end of handling the numbers.
+						else
+						{
+							System.out.println("Crapping out");//debug
+							boardPrimary.clearTemps();
+							writer.println("ack");
+							done=true;
+						}//Player "crapped" out
+						if(wasAbleToPlaceATemp<1)
+						{
+							//Bust
+							System.out.println("Busted out.");//debug
+							boardPrimary.clearTemps();
+							writer.println("ack");
+							done=true;
+						}
+					}//try
+					catch(Exception e)
+					{
+						System.err.println("Error with turn function." + e.getMessage());
+					}//catch
+					System.out.println(boardPrimary.printBoard());//debug
+					freshRoll=false;
+				}//assume the 2 desired dice combinations were passed. Can't do this until you've rolled.
+				else
+				{
+					System.out.println("Unhandled line: "+line);//debug
+					writer.println("err");
+				}//unhandled yet, skip to next input.
+
+			}//while
+		}//try
+		catch (IOException e) 
+		{
+			done=true;
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
+	}//method
+}//classpackage networking;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+import javax.swing.SpringLayout;
+import net.miginfocom.swing.MigLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class GUI extends JFrame implements ActionListener{
+	static Socket playerSocket;
+	PrintWriter output = null;
+	BufferedReader input = null;
+	private JPanel contentPane;
+	private JButton btnRoll = new JButton("Roll");
+	private JButton die1 = new JButton();
+	private JButton die2 = new JButton();
+	private JButton die3 = new JButton();
+	private JButton die4 = new JButton();
+	private JButton die5 = new JButton();
+	private JButton die6 = new JButton();
+	private JButton btnBust = new JButton("Crap");
+	private JButton btnStop = new JButton("Stop");
+	private JButton btnGo = new JButton("Go");
+
+
+	/**
+	 * Launch the application.
+	 */
+	private static String getUserType()
+	{
+		String answer = JOptionPane.showInputDialog("Are you a new user? Please enter yes or no.");
+		while(!(answer.equals("no")|| answer.equals("No") || answer.equals("NO") ||
+				answer.equals("yes")|| answer.equals("Yes") || answer.equals("YES")))
+		{
+			answer = JOptionPane.showInputDialog("Invalid answer. Please type in yes or no.");
+		}
+		if(answer.equals(answer.equals("no")|| answer.equals("No") || answer.equals("NO")))
+		{
+			answer="R";
+		}
+		else
+		{
+			answer="N";
+		}
+		return answer;
+	}
+	private static String getUserName(String prompt)
+	{
+		String userName=JOptionPane.showInputDialog(prompt);
+		while(userName.length()==0)
+		{
+			userName=JOptionPane.showInputDialog("Invalid Length. Please enter your username");
+		}
+		return userName;
+	}
+	private static String getPassword(String prompt)
+	{
+		String password=JOptionPane.showInputDialog(prompt);
+		return password;
+	}
+	public static void main(String[] args) {
+		boolean valid = false;
+		boolean userValid = false;
+		boolean passwordValid = false;
+		String userType;
+		String name;
+		String loginString;
+		String password;
+		playerSocket=null;
+		PrintWriter out=null;
+		BufferedReader in=null;
+		Scanner scan=null;
+		try{
+			playerSocket = new Socket("localhost", 2043);
+			out = new PrintWriter(playerSocket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+			scan = new Scanner(in);
+		}
+		catch(IOException e){
+			System.err.println("Could not connect socket: " + e.getMessage());
+		}
+		W: while(!valid)
+		{
+
+			userType=getUserType();
+			name=getUserName("Enter your Username");
+			L: while(!userValid)
+			{
+				String temp="";
+				loginString=userType+","+name;
+				System.out.println(loginString);//debug
+				out.println(loginString);
+				try {
+					temp = in.readLine();
+					System.out.println(temp);//debug
+					if(temp.equals("ack"))
+					{
+						//accept and move on
+						userValid=true;
+						password="";
+						while(!passwordValid)
+						{
+							String temp2="";
+							password=getPassword("Enter your Password");
+							out.println(password);
+							System.out.println(password);//debug
+							try {
+								temp2 = in.readLine();
+								System.out.println("From Server: "+temp2);//debug
+								if(temp2.equals("ack"))
+								{
+									System.out.println("Should break");//debug
+									passwordValid=true;
+									System.out.println("ack");//debug
+									break L;
+								}
+								else if(temp2.equals("err,Invalid Password"))
+								{
+									password=getPassword("Enter your Password");
+									System.out.println("err,Invalid Password");//debug
+								}
+							} //try
+							catch (IOException e) {
+								System.err.println("Could not read from server: " + e.getMessage());
+							}//catch
+
+						}//while
+					}
+					else if(temp.equals("err,Duplicate User Name"))
+					{
+						userType=getUserType();
+						name=getUserName("User Name already taken, Please choose another.");
+					}
+					else if(temp.equals("err,Unknown User"))
+					{
+						userType=getUserType();
+						name=getUserName("User Name does not exist, Please choose another.");
+					}
+				} catch (IOException e) {
+					System.err.println("Could not read from server: " + e.getMessage());
+				}
+			}
+			if(userValid&&passwordValid)
+			{
+				valid=true;
+			}
+		}//while
+		System.out.println("Event Queue.invokeLater()");//debug
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI frame = new GUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public Socket getSocket(){
+		return playerSocket;
+	}
+	/**
+	 * Create the frame.
+	 */
+	public GUI() {
+		try{
+			output = new PrintWriter(playerSocket.getOutputStream(), true);
+			input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+		}
+		catch(IOException e){
+			System.err.println("Could not connect socket: " + e.getMessage());
+		}
+		setAlwaysOnTop(true);
+		setFont(new Font("Orator Std", Font.PLAIN, 12));
+		setTitle("Can't Stop");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 726, 599);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 153, 102));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+
+		JLabel lblCantStop = new JLabel("CAN'T STOP");
+		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
+
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(102, 187, 102));
+
+
+		btnRoll.addActionListener(this);
+		btnRoll.setBackground(new Color(255, 127, 80));
+		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
+
+		btnBust.addActionListener(this);
+		btnBust.setBackground(new Color(255, 127, 80));
+		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
+
+		btnStop.addActionListener(this);
+		btnStop.setBackground(new Color(255, 99, 71));
+		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
+
+		btnGo.addActionListener(this);
+		btnGo.setBackground(new Color(255, 127, 80));
+		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(102, 187, 102));
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGap(137)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 343, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(112, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(156)
+								.addComponent(btnStop)
+								.addGap(26)
+								.addComponent(btnGo)
+								.addGap(18)
+								.addComponent(btnBust)
+								.addGap(18)
+								.addComponent(btnRoll)
+								.addContainerGap(317, Short.MAX_VALUE))
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+										.addContainerGap(81, Short.MAX_VALUE)
+										.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 540, GroupLayout.PREFERRED_SIZE)
+										.addGap(79))
+										.addGroup(gl_contentPane.createSequentialGroup()
+												.addGap(244)
+												.addComponent(lblCantStop)
+												.addContainerGap(296, Short.MAX_VALUE))
+				);
+		gl_contentPane.setVerticalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(lblCantStop)
+						.addGap(18)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
+						.addGap(59)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnStop)
+								.addComponent(btnGo)
+								.addComponent(btnBust)
+								.addComponent(btnRoll))
+								.addGap(18)
+								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+								.addGap(25))
+				);
+		panel_1.setLayout(new MigLayout("", "[39px][39px][39px][39px][39px][39px][39px][39px][45px][45px][45px]", "[23px][23px][23px][23px][23px][23px][23px][]"));
+
+		JButton button_5 = new JButton("7");
+		panel_1.add(button_5, "cell 5 0,alignx left,aligny top");
+		button_5.setEnabled(false);
+
+		JButton button_4 = new JButton("6");
+		panel_1.add(button_4, "cell 4 1,alignx left,aligny top");
+		button_4.setEnabled(false);
+
+		JButton button_16 = new JButton("   ");
+		button_16.setEnabled(false);
+		panel_1.add(button_16, "cell 5 1");
+
+		JButton button_6 = new JButton("8");
+		panel_1.add(button_6, "cell 6 1,alignx left,aligny top");
+		button_6.setEnabled(false);
+
+		JButton button_3 = new JButton("5");
+		panel_1.add(button_3, "cell 3 2,alignx left,aligny top");
+		button_3.setEnabled(false);
+
+		JButton button_15 = new JButton("   ");
+		button_15.setEnabled(false);
+		panel_1.add(button_15, "cell 4 2");
+
+		JButton button_27 = new JButton("   ");
+		button_27.setEnabled(false);
+		panel_1.add(button_27, "cell 5 2");
+
+		JButton button_17 = new JButton("   ");
+		button_17.setEnabled(false);
+		panel_1.add(button_17, "cell 6 2");
+
+		JButton button_7 = new JButton("9");
+		panel_1.add(button_7, "cell 7 2,alignx left,aligny top");
+		button_7.setEnabled(false);
+
+		JButton button_2 = new JButton("4");
+		panel_1.add(button_2, "cell 2 3,alignx left,aligny bottom");
+		button_2.setEnabled(false);
+
+		JButton button_14 = new JButton("   ");
+		button_14.setEnabled(false);
+		panel_1.add(button_14, "cell 3 3");
+
+		JButton button_26 = new JButton("   ");
+		button_26.setEnabled(false);
+		panel_1.add(button_26, "cell 4 3");
+
+		JButton button_37 = new JButton("   ");
+		button_37.setEnabled(false);
+		panel_1.add(button_37, "cell 5 3");
+
+		JButton button_28 = new JButton("   ");
+		button_28.setEnabled(false);
+		panel_1.add(button_28, "cell 6 3");
+
+		JButton button_18 = new JButton("   ");
+		button_18.setEnabled(false);
+		panel_1.add(button_18, "cell 7 3");
+
+		JButton button_8 = new JButton("10");
+		panel_1.add(button_8, "cell 8 3,alignx left,aligny bottom");
+		button_8.setEnabled(false);
+
+		JButton button_1 = new JButton("3");
+		panel_1.add(button_1, "cell 1 4,alignx left,aligny top");
+		button_1.setEnabled(false);
+
+		JButton button_13 = new JButton("   ");
+		button_13.setEnabled(false);
+		panel_1.add(button_13, "cell 2 4");
+
+		JButton button_25 = new JButton("   ");
+		button_25.setEnabled(false);
+		panel_1.add(button_25, "cell 3 4");
+
+		JButton button_36 = new JButton("   ");
+		button_36.setEnabled(false);
+		panel_1.add(button_36, "cell 4 4");
+
+		JButton button_51 = new JButton("   ");
+		button_51.setEnabled(false);
+		panel_1.add(button_51, "cell 5 4");
+
+		JButton button_38 = new JButton("   ");
+		button_38.setEnabled(false);
+		panel_1.add(button_38, "cell 6 4");
+
+		JButton button_29 = new JButton("   ");
+		button_29.setEnabled(false);
+		panel_1.add(button_29, "cell 7 4");
+
+		JButton button_19 = new JButton("   ");
+		button_19.setEnabled(false);
+		panel_1.add(button_19, "cell 8 4");
+
+		JButton button_9 = new JButton("11");
+		panel_1.add(button_9, "cell 9 4,alignx right,aligny top");
+		button_9.setEnabled(false);
+
+		JButton button = new JButton("2");
+		panel_1.add(button, "cell 0 5,alignx left,aligny top");
+		button.setEnabled(false);
+
+		JButton button_12 = new JButton("   ");
+		button_12.setEnabled(false);
+		panel_1.add(button_12, "cell 1 5");
+
+		JButton button_24 = new JButton("   ");
+		button_24.setEnabled(false);
+		panel_1.add(button_24, "cell 2 5");
+
+		JButton button_35 = new JButton("   ");
+		button_35.setEnabled(false);
+		panel_1.add(button_35, "cell 3 5");
+
+		JButton button_50 = new JButton("   ");
+		button_50.setEnabled(false);
+		panel_1.add(button_50, "cell 4 5");
+
+		JButton button_55 = new JButton("   ");
+		button_55.setEnabled(false);
+		panel_1.add(button_55, "cell 5 5");
+
+		JButton button_52 = new JButton("   ");
+		button_52.setEnabled(false);
+		panel_1.add(button_52, "cell 6 5");
+
+		JButton button_39 = new JButton("   ");
+		button_39.setEnabled(false);
+		panel_1.add(button_39, "cell 7 5");
+
+		JButton button_30 = new JButton("   ");
+		button_30.setEnabled(false);
+		panel_1.add(button_30, "cell 8 5");
+
+		JButton button_20 = new JButton("   ");
+		button_20.setEnabled(false);
+		panel_1.add(button_20, "cell 9 5");
+
+		JButton button_10 = new JButton("12");
+		panel_1.add(button_10, "cell 10 5,alignx left,aligny top");
+		button_10.setEnabled(false);
+		button_10.setBackground(new Color(245, 245, 245));
+
+		JButton button_11 = new JButton("   ");
+		button_11.setEnabled(false);
+		panel_1.add(button_11, "cell 0 6");
+
+		JButton button_23 = new JButton("   ");
+		button_23.setEnabled(false);
+		panel_1.add(button_23, "cell 1 6");
+
+		JButton button_34 = new JButton("   ");
+		button_34.setEnabled(false);
+		panel_1.add(button_34, "cell 2 6");
+
+		JButton button_49 = new JButton("   ");
+		button_49.setEnabled(false);
+		panel_1.add(button_49, "cell 3 6");
+
+		JButton button_54 = new JButton("   ");
+		button_54.setEnabled(false);
+		panel_1.add(button_54, "cell 4 6");
+
+		JButton button_56 = new JButton("   ");
+		button_56.setEnabled(false);
+		panel_1.add(button_56, "cell 5 6");
+
+		JButton button_57 = new JButton("   ");
+		button_57.setEnabled(false);
+		panel_1.add(button_57, "cell 6 6");
+
+		JButton button_53 = new JButton("   ");
+		button_53.setEnabled(false);
+		panel_1.add(button_53, "cell 7 6");
+
+		JButton button_40 = new JButton("   ");
+		button_40.setEnabled(false);
+		panel_1.add(button_40, "cell 8 6");
+
+		JButton button_31 = new JButton("   ");
+		button_31.setEnabled(false);
+		panel_1.add(button_31, "cell 9 6");
+
+		JButton button_21 = new JButton("   ");
+		button_21.setEnabled(false);
+		panel_1.add(button_21, "cell 10 6");
+
+		JButton button_22 = new JButton("   ");
+		button_22.setEnabled(false);
+		panel_1.add(button_22, "cell 0 7");
+
+		JButton button_33 = new JButton("   ");
+		button_33.setEnabled(false);
+		panel_1.add(button_33, "cell 1 7");
+
+		JButton button_48 = new JButton("   ");
+		button_48.setEnabled(false);
+		panel_1.add(button_48, "cell 2 7");
+
+		JButton button_47 = new JButton("   ");
+		button_47.setEnabled(false);
+		panel_1.add(button_47, "cell 3 7");
+
+		JButton button_46 = new JButton("   ");
+		button_46.setEnabled(false);
+		panel_1.add(button_46, "cell 4 7");
+
+		JButton button_45 = new JButton("   ");
+		button_45.setEnabled(false);
+		panel_1.add(button_45, "cell 5 7");
+
+		JButton button_44 = new JButton("   ");
+		button_44.setEnabled(false);
+		panel_1.add(button_44, "cell 6 7");
+
+		JButton button_43 = new JButton("   ");
+		button_43.setEnabled(false);
+		panel_1.add(button_43, "cell 7 7");
+
+		JButton button_42 = new JButton("   ");
+		button_42.setEnabled(false);
+		panel_1.add(button_42, "cell 8 7");
+
+		JButton button_41 = new JButton("   ");
+		button_41.setEnabled(false);
+		panel_1.add(button_41, "cell 9 7");
+
+		JButton button_32 = new JButton("   ");
+		button_32.setEnabled(false);
+		panel_1.add(button_32, "cell 10 7");
+
+
+		contentPane.setLayout(gl_contentPane);
+		setVisible(true);
+	}
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o == btnRoll){
+			output.println("roll");
+			Scanner search = new Scanner(input);
+			String rolled = search.nextLine();
+			Scanner search2 = new Scanner(rolled);
+			while(search2.hasNext()){
+				if(search2.nextInt() == 1){
+					die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
+					add(die1);
+				}
+				else if(search2.nextInt() == 2){
+					die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
+					add(die2);
+				}
+				else if(search2.nextInt() == 3){
+					die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
+					add(die3);
+				}
+				else if(search2.nextInt() == 4){
+					die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
+					add(die4);
+				}
+				else if(search2.nextInt() == 5){
+					die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
+					add(die5);
+				}
+				else if(search2.nextInt() == 6){
+					die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
+					add(die6);
+				}
+			}
+		}
+		if(o == btnBust){
+			output.println("crap");
+			die1.setVisible(false);
+			die2.setVisible(false);
+			die3.setVisible(false);
+			die4.setVisible(false);
+			die5.setVisible(false);
+			die6.setVisible(false);
+		}
+		if(o == btnStop){
+			output.println("stop");
+		}
+		if(o==btnGo){
+			output.println("go");
+		}
+	}
+}
+package networking;
+public class Marker {
+	boolean permanent;
+	int playerNum;
+	boolean vacant;
+	
+	public Marker(boolean perma, int playNum, boolean issVacant){
+		permanent = perma;
+		playerNum = playNum;
+		vacant = issVacant;
+	}
+	
+	private boolean getPermanent(){
+		return permanent;
+	}
+	
+	private int getPlayerNumber(){
+		return playerNum;
+	}
+	
+	private void setVacancy(){
+		if(vacant == true){
+			vacant = false;
+		}
+		else{
+			vacant = true;
+		}
+	}
+	
+	private boolean isVacant(){
+		return vacant;
+	}
+	
+}
+package networking;
+
+public class Player {
+	String name;
+	int score;
+	
+	public Player(String plaNam){
+		name = plaNam;
+		score = 0;
+	}
+	
+	private int getScore(){
+		return score;
+	}
+	
+	private void setScore(int newScore){
+		score = newScore;
+	}
+}
+package networking;
+import java.io.*;
+import java.net.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+public class Server {
+	//Instance variables
+	ServerSocket s = null;
+	Socket player = null;
+	int portNumber;
+	BufferedReader in = null;
+	PrintWriter out = null;
+	BufferedReader fileReader = null;
+	static int numConnected=0;
+	String loginInfo = "CantStop.txt";
+	Scanner loginSc = null;
+
+	//Initialize Server and ServerSocket
+	public Server()	{
+		portNumber=2043;
+		try
+		{
+			File loginFile = new File(loginInfo);
+			if(loginFile.createNewFile())
+			{
+				loginFile.createNewFile();
+				System.out.println("File Created: "+loginFile.getName());//debug
+				System.out.println("File Path: "+loginFile.getAbsolutePath());//debug
+			}
+			else
+			{
+				System.out.println("File already exists.");//debug
+			}//debug
+		}
+		catch(IOException e)
+		{
+			System.err.println("Could not handle file: "+loginInfo+": " + e.getMessage());
+		}
+		try
+		{
+			s=new ServerSocket(portNumber);
+			System.out.println("Server started on port: "+portNumber);//debug
+		}//try
+		catch(IOException e){
+			System.err.println("Could not listen on port: "+portNumber+". " + e.getMessage());
+			System.exit(-1);
+		}//catch
+	}//Method
+	private boolean checkExistingUser(String requested)
+	{
+		boolean existing=false;
+		try
+		{
+			System.out.println("Login File reader to be created: "+loginInfo);//debug
+			fileReader = new BufferedReader(new FileReader(loginInfo));
+			loginSc = new Scanner(fileReader);
+			String line=",";
+			boolean scan = true;
+			try {
+				line = loginSc.nextLine();
+			} catch (NoSuchElementException e) {
+				System.err.println("No line found" + e.getMessage());
+				scan=false;
+			}
+			System.out.println(line);//debug
+			String store[];
+			while(scan)
+			{
+				store = line.split(",");
+				if(store[0].equals(requested))
+				{
+					existing=true;
+				}
+				System.out.println(store[0]);//debug
+				System.out.println("Matches requested: "+existing);//debug
+				try
+				{
+					line=loginSc.nextLine();
+				} catch (NoSuchElementException e) {
+					System.err.println("Could not use Scanner. " + e.getMessage());
+					scan=false;
+				}
+			}
+		}
+		catch(IOException e)
+		{
+			System.err.println("Could not use File Reader or Scanner" + e.getMessage());
+			System.exit(-1);
+		}
+		finally
+		{
+			try 
+			{
+				fileReader.close();
+			} catch (IOException e) 
+			{
+				System.err.println("Could not close File Reader" + e.getMessage());
+			}
+		}
+		return existing;
+	}//Method - checkExistingUser
+	private boolean checkPasswordWithName(String u, String p)
+	{
+		boolean accept = false;
+		try
+		{
+			System.out.println("Login File reader to be created: "+loginInfo);//debug
+			fileReader = new BufferedReader(new FileReader(loginInfo));
+			loginSc = new Scanner(fileReader);
+			String line = loginSc.nextLine();
+			System.out.println(line);//debug
+			String store[];
+			boolean scan = true;
+			while(scan)
+			{
+				store = line.split(",");
+				if(store[0].equals(u) && store[1].equals(p))
+				{
+					accept=true;
+				}
+				System.out.println(store[0]);//debug
+				System.out.println("Matches requested: "+accept);//debug
+				try
+				{
+					line=loginSc.nextLine();
+				} catch (NoSuchElementException e) {
+					System.err.println("Could not use Scanner. " + e.getMessage());
+					scan=false;
+				}
+			}
+		}
+		catch(IOException e)
+		{
+			System.err.println("Could not use File Reader or Scanner" + e.getMessage());
+			System.exit(-1);
+		}
+		finally
+		{
+			try 
+			{
+				fileReader.close();
+			} catch (IOException e) 
+			{
+				System.err.println("Could not close File Reader" + e.getMessage());
+			}
+		}
+		return accept;
+	}
+	private void addNewUser(String write)
+	{
+		try
+		{
+			System.out.println("Adding new User Login.");//debug
+			FileWriter fileWriter = new FileWriter(loginInfo,true);
+			System.out.println("Should write: " + write);
+			fileWriter.write(write+System.getProperty("line.separator"));
+
+			fileWriter.flush();
+			fileWriter.close();
+			System.out.println("Finished adding new User Login.");//debug
+		}
+		catch(IOException e)
+		{
+			System.err.println("Could not add user to records." + e.getMessage());
+			System.exit(-1);
+		}
+	}
+	public void initFileIO()
+	{
+		try
+		{
+			System.out.println("Login File reader to be created: "+loginInfo);//debug
+			fileReader = new BufferedReader(new FileReader(loginInfo));
+			loginSc = new Scanner(fileReader);
+		}
+		catch(IOException e)
+
+		{
+			System.err.println("Could not setup reader or writer." + e.getMessage());
+			System.exit(-1);
+		}
+	}//method
+	public boolean handleLogin()
+	{
+		boolean result = false;
+		return result;
+	}
+	public Socket connect(Socket player)
+	{
+		boolean userNameCheck;
+		boolean passwordCheck;
+		boolean error;
+		try {
+			player = s.accept( );
+			in = new BufferedReader(new InputStreamReader(player.getInputStream()));
+			out = new PrintWriter(player.getOutputStream(), true);
+			/* Handle there user name and password 
+			 * here before allowing them to connect fully.*/
+			boolean done = false;
+			while(!done)
+			{
+				userNameCheck=false;
+				passwordCheck=false;
+				error = false;
+				String line = in.readLine();
+				String store[];
+				String password;
+				int passwordsAttempted=0;
+				System.out.println("Line: "+line);//debug
+				if(line.matches("[RN]{1}[,]{1}[\\w|\\s]*"));
+				{
+					
+					store=line.split(",");
+					if(store[0]=="R")
+					{
+						System.out.println(store[0]);//debug
+						System.out.println(store[1]);//debug
+						if(checkExistingUser(store[1]))
+						{
+							
+							System.out.println(store[1]);//debug
+							out.println("ack");
+							userNameCheck=true;
+							PW: while(!error)
+							{
+								password=in.readLine();
+								if(checkPasswordWithName(store[1], password))
+								{
+									out.println("ack");
+									passwordCheck=true;
+									break PW;
+								}//password matched
+								else
+								{
+									out.println("err,Invalid Password");
+									passwordsAttempted++;
+									if(passwordsAttempted>2)
+									{
+										error=true;
+									}
+								}//invalid password
+							}
+						}//check to see if user name exists.
+						else
+						{
+							System.out.println(store[0]);//debug
+							out.println("err,Unknown User");
+						}
+					}//returning user.
+					else
+					{
+						if(!checkExistingUser(store[1]))
+						{
+							out.println("ack");
+							password = in.readLine();
+							userNameCheck=true;
+							addNewUser(store[1]+","+password);
+							passwordCheck=true;
+							out.println("ack");
+							//get password then store both
+						}//check to see if User Name is free;
+						else
+						{
+							out.println("err,Duplicate User Name");
+						}//err,Duplicate User Name
+					}//new user.
+				}//only excepts in the form of regex: "(r|d){1}[,]{1}(\\w|\\s)*"
+				if(error)
+				{
+					//close connection
+				}
+				else if(passwordCheck && userNameCheck)
+				{
+					//Keep Connection
+					done=true;
+				}
+			}//while not done
+			/*Done Handling Connection Attempt.*/
+		}//try
+		catch (IOException e) {
+			System.err.println("Accept failed: " + e.getMessage());
+		}//catch
+				out.println(++numConnected);
+		return player;
+	}//method
+	public BufferedReader connectReader(Socket socket)
+	{
+		try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		}//try
+		catch (IOException e) {
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
+		return in;
+	}//Method
+	public PrintWriter connectWriter(Socket socket)
+	{
+		try{
+			out = new PrintWriter
+					(socket.getOutputStream(), true /* autoFlush */);
+		}//try
+		catch (IOException e) {
+			System.err.println("Unable to read from or write to the client: "
+					+ e.getMessage());
+		}//Catch
+		return out;
+	}//method
+	//close the connections
+	public void close(Socket socket)
+	{
+		try
+		{
+			socket.close();
+			numConnected--;
+		}
+		catch(IOException e)
+		{
+			System.err.println("Unable to close the connection to the client: "
+					+ e.getMessage());
+		}
+
+	}
+	public void close()
+	{
+		try {
+			out.close();
+			in.close();
+			s.close();
+		}//try
+		catch (IOException e) {
+			System.err.println("Unable to close writer, reader, or socket: "
+					+ e.getMessage());
+		}//catch
+	}//method
+}//class

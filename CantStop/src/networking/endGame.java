@@ -12,7 +12,11 @@ import java.awt.FlowLayout;
 
 
 public class endGame extends JFrame {
-
+	/**
+	 * EndGame.java
+	 * @author Kelsey LaPointe
+	 * @author Matthew Koval
+	 */
 	private JPanel contentPane;
 
 	/**

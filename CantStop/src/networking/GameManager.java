@@ -1,11 +1,19 @@
 package networking;
 import java.net.*;
 import java.io.*;
-
+/**
+ * GameManager.java
+ * Run the server.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class GameManager 
 {
 	static int[] dice = new int[4];
 
+	/**Runs the Server
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		Server server = new Server();
@@ -86,6 +94,9 @@ public class GameManager
 		server.close();
 	}//Main method
 
+	/**Create 4 dice rolls to be stored in an array
+	 * @return
+	 */
 	private static int[] roll(){
 		for(int i=0; i<dice.length; i++){
 			dice[i]= (int) (6*Math.random()+1);
@@ -93,6 +104,10 @@ public class GameManager
 
 		return dice;
 	}//method - roll
+	/**Concatenate the dice rolls into a string delimited by ","
+	 * @param diceArray
+	 * @return
+	 */
 	private static String concatRoll(int[] diceArray)
 	{
 		String results="";
@@ -107,6 +122,11 @@ public class GameManager
 		return results;
 	}//method - concat roll
 
+	/**check to see if the combination picked is between 2 and 12
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	private static boolean checkRoll(int a, int b){
 		boolean valid = false;
 		if((2<=a)&&(12>=a)){
@@ -122,6 +142,12 @@ public class GameManager
 	 * given board and returns true if at least one temp marker is placed
 	 * and there is a possibility that it was chosen by the user with a 
 	 * valid roll.
+	 */
+	/**check to see if the 2 combinations are possible from the dice rolls
+	 * @param dice
+	 * @param a
+	 * @param b
+	 * @return
 	 */
 	private static boolean checkCombinations(int[] dice, int a, int b)
 	{
@@ -163,11 +189,11 @@ public class GameManager
 		System.out.println("Both valid: "+result);
 		return result;
 	}//method - check combinations.
-	public boolean checkBusted(Board board)
-	{
-		boolean result = false;
-		return result;
-	}//Return true if the player busted.
+	/**Check to see if the game has been won
+	 * @param board1
+	 * @param board2
+	 * @return
+	 */
 	private static boolean isGameWon(Board board1, Board board2){
 		boolean gameWon = false;
 		int counter = 0;
@@ -190,6 +216,14 @@ public class GameManager
 		}
 		return gameWon;
 	}//method - isGameWon
+	/**a players turn
+	 * @param reader read from the player
+	 * @param writer write to the player who's turn it is
+	 * @param otherPlayer write to the player who's turn it is not
+	 * @param playerNum current player number
+	 * @param boardPrimary board for the current player
+	 * @param boardSecondary board for the other player
+	 */
 	private static void playerTurn(BufferedReader reader, PrintWriter writer,
 			PrintWriter otherPlayer, int playerNum, Board boardPrimary,
 			Board boardSecondary)

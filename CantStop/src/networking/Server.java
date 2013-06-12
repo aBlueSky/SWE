@@ -4,6 +4,12 @@ import java.net.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Server.java
+ * Server methods.
+ * @author Kelsey LaPointe
+ * @author Matthew Koval
+ */
 public class Server {
 	//Instance variables
 	ServerSocket s = null;
@@ -17,6 +23,9 @@ public class Server {
 	Scanner loginSc = null;
 
 	//Initialize Server and ServerSocket
+	/**
+	 * create a server with the port number
+	 */
 	public Server()	{
 		portNumber=2043;
 		try
@@ -47,6 +56,10 @@ public class Server {
 			System.exit(-1);
 		}//catch
 	}//Method
+	/**check to see if user already exists in the records
+	 * @param requested
+	 * @return
+	 */
 	private boolean checkExistingUser(String requested)
 	{
 		boolean existing=false;
@@ -100,6 +113,11 @@ public class Server {
 		}
 		return existing;
 	}//Method - checkExistingUser
+	/**check to see if user u has password matching p
+	 * @param u
+	 * @param p
+	 * @return
+	 */
 	private boolean checkPasswordWithName(String u, String p)
 	{
 		boolean accept = false;
@@ -147,6 +165,9 @@ public class Server {
 		}
 		return accept;
 	}
+	/**add a new user with the information delimited by a ","
+	 * @param write
+	 */
 	private void addNewUser(String write)
 	{
 		try
@@ -166,6 +187,9 @@ public class Server {
 			System.exit(-1);
 		}
 	}
+	/**create the file io for loginInfo
+	 * 
+	 */
 	public void initFileIO()
 	{
 		try
@@ -181,11 +205,18 @@ public class Server {
 			System.exit(-1);
 		}
 	}//method
+	/**handle the login attempt
+	 * @return
+	 */
 	public boolean handleLogin()
 	{
 		boolean result = false;
 		return result;
 	}
+	/**connect a player to the server
+	 * @param player
+	 * @return
+	 */
 	public Socket connect(Socket player)
 	{
 		boolean userNameCheck;
@@ -284,6 +315,10 @@ public class Server {
 				out.println(++numConnected);
 		return player;
 	}//method
+	/**connect a bufferedreader to the socket and return it
+	 * @param socket
+	 * @return
+	 */
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
@@ -295,6 +330,10 @@ public class Server {
 		}//Catch
 		return in;
 	}//Method
+	/**connect a writer to the socket and return it
+	 * @param socket
+	 * @return
+	 */
 	public PrintWriter connectWriter(Socket socket)
 	{
 		try{
@@ -308,6 +347,9 @@ public class Server {
 		return out;
 	}//method
 	//close the connections
+	/**close the socket
+	 * @param socket
+	 */
 	public void close(Socket socket)
 	{
 		try
@@ -322,6 +364,9 @@ public class Server {
 		}
 
 	}
+	/**
+	 * close the server
+	 */
 	public void close()
 	{
 		try {
