@@ -16,11 +16,15 @@ public class GameManager
 
 		//player connections
 		player1=server.connect(player1);
+		System.out.println("Closed: " +player1.isClosed());//debug
+		System.out.println("Player set up");//debug
 		//Create IO for Player 1
 		BufferedReader p1Reader = server.connectReader(player1);
 		PrintWriter p1Writer = server.connectWriter(player1);
 
 		player2=server.connect(player2);
+		System.out.println("Closed: " +player2.isClosed());//debug
+		System.out.println("Player set up");//debug
 		//Create IO for Player 2
 		BufferedReader p2Reader = server.connectReader(player2);
 		PrintWriter p2Writer = server.connectWriter(player2);
@@ -30,6 +34,7 @@ public class GameManager
 		 						be true as long as the game
 		 						is running and needs to continue
 		 						running*/
+		
 		while(playing)
 		{
 			playerTurn(p1Reader, p1Writer, p2Writer, 1, board1, board2);

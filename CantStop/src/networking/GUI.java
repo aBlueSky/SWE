@@ -31,7 +31,7 @@ import java.io.*;
 import java.util.*;
 
 public class GUI extends JFrame implements ActionListener{
-	Socket playerSocket = null;
+	static Socket playerSocket;
 	PrintWriter output = null;
 	BufferedReader input = null;
 	private JPanel contentPane;
@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton btnBust = new JButton("Crap");
 	private JButton btnStop = new JButton("Stop");
 	private JButton btnGo = new JButton("Go");
-	
+
 
 	/**
 	 * Launch the application.
@@ -57,6 +57,14 @@ public class GUI extends JFrame implements ActionListener{
 				answer.equals("yes")|| answer.equals("Yes") || answer.equals("YES")))
 		{
 			answer = JOptionPane.showInputDialog("Invalid answer. Please type in yes or no.");
+		}
+		if(answer.equals(answer.equals("no")|| answer.equals("No") || answer.equals("NO")))
+		{
+			answer="R";
+		}
+		else
+		{
+			answer="N";
 		}
 		return answer;
 	}
@@ -82,83 +90,90 @@ public class GUI extends JFrame implements ActionListener{
 		String name;
 		String loginString;
 		String password;
-		Socket socket=null;
+		playerSocket=null;
 		PrintWriter out=null;
 		BufferedReader in=null;
 		Scanner scan=null;
 		try{
-			socket = new Socket("localhost", 2043);
-			out = new PrintWriter(socket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			playerSocket = new Socket("localhost", 2043);
+			out = new PrintWriter(playerSocket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 			scan = new Scanner(in);
 		}
 		catch(IOException e){
 			System.err.println("Could not connect socket: " + e.getMessage());
 		}
-
-		if(socket!=null)
+		W: while(!valid)
 		{
-			while(!valid)
+
+			userType=getUserType();
+			name=getUserName("Enter your Username");
+			L: while(!userValid)
 			{
-
-				userType=getUserType();
-				name=getUserName("Enter your Username");
-				while(!userValid)
-				{
-					String temp="";
-					loginString=userType+","+name;
-					out.println(loginString);
-					try {
-						temp = in.readLine();
-						System.out.println(temp);
-						if(temp.equals("ack"))
+				String temp="";
+				loginString=userType+","+name;
+				System.out.println(loginString);//debug
+				out.println(loginString);
+				try {
+					temp = in.readLine();
+					System.out.println(temp);//debug
+					if(temp.equals("ack"))
+					{
+						//accept and move on
+						userValid=true;
+						password="";
+						while(!passwordValid)
 						{
-							//accept and move on
-							userValid=true;
-						}
-						else if(temp.equals("err,Duplicate User Name"))
-						{
-							userType=getUserType();
-							name=getUserName("User Name already taken, Please choose another.");
-						}
-						else if(temp.equals("err,Unknown User"))
-						{
-							userType=getUserType();
-							name=getUserName("User Name does not exist, Please choose another.");
-						}
-					} catch (IOException e) {
-						System.err.println("Could not read from server: " + e.getMessage());
-					}
-
-				}
-				password=getPassword("Enter your Password");
-				while(!passwordValid)
-				{
-					String temp="";
-					out.println(password);
-					try {
-						temp = in.readLine();
-						System.out.println(temp);
-						if(temp.equals("ack"))
-						{
-							passwordValid=true;
-						}
-						else if(temp.equals("err,Invalid Password"))
-						{
+							String temp2="";
 							password=getPassword("Enter your Password");
-						}
-					} catch (IOException e) {
-						System.err.println("Could not read from server: " + e.getMessage());
-					}
+							out.println(password);
+							System.out.println(password);//debug
+							try {
+								temp2 = in.readLine();
+								System.out.println("From Server: "+temp2);//debug
+								if(temp2.equals("ack"))
+								{
+									System.out.println("Should break");//debug
+									passwordValid=true;
+									System.out.println("ack");//debug
+									break L;
+								}
+								else if(temp2.equals("err,Invalid Password"))
+								{
+									password=getPassword("Enter your Password");
+									System.out.println("err,Invalid Password");//debug
+								}
+							} //try
+							catch (IOException e) {
+								System.err.println("Could not read from server: " + e.getMessage());
+							}//catch
 
+						}//while
+					}
+					else if(temp.equals("err,Duplicate User Name"))
+					{
+						userType=getUserType();
+						name=getUserName("User Name already taken, Please choose another.");
+					}
+					else if(temp.equals("err,Unknown User"))
+					{
+						userType=getUserType();
+						name=getUserName("User Name does not exist, Please choose another.");
+					}
+				} catch (IOException e) {
+					System.err.println("Could not read from server: " + e.getMessage());
 				}
 			}
-		}
-		final Socket s = socket;
+			if(userValid&&passwordValid)
+			{
+				valid=true;
+			}
+		}//while
+		System.out.println("Event Queue.invokeLater()");//debug
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI frame = new GUI(s);
+					GUI frame = new GUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -166,12 +181,14 @@ public class GUI extends JFrame implements ActionListener{
 			}
 		});
 	}
+	public Socket getSocket(){
+		return playerSocket;
+	}
 	/**
 	 * Create the frame.
 	 */
-	public GUI(Socket socket) {
+	public GUI() {
 		try{
-			playerSocket = socket;
 			output = new PrintWriter(playerSocket.getOutputStream(), true);
 			input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 		}
@@ -194,23 +211,23 @@ public class GUI extends JFrame implements ActionListener{
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 187, 102));
 
-		
+
 		btnRoll.addActionListener(this);
 		btnRoll.setBackground(new Color(255, 127, 80));
 		btnRoll.setFont(new Font("Orator Std", Font.PLAIN, 12));
-		
+
 		btnBust.addActionListener(this);
 		btnBust.setBackground(new Color(255, 127, 80));
 		btnBust.setFont(new Font("Orator Std", Font.PLAIN, 12));
-		
+
 		btnStop.addActionListener(this);
 		btnStop.setBackground(new Color(255, 99, 71));
 		btnStop.setFont(new Font("Orator Std", Font.PLAIN, 12));
-		
+
 		btnGo.addActionListener(this);
 		btnGo.setBackground(new Color(255, 127, 80));
 		btnGo.setFont(new Font("Orator Std", Font.PLAIN, 11));
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(102, 187, 102));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -495,54 +512,54 @@ public class GUI extends JFrame implements ActionListener{
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
 	}
-public void actionPerformed(ActionEvent e) {
-	Object o = e.getSource();
-	if(o == btnRoll){
-		output.println("roll");
-		Scanner search = new Scanner(input);
-		String rolled = search.nextLine();
-		Scanner search2 = new Scanner(rolled);
-		while(search2.hasNext()){
-			if(search2.nextInt() == 1){
-				die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
-				add(die1);
-			}
-			else if(search2.nextInt() == 2){
-				die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
-				add(die2);
-			}
-			else if(search2.nextInt() == 3){
-				die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
-				add(die3);
-			}
-			else if(search2.nextInt() == 4){
-				die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
-				add(die4);
-			}
-			else if(search2.nextInt() == 5){
-				die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
-				add(die5);
-			}
-			else if(search2.nextInt() == 6){
-				die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
-				add(die6);
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o == btnRoll){
+			output.println("roll");
+			Scanner search = new Scanner(input);
+			String rolled = search.nextLine();
+			Scanner search2 = new Scanner(rolled);
+			while(search2.hasNext()){
+				if(search2.nextInt() == 1){
+					die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
+					add(die1);
+				}
+				else if(search2.nextInt() == 2){
+					die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
+					add(die2);
+				}
+				else if(search2.nextInt() == 3){
+					die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
+					add(die3);
+				}
+				else if(search2.nextInt() == 4){
+					die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
+					add(die4);
+				}
+				else if(search2.nextInt() == 5){
+					die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
+					add(die5);
+				}
+				else if(search2.nextInt() == 6){
+					die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
+					add(die6);
+				}
 			}
 		}
+		if(o == btnBust){
+			output.println("crap");
+			die1.setVisible(false);
+			die2.setVisible(false);
+			die3.setVisible(false);
+			die4.setVisible(false);
+			die5.setVisible(false);
+			die6.setVisible(false);
+		}
+		if(o == btnStop){
+			output.println("stop");
+		}
+		if(o==btnGo){
+			output.println("go");
+		}
 	}
-	if(o == btnBust){
-		output.println("crap");
-		die1.setVisible(false);
-		die2.setVisible(false);
-		die3.setVisible(false);
-		die4.setVisible(false);
-		die5.setVisible(false);
-		die6.setVisible(false);
-	}
-	if(o == btnStop){
-		output.println("stop");
-	}
-	if(o==btnGo){
-		output.println("go");
-	}
-  }
 }

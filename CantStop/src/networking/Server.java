@@ -55,10 +55,16 @@ public class Server {
 			System.out.println("Login File reader to be created: "+loginInfo);//debug
 			fileReader = new BufferedReader(new FileReader(loginInfo));
 			loginSc = new Scanner(fileReader);
-			String line = loginSc.nextLine();
+			String line=",";
+			boolean scan = true;
+			try {
+				line = loginSc.nextLine();
+			} catch (NoSuchElementException e) {
+				System.err.println("No line found" + e.getMessage());
+				scan=false;
+			}
 			System.out.println(line);//debug
 			String store[];
-			boolean scan = true;
 			while(scan)
 			{
 				store = line.split(",");
@@ -212,6 +218,7 @@ public class Server {
 						System.out.println(store[1]);//debug
 						if(checkExistingUser(store[1]))
 						{
+							
 							System.out.println(store[1]);//debug
 							out.println("ack");
 							userNameCheck=true;
@@ -250,6 +257,7 @@ public class Server {
 							userNameCheck=true;
 							addNewUser(store[1]+","+password);
 							passwordCheck=true;
+							out.println("ack");
 							//get password then store both
 						}//check to see if User Name is free;
 						else
@@ -269,47 +277,13 @@ public class Server {
 				}
 			}//while not done
 			/*Done Handling Connection Attempt.*/
-			out.println(++numConnected);
 		}//try
 		catch (IOException e) {
 			System.err.println("Accept failed: " + e.getMessage());
-			close(player);
 		}//catch
-		finally
-		{
-			try
-			{
-				player.close();
-				in.close();
-				out.close();
-			}
-			catch(IOException e)
-			{
-				System.err.println("Error closing connections: " + e.getMessage());
-			}
-		}
+				out.println(++numConnected);
 		return player;
 	}//method
-	/*Safety Copy of connect(player)
-	public Socket connect(Socket player)
-	{
-		try {
-			player = s.accept( );
-			in = new BufferedReader(new InputStreamReader(player.getInputStream()));
-			out = new PrintWriter(player.getOutputStream(), true);
-			/* Handle there user name and password 
-			 * here before allowing them to connect fully.*/
-			
-			/*Done Handling Connection Attempt.*//*
-			out.println(++numConnected);
-		}//try
-		catch (IOException e) {
-			System.err.println("Accept failed: " + e.getMessage());
-			close(player);
-		}//catch
-		return player;
-	}//method
-	End of Safety*/
 	public BufferedReader connectReader(Socket socket)
 	{
 		try {
