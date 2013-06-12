@@ -84,13 +84,12 @@ public class Server {
 		}
 		finally
 		{
-			loginSc.close();
 			try 
 			{
 				fileReader.close();
 			} catch (IOException e) 
 			{
-				System.err.println("Could not close File Reader or Scanner" + e.getMessage());
+				System.err.println("Could not close File Reader" + e.getMessage());
 			}
 		}
 		if(existing)
