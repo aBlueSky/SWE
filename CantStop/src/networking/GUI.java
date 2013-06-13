@@ -51,6 +51,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton btnBust = new JButton("Crap");
 	private JButton btnStop = new JButton("Stop");
 	private JButton btnGo = new JButton("Go");
+	JPanel panel;
 
 
 	/**prompt for the user type
@@ -231,7 +232,7 @@ public class GUI extends JFrame implements ActionListener{
 		JLabel lblCantStop = new JLabel("CAN'T STOP");
 		lblCantStop.setFont(new Font("Orator Std", Font.PLAIN, 26));
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(new Color(102, 187, 102));
 
 
@@ -538,35 +539,62 @@ public class GUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o == btnRoll){
+			System.out.println("roll request sent.");//debug
 			output.println("roll");
-			Scanner search = new Scanner(input);
-			String rolled = search.nextLine();
-			Scanner search2 = new Scanner(rolled);
-			while(search2.hasNext()){
-				if(search2.nextInt() == 1){
-					die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
-					add(die1);
+			String rolled;
+			try {
+				rolled = input.readLine();
+				String dice[]=new String[4];
+				dice=rolled.split(",");
+				for(int i=0;i<dice.length;i++)
+				{
+					System.out.print(dice[i]);//debug
+					if(i<dice.length-1)
+					{
+						System.out.print(",");//debug
+					}
 				}
-				else if(search2.nextInt() == 2){
-					die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
-					add(die2);
+				System.out.println();//debug
+				for(int i=0;i<dice.length;i++){
+					if(dice[i].equals("1")){
+						die1.setIcon(new ImageIcon(GUI.class.getResource("/networking/die1.png")));
+						panel.add(die1);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
+					else if(dice[i].equals("2")){
+						die2.setIcon(new ImageIcon(GUI.class.getResource("/networking/die2.png")));
+						panel.add(die2);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
+					else if(dice[i].equals("3")){
+						die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
+						panel.add(die3);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
+					else if(dice[i].equals("4")){
+						die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
+						panel.add(die4);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
+					else if(dice[i].equals("5")){
+						die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
+						panel.add(die5);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
+					else if(dice[i].equals("6")){
+						die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
+						panel.add(die6);
+						System.out.println("Should have added die: "+i);//debug
+						System.out.println("Die panel has elements: "+panel.countComponents());//debug
+					}
 				}
-				else if(search2.nextInt() == 3){
-					die3.setIcon(new ImageIcon(GUI.class.getResource("/networking/die3.png")));
-					add(die3);
-				}
-				else if(search2.nextInt() == 4){
-					die4.setIcon(new ImageIcon(GUI.class.getResource("/networking/die4.png")));
-					add(die4);
-				}
-				else if(search2.nextInt() == 5){
-					die5.setIcon(new ImageIcon(GUI.class.getResource("/networking/die5.png")));
-					add(die5);
-				}
-				else if(search2.nextInt() == 6){
-					die6.setIcon(new ImageIcon(GUI.class.getResource("/networking/die6.png")));
-					add(die6);
-				}
+			} catch (IOException e2) {
+				System.err.println("Error Reading Roll: " + e2.getMessage());
 			}
 		}
 		if(o == btnBust){
