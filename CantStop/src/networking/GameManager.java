@@ -168,12 +168,12 @@ public class GameManager
 		}//set up combination possibilities.
 		for(int i=0;i<possibilities.length;i++)
 		{
-			if(a==possibilities[i])
+			A: if(a==possibilities[i]&&!aPrime)
 			{
 				aPrime=true;
 				possibilities[i]=0;
 			}
-			if(b==possibilities[i])
+			B: if(b==possibilities[i]&&!bPrime)
 			{
 				bPrime=true;
 				possibilities[i]=0;
